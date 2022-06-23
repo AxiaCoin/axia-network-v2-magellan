@@ -27,11 +27,11 @@ import (
 )
 
 var (
-	testXChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
+	testSwapChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
 )
 
 func TestIndexBootstrap(t *testing.T) {
-	conns, writer, reader, closeFn := newTestIndex(t, testXChainID)
+	conns, writer, reader, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 
 	persist := db.NewPersist()
@@ -41,7 +41,7 @@ func TestIndexBootstrap(t *testing.T) {
 	}
 
 	txList, err := reader.ListTransactions(context.Background(), &params.ListTransactionsParams{
-		ChainIDs: []string{testXChainID.String()},
+		ChainIDs: []string{testSwapChainID.String()},
 	}, ids.Empty)
 	if err != nil {
 		t.Fatal("Failed to list transactions:", err.Error())
@@ -108,7 +108,7 @@ func TestIndexBootstrap(t *testing.T) {
 
 	// invoke the address and asset logic to test the db.
 	txList, err = reader.ListTransactions(context.Background(), &params.ListTransactionsParams{
-		ChainIDs:  []string{testXChainID.String()},
+		ChainIDs:  []string{testSwapChainID.String()},
 		Addresses: []ids.ShortID{ids.ShortEmpty},
 	}, ids.Empty)
 
@@ -164,7 +164,7 @@ func newTestContext() context.Context {
 }
 
 func TestInsertTxInternal(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, testXChainID)
+	conns, writer, _, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 
@@ -232,7 +232,7 @@ func TestInsertTxInternal(t *testing.T) {
 }
 
 func TestInsertTxInternalCreateAsset(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, testXChainID)
+	conns, writer, _, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 
@@ -280,7 +280,7 @@ func TestInsertTxInternalCreateAsset(t *testing.T) {
 }
 
 func TestTransactionNext(t *testing.T) {
-	conns, _, reader, closeFn := newTestIndex(t, testXChainID)
+	conns, _, reader, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 

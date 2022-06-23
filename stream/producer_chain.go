@@ -60,7 +60,7 @@ const (
 func (t IndexedChain) String() string {
 	switch t {
 	case IndexXChain:
-		return "X"
+		return "Swap"
 	case IndexCoreChain:
 		return "Core"
 	case IndexAXChain:

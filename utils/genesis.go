@@ -12,8 +12,8 @@ import (
 
 type GenesisContainer struct {
 	NetworkID       uint32
-	XChainGenesisTx *platformvm.Tx
-	XChainID        ids.ID
+	SwapChainGenesisTx *platformvm.Tx
+	SwapChainID        ids.ID
 	AvaxAssetID     ids.ID
 	GenesisBytes    []byte
 }
@@ -26,11 +26,11 @@ func NewGenesisContainer(networkID uint32) (*GenesisContainer, error) {
 		return nil, err
 	}
 
-	gc.XChainGenesisTx, err = genesis.VMGenesis(gc.GenesisBytes, constants.AVMID)
+	gc.SwapChainGenesisTx, err = genesis.VMGenesis(gc.GenesisBytes, constants.AVMID)
 	if err != nil {
 		return nil, err
 	}
 
-	gc.XChainID = gc.XChainGenesisTx.ID()
+	gc.SwapChainID = gc.SwapChainGenesisTx.ID()
 	return gc, nil
 }
