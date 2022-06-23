@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
-	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia/utils/hashing"
 	corethType "github.com/axiacoin/coreth/core/types"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"

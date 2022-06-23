@@ -7,8 +7,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/axiacoin/avalanchego/utils/logging"
-	"github.com/axiacoin/avalanchego/version"
+	"github.com/axiacoin/axia/utils/logging"
+	"github.com/axiacoin/axia/version"
 )
 
 const appName = "ortelius"
@@ -30,7 +30,7 @@ type Config struct {
 	AdminListenAddr   string `json:"adminListenAddr"`
 	Features          map[string]struct{}
 	AXchainID          string `json:"axchainId"`
-	AvalancheGO       string `json:"avalanchego"`
+	Axia       string `json:"axia"`
 	NodeInstance      string `json:"nodeInstance"`
 	AP5Activation     uint64
 }
@@ -123,7 +123,7 @@ func NewFromFile(filePath string) (*Config, error) {
 			},
 		},
 		AXchainID:      v.GetString(keysStreamProducerAXchainID),
-		AvalancheGO:   v.GetString(keysStreamProducerAvalanchego),
+		Axia:   v.GetString(keysStreamProducerAxia),
 		NodeInstance:  v.GetString(keysStreamProducerNodeInstance),
 		AP5Activation: uint64(ap5Activation),
 	}, nil

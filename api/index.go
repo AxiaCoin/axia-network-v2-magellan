@@ -6,7 +6,7 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/axia/ids"
 	"github.com/axiacoin/ortelius/models"
 )
 

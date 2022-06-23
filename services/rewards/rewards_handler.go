@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/avalanchego/api"
-	"github.com/axiacoin/avalanchego/ids"
-	"github.com/axiacoin/avalanchego/utils/formatting"
-	avalancheGoAvax "github.com/axiacoin/avalanchego/vms/components/avax"
-	"github.com/axiacoin/avalanchego/vms/platformvm"
+	"github.com/axiacoin/axia/api"
+	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia/utils/formatting"
+	axiaAvax "github.com/axiacoin/axia/vms/components/avax"
+	"github.com/axiacoin/axia/vms/platformvm"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"
 	"github.com/axiacoin/ortelius/services"
@@ -52,7 +52,7 @@ func (r *Handler) runTicker(sc *servicesctrl.Control, conns *utils.Connections) 
 	r.doneCh = make(chan struct{}, 1)
 
 	r.conns = conns
-	r.client = platformvm.NewClient(sc.ServicesCfg.AvalancheGO)
+	r.client = platformvm.NewClient(sc.ServicesCfg.Axia)
 	r.perist = db.NewPersist()
 
 	r.avaxAssetID = sc.GenesisContainer.AvaxAssetID
@@ -161,7 +161,7 @@ func (r *Handler) processRewardUtxos(rewardsUtxos [][]byte, createdAt time.Time)
 	ctx := context.Background()
 
 	for _, reawrdUtxo := range rewardsUtxos {
-		var utxo *avalancheGoAvax.UTXO
+		var utxo *axiaAvax.UTXO
 		_, err = platformvm.Codec.Unmarshal(reawrdUtxo, &utxo)
 		if err != nil {
 			return err

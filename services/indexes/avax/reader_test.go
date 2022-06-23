@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/axiacoin/avalanchego/utils/logging"
+	"github.com/axiacoin/axia/utils/logging"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"

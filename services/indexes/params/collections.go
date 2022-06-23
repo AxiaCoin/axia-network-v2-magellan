@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/axia/ids"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"
 	"github.com/gocraft/dbr/v2"

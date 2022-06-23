@@ -6,7 +6,7 @@ package utils
 import (
 	"fmt"
 
-	"github.com/axiacoin/avalanchego/utils/logging"
+	"github.com/axiacoin/axia/utils/logging"
 	"github.com/gocraft/dbr/v2"
 	"github.com/palantir/stacktrace"
 )

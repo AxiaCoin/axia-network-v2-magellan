@@ -13,8 +13,8 @@ import (
 
 	"github.com/axiacoin/ortelius/db"
 
-	"github.com/axiacoin/avalanchego/ids"
-	avlancheGoUtils "github.com/axiacoin/avalanchego/utils"
+	"github.com/axiacoin/axia/ids"
+	avlancheGoUtils "github.com/axiacoin/axia/utils"
 	"github.com/axiacoin/coreth/core/types"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/modelsc"

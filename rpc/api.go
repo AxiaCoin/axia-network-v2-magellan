@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"runtime/pprof"
 
-	"github.com/axiacoin/avalanchego/utils/logging"
+	"github.com/axiacoin/axia/utils/logging"
 )
 
 type SuccessResponse struct {

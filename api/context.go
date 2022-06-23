@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/axia/ids"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/services/indexes/avax"
 	"github.com/axiacoin/ortelius/services/indexes/params"

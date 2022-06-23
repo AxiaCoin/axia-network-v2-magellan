@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
-	avalancheGoUtils "github.com/axiacoin/avalanchego/utils"
-	"github.com/axiacoin/avalanchego/utils/hashing"
-	"github.com/axiacoin/avalanchego/utils/wrappers"
+	"github.com/axiacoin/axia/ids"
+	axiaUtils "github.com/axiacoin/axia/utils"
+	"github.com/axiacoin/axia/utils/hashing"
+	"github.com/axiacoin/axia/utils/wrappers"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/modelsc"
@@ -49,7 +49,7 @@ type producerAXChainContainer struct {
 
 	runningControl utils.Running
 
-	catchupErrs avalancheGoUtils.AtomicInterface
+	catchupErrs axiaUtils.AtomicInterface
 }
 
 func newContainerC(
@@ -75,7 +75,7 @@ func newContainerC(
 		return nil, err
 	}
 
-	cl, err := modelsc.NewClient(conf.AvalancheGO + "/ext/bc/C/rpc")
+	cl, err := modelsc.NewClient(conf.Axia + "/ext/bc/C/rpc")
 	if err != nil {
 		_ = conns.Close()
 		return nil, err
@@ -201,7 +201,7 @@ func (p *producerAXChainContainer) ProcessNextMessage() error {
 		return ErrNoMessage
 	}
 
-	errs := &avalancheGoUtils.AtomicInterface{}
+	errs := &axiaUtils.AtomicInterface{}
 	for lblocknext.Cmp(p.block) > 0 {
 		if p.runningControl.IsStopped() {
 			break
@@ -385,7 +385,7 @@ func (p *ProducerAXChain) runProcessor() error {
 	}
 
 	for icnt := 0; icnt < maxWorkers; icnt++ {
-		cl, err := modelsc.NewClient(p.conf.AvalancheGO + "/ext/bc/C/rpc")
+		cl, err := modelsc.NewClient(p.conf.Axia + "/ext/bc/C/rpc")
 		if err != nil {
 			return err
 		}
@@ -560,7 +560,7 @@ func (p *ProducerAXChain) processWork(conns *utils.Connections, localBlock *loca
 }
 
 type blockWorkContainer struct {
-	errs        *avalancheGoUtils.AtomicInterface
+	errs        *axiaUtils.AtomicInterface
 	blockNumber *big.Int
 }
 

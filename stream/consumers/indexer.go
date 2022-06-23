@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	avlancheGoUtils "github.com/axiacoin/avalanchego/utils"
+	avlancheGoUtils "github.com/axiacoin/axia/utils"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/services"

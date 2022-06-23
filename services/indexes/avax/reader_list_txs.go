@@ -7,7 +7,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/axia/ids"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"

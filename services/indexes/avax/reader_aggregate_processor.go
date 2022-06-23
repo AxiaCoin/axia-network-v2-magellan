@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/axia/ids"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"
 	"github.com/axiacoin/ortelius/services/indexes/params"

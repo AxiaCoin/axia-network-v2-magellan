@@ -1,27 +1,27 @@
 version: '3'
 volumes:
-  avalanche-data:
-  avalanche-ipcs:
+  axia-data:
+  axia-ipcs:
 networks:
   services:
     external:
       name: ortelius_services
 services:
-  avalanche:
+  axia:
     env_file:
       - standalone.env
-    image: "avaplatform/avalanchego:v1.7.10"
-    command: /bin/sh -cx "exec /avalanchego/build/avalanchego
+    image: "avaplatform/axia:v1.7.10"
+    command: /bin/sh -cx "exec /axia/build/axia
       --config-file=/opt/config.json
       --network-id=$${NETWORKID}
       "
     ports:
       - "9650:9650"
     volumes:
-      - avalanche-data:/var/lib/avalanche
-      - ./../avalanchego_config.json:/opt/config.json
-      - ./../avalanchego_chain_config:/opt/avalanchego
-      - avalanche-ipcs:/tmp
+      - axia-data:/var/lib/axia
+      - ./../axia_config.json:/opt/config.json
+      - ./../axia_chain_config:/opt/axia
+      - axia-ipcs:/tmp
     depends_on:
       - indexer
     restart: always
@@ -33,7 +33,7 @@ services:
     external_links:
       - mysql
     volumes:
-      - avalanche-ipcs:/tmp
+      - axia-ipcs:/tmp
       - ./config.standalone.json:/opt/config.json
     restart: on-failure
   api:

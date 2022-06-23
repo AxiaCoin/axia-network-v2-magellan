@@ -10,20 +10,20 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/axiacoin/avalanchego/api/metrics"
-	"github.com/axiacoin/avalanchego/codec"
-	"github.com/axiacoin/avalanchego/genesis"
-	"github.com/axiacoin/avalanchego/ids"
-	"github.com/axiacoin/avalanchego/snow"
-	"github.com/axiacoin/avalanchego/snow/engine/avalanche/vertex"
-	"github.com/axiacoin/avalanchego/utils/constants"
-	"github.com/axiacoin/avalanchego/utils/hashing"
-	"github.com/axiacoin/avalanchego/utils/logging"
-	"github.com/axiacoin/avalanchego/vms/avm"
-	avalancheGoAvax "github.com/axiacoin/avalanchego/vms/components/avax"
-	"github.com/axiacoin/avalanchego/vms/components/verify"
-	"github.com/axiacoin/avalanchego/vms/platformvm"
-	"github.com/axiacoin/avalanchego/vms/secp256k1fx"
+	"github.com/axiacoin/axia/api/metrics"
+	"github.com/axiacoin/axia/codec"
+	"github.com/axiacoin/axia/genesis"
+	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia/snow"
+	"github.com/axiacoin/axia/snow/engine/axia/vertex"
+	"github.com/axiacoin/axia/utils/constants"
+	"github.com/axiacoin/axia/utils/hashing"
+	"github.com/axiacoin/axia/utils/logging"
+	"github.com/axiacoin/axia/vms/avm"
+	axiaAvax "github.com/axiacoin/axia/vms/components/avax"
+	"github.com/axiacoin/axia/vms/components/verify"
+	"github.com/axiacoin/axia/vms/platformvm"
+	"github.com/axiacoin/axia/vms/secp256k1fx"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"
@@ -383,7 +383,7 @@ func (w *Writer) insertOperationTx(
 	}
 	for _, txOps := range tx.Ops {
 		for _, u := range txOps.UTXOIDs {
-			ti := &avalancheGoAvax.TransferableInput{
+			ti := &axiaAvax.TransferableInput{
 				Asset:  txOps.Asset,
 				UTXOID: *u,
 				In:     &secp256k1fx.TransferInput{},

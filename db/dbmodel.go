@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
-	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia/utils/hashing"
 	"github.com/axiacoin/ortelius/models"
 	"github.com/axiacoin/ortelius/utils"
 	"github.com/gocraft/dbr/v2"

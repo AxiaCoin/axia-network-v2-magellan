@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
-	"github.com/axiacoin/avalanchego/indexer"
-	"github.com/axiacoin/avalanchego/utils/formatting"
-	"github.com/axiacoin/avalanchego/utils/hashing"
-	"github.com/axiacoin/avalanchego/utils/json"
-	"github.com/axiacoin/avalanchego/utils/wrappers"
+	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia/indexer"
+	"github.com/axiacoin/axia/utils/formatting"
+	"github.com/axiacoin/axia/utils/hashing"
+	"github.com/axiacoin/axia/utils/json"
+	"github.com/axiacoin/axia/utils/wrappers"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/servicesctrl"
@@ -280,7 +280,7 @@ func NewProducerChain(sc *servicesctrl.Control, conf cfg.Config, chainID string,
 
 	endpoint := fmt.Sprintf("/ext/index/%s/%s", indexerChain, indexerType)
 
-	nodeIndexer := indexer.NewClient(conf.AvalancheGO, endpoint)
+	nodeIndexer := indexer.NewClient(conf.Axia, endpoint)
 
 	p := &ProducerChain{
 		indexerType:             indexerType,

@@ -10,12 +10,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
-	"github.com/axiacoin/avalanchego/utils/crypto"
-	"github.com/axiacoin/avalanchego/utils/logging"
-	"github.com/axiacoin/avalanchego/vms/avm"
-	avalancheGoAvax "github.com/axiacoin/avalanchego/vms/components/avax"
-	"github.com/axiacoin/avalanchego/vms/secp256k1fx"
+	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia/utils/crypto"
+	"github.com/axiacoin/axia/utils/logging"
+	"github.com/axiacoin/axia/vms/avm"
+	axiaAvax "github.com/axiacoin/axia/vms/components/avax"
+	"github.com/axiacoin/axia/vms/secp256k1fx"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/models"
@@ -171,15 +171,15 @@ func TestInsertTxInternal(t *testing.T) {
 	tx := &avm.Tx{}
 	baseTx := &avm.BaseTx{}
 
-	transferableOut := &avalancheGoAvax.TransferableOutput{}
+	transferableOut := &axiaAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{
 		OutputOwners: secp256k1fx.OutputOwners{Addrs: []ids.ShortID{ids.ShortEmpty}},
 	}
-	baseTx.Outs = []*avalancheGoAvax.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaAvax.TransferableOutput{transferableOut}
 
-	transferableIn := &avalancheGoAvax.TransferableInput{}
+	transferableIn := &axiaAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*avalancheGoAvax.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaAvax.TransferableInput{transferableIn}
 
 	f := crypto.FactorySECP256K1R{}
 	pk, _ := f.NewPrivateKey()
@@ -239,13 +239,13 @@ func TestInsertTxInternalCreateAsset(t *testing.T) {
 	tx := &avm.Tx{}
 	baseTx := &avm.CreateAssetTx{}
 
-	transferableOut := &avalancheGoAvax.TransferableOutput{}
+	transferableOut := &axiaAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	baseTx.Outs = []*avalancheGoAvax.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaAvax.TransferableOutput{transferableOut}
 
-	transferableIn := &avalancheGoAvax.TransferableInput{}
+	transferableIn := &axiaAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*avalancheGoAvax.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaAvax.TransferableInput{transferableIn}
 
 	tx.UnsignedTx = baseTx
 

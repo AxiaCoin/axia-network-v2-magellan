@@ -6,8 +6,8 @@ package servicesctrl
 import (
 	"time"
 
-	avlancheGoUtils "github.com/axiacoin/avalanchego/utils"
-	"github.com/axiacoin/avalanchego/utils/logging"
+	avlancheGoUtils "github.com/axiacoin/axia/utils"
+	"github.com/axiacoin/axia/utils/logging"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
 	"github.com/axiacoin/ortelius/utils"

@@ -4,7 +4,7 @@
   "listenAddr": ":8080",
   "features": [
   ],
-  "avalanchego": "http://avalanche:9650",
+  "axia": "http://axia:9650",
   "nodeInstance": "default",
   "axchainId": "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
   "chains": {

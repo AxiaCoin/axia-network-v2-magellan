@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/axia/ids"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/services/indexes/params"
 	"github.com/axiacoin/ortelius/utils"

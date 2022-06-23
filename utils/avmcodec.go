@@ -6,13 +6,13 @@ package utils
 import (
 	"errors"
 
-	"github.com/axiacoin/avalanchego/codec"
-	"github.com/axiacoin/avalanchego/genesis"
-	"github.com/axiacoin/avalanchego/utils/constants"
-	"github.com/axiacoin/avalanchego/vms/avm"
-	"github.com/axiacoin/avalanchego/vms/nftfx"
-	"github.com/axiacoin/avalanchego/vms/platformvm"
-	"github.com/axiacoin/avalanchego/vms/secp256k1fx"
+	"github.com/axiacoin/axia/codec"
+	"github.com/axiacoin/axia/genesis"
+	"github.com/axiacoin/axia/utils/constants"
+	"github.com/axiacoin/axia/vms/avm"
+	"github.com/axiacoin/axia/vms/nftfx"
+	"github.com/axiacoin/axia/vms/platformvm"
+	"github.com/axiacoin/axia/vms/secp256k1fx"
 )
 
 var (

@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/axiacoin/avalanchego/utils/wrappers"
+	"github.com/axiacoin/axia/utils/wrappers"
 	"github.com/axiacoin/ortelius/cfg"
 )
 

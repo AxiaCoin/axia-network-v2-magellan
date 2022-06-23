@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/axia/utils/hashing"
 	"github.com/axiacoin/coreth/core/types"
 	"github.com/axiacoin/ortelius/cfg"
 	"github.com/axiacoin/ortelius/db"
