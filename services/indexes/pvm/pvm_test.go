@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/axia/utils/logging"
-	"github.com/axiacoin/axia/vms/platformvm"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/logging"
+	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/models"

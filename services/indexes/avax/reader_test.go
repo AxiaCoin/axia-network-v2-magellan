@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/axiacoin/axia/utils/logging"
+	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/models"

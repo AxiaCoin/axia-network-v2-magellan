@@ -4,10 +4,10 @@
 package utils
 
 import (
-	"github.com/axiacoin/axia/genesis"
-	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/axia/utils/constants"
-	"github.com/axiacoin/axia/vms/platformvm"
+	"github.com/axiacoin/axia-network-v2/genesis"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/constants"
+	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 )
 
 type GenesisContainer struct {

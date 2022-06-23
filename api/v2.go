@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/services/indexes/params"
 	"github.com/axiacoin/magellan/utils"

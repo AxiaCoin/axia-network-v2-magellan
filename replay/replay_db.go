@@ -13,9 +13,9 @@ import (
 
 	"github.com/axiacoin/magellan/db"
 
-	"github.com/axiacoin/axia/ids"
-	avlancheGoUtils "github.com/axiacoin/axia/utils"
-	"github.com/axiacoin/coreth/core/types"
+	"github.com/axiacoin/axia-network-v2/ids"
+	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
+	"github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/modelsc"
 	"github.com/axiacoin/magellan/services"

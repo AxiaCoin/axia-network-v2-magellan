@@ -7,7 +7,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/models"

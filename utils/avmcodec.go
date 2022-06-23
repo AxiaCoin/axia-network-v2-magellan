@@ -6,13 +6,13 @@ package utils
 import (
 	"errors"
 
-	"github.com/axiacoin/axia/codec"
-	"github.com/axiacoin/axia/genesis"
-	"github.com/axiacoin/axia/utils/constants"
-	"github.com/axiacoin/axia/vms/avm"
-	"github.com/axiacoin/axia/vms/nftfx"
-	"github.com/axiacoin/axia/vms/platformvm"
-	"github.com/axiacoin/axia/vms/secp256k1fx"
+	"github.com/axiacoin/axia-network-v2/codec"
+	"github.com/axiacoin/axia-network-v2/genesis"
+	"github.com/axiacoin/axia-network-v2/utils/constants"
+	"github.com/axiacoin/axia-network-v2/vms/avm"
+	"github.com/axiacoin/axia-network-v2/vms/nftfx"
+	"github.com/axiacoin/axia-network-v2/vms/platformvm"
+	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
 )
 
 var (

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/services/indexes/avax"
 	"github.com/axiacoin/magellan/services/indexes/params"

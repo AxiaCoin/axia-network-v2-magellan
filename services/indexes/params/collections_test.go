@@ -3,8 +3,8 @@ package params
 import (
 	"testing"
 
-	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/axia/utils/hashing"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/hashing"
 )
 
 func TestForValueChainID(t *testing.T) {

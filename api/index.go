@@ -6,7 +6,7 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/magellan/models"
 )
 

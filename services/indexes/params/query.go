@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/axia/utils/formatting"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/formatting"
 )
 
 func GetQueryInt(q url.Values, key string, defaultVal int) (val int, err error) {

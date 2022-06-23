@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/axia/utils/hashing"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/magellan/models"
 	"github.com/axiacoin/magellan/utils"
 	"github.com/gocraft/dbr/v2"

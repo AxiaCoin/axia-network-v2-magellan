@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	avlancheGoUtils "github.com/axiacoin/axia/utils"
+	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/services"

@@ -16,9 +16,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/axia/utils/hashing"
-	corethType "github.com/axiacoin/coreth/core/types"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/hashing"
+	corethType "github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/models"

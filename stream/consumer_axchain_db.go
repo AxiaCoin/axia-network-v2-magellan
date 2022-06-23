@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/axia/utils/hashing"
-	"github.com/axiacoin/coreth/core/types"
+	"github.com/axiacoin/axia-network-v2/utils/hashing"
+	"github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/magellan/cfg"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/modelsc"

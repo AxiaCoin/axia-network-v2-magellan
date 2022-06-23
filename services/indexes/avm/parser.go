@@ -4,8 +4,8 @@
 package avm
 
 import (
-	"github.com/axiacoin/axia/codec"
-	"github.com/axiacoin/axia/vms/avm"
+	"github.com/axiacoin/axia-network-v2/codec"
+	"github.com/axiacoin/axia-network-v2/vms/avm"
 )
 
 func parseTx(c codec.Manager, bytes []byte) (*avm.Tx, error) {

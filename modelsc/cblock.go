@@ -10,11 +10,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axiacoin/coreth/core/types"
-	"github.com/axiacoin/coreth/eth/tracers"
-	"github.com/axiacoin/coreth/ethclient"
-	"github.com/axiacoin/coreth/interfaces"
-	"github.com/axiacoin/coreth/rpc"
+	"github.com/axiacoin/axia-network-v2-coreth/core/types"
+	"github.com/axiacoin/axia-network-v2-coreth/eth/tracers"
+	"github.com/axiacoin/axia-network-v2-coreth/ethclient"
+	"github.com/axiacoin/axia-network-v2-coreth/interfaces"
+	"github.com/axiacoin/axia-network-v2-coreth/rpc"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )

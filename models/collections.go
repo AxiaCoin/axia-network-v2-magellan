@@ -6,7 +6,7 @@ package models
 import (
 	"time"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 )
 
 type ListMetadata struct {

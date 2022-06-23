@@ -7,8 +7,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/axiacoin/axia/utils/logging"
-	"github.com/axiacoin/axia/version"
+	"github.com/axiacoin/axia-network-v2/utils/logging"
+	"github.com/axiacoin/axia-network-v2/version"
 )
 
 const appName = "magellan"

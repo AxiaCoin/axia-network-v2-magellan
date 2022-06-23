@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/magellan/db"
 	"github.com/axiacoin/magellan/models"
 	"github.com/axiacoin/magellan/services/indexes/params"

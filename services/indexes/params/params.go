@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/axiacoin/axia/ids"
+	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/gocraft/dbr/v2"
 )
 

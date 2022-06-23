@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/axiacoin/axia/utils/wrappers"
+	"github.com/axiacoin/axia-network-v2/utils/wrappers"
 	"github.com/axiacoin/magellan/cfg"
 )
 
