@@ -13,15 +13,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ava-labs/avalanchego/ids"
-	avalancheGoUtils "github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/modelsc"
-	"github.com/ava-labs/ortelius/servicesctrl"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/ids"
+	avalancheGoUtils "github.com/axiacoin/avalanchego/utils"
+	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/avalanchego/utils/wrappers"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/modelsc"
+	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/ortelius/utils"
 )
 
 const (

@@ -1,10 +1,10 @@
-module github.com/ava-labs/ortelius
+module github.com/axiacoin/ortelius
 
 go 1.17
 
 require (
-	github.com/ava-labs/avalanchego v1.7.10
-	github.com/ava-labs/coreth v0.8.9-rc.1
+	github.com/axiacoin/avalanchego v1.7.10
+	github.com/axiacoin/coreth v0.8.9-rc.1
 	github.com/ethereum/go-ethereum v1.10.16
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gocraft/dbr/v2 v2.7.2

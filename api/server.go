@@ -8,13 +8,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/models"
-	"github.com/ava-labs/ortelius/services"
-	"github.com/ava-labs/ortelius/services/indexes/avax"
-	"github.com/ava-labs/ortelius/servicesctrl"
-	"github.com/ava-labs/ortelius/stream/consumers"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/ortelius/services"
+	"github.com/axiacoin/ortelius/services/indexes/avax"
+	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/ortelius/stream/consumers"
+	"github.com/axiacoin/ortelius/utils"
 	"github.com/gocraft/web"
 )
 

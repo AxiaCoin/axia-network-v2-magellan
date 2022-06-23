@@ -7,8 +7,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/version"
+	"github.com/axiacoin/avalanchego/utils/logging"
+	"github.com/axiacoin/avalanchego/version"
 )
 
 const appName = "ortelius"

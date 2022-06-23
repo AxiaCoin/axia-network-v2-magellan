@@ -1,3 +1,3 @@
 # Ortelius Configuration
 
-[configuration](https://github.com/ava-labs/ortelius/blob/master/docker/config.json)
+[configuration](https://github.com/axiacoin/ortelius/blob/master/docker/config.json)

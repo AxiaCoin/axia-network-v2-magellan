@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/formatting"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/avalanchego/utils/constants"
+	"github.com/axiacoin/avalanchego/utils/formatting"
 )
 
 // Bech32HRP is the human-readable part of bech32 addresses. It needs to be

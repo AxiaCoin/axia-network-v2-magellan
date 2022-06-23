@@ -10,16 +10,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/indexer"
-	"github.com/ava-labs/avalanchego/utils/formatting"
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/avalanchego/utils/json"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/servicesctrl"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/avalanchego/indexer"
+	"github.com/axiacoin/avalanchego/utils/formatting"
+	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/avalanchego/utils/json"
+	"github.com/axiacoin/avalanchego/utils/wrappers"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/ortelius/utils"
 )
 
 const (

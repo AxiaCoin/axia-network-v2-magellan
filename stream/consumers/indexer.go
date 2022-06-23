@@ -10,16 +10,16 @@ import (
 	"sync"
 	"time"
 
-	avlancheGoUtils "github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/services"
-	"github.com/ava-labs/ortelius/services/indexes/avm"
-	"github.com/ava-labs/ortelius/services/indexes/cvm"
-	"github.com/ava-labs/ortelius/services/indexes/pvm"
-	"github.com/ava-labs/ortelius/servicesctrl"
-	"github.com/ava-labs/ortelius/stream"
-	"github.com/ava-labs/ortelius/utils"
+	avlancheGoUtils "github.com/axiacoin/avalanchego/utils"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/services"
+	"github.com/axiacoin/ortelius/services/indexes/avm"
+	"github.com/axiacoin/ortelius/services/indexes/cvm"
+	"github.com/axiacoin/ortelius/services/indexes/pvm"
+	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/ortelius/stream"
+	"github.com/axiacoin/ortelius/utils"
 )
 
 const (

@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/services/indexes/params"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/services/indexes/params"
+	"github.com/axiacoin/ortelius/utils"
 	"github.com/gocraft/web"
 )
 

@@ -6,11 +6,11 @@ package servicesctrl
 import (
 	"time"
 
-	avlancheGoUtils "github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/utils"
+	avlancheGoUtils "github.com/axiacoin/avalanchego/utils"
+	"github.com/axiacoin/avalanchego/utils/logging"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/utils"
 )
 
 const (

@@ -6,8 +6,8 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/ortelius/models"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/ortelius/models"
 )
 
 const (

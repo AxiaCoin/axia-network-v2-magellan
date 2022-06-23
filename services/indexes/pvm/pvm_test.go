@@ -5,17 +5,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/vms/platformvm"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/models"
-	"github.com/ava-labs/ortelius/services"
-	"github.com/ava-labs/ortelius/services/indexes/avax"
-	"github.com/ava-labs/ortelius/services/indexes/params"
-	"github.com/ava-labs/ortelius/servicesctrl"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/avalanchego/utils/logging"
+	"github.com/axiacoin/avalanchego/vms/platformvm"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/ortelius/services"
+	"github.com/axiacoin/ortelius/services/indexes/avax"
+	"github.com/axiacoin/ortelius/services/indexes/params"
+	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/ortelius/utils"
 )
 
 var (

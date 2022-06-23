@@ -6,10 +6,10 @@ package avax
 import (
 	"context"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/models"
-	"github.com/ava-labs/ortelius/services/indexes/params"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/ortelius/services/indexes/params"
 )
 
 func (r *Reader) ListBlocks(ctx context.Context, params *params.ListBlocksParams) (*models.BlockList, error) {

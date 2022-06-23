@@ -10,19 +10,19 @@ import (
 
 	"github.com/palantir/stacktrace"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/crypto"
-	"github.com/ava-labs/avalanchego/utils/formatting"
-	"github.com/ava-labs/avalanchego/utils/math"
-	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/components/verify"
-	"github.com/ava-labs/avalanchego/vms/nftfx"
-	"github.com/ava-labs/avalanchego/vms/platformvm"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/models"
-	"github.com/ava-labs/ortelius/services"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/avalanchego/utils/crypto"
+	"github.com/axiacoin/avalanchego/utils/formatting"
+	"github.com/axiacoin/avalanchego/utils/math"
+	"github.com/axiacoin/avalanchego/vms/components/avax"
+	"github.com/axiacoin/avalanchego/vms/components/verify"
+	"github.com/axiacoin/avalanchego/vms/nftfx"
+	"github.com/axiacoin/avalanchego/vms/platformvm"
+	"github.com/axiacoin/avalanchego/vms/secp256k1fx"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/ortelius/services"
 )
 
 var (

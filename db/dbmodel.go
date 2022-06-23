@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/ortelius/models"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/ortelius/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

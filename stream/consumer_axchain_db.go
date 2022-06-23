@@ -9,15 +9,15 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/coreth/core/types"
-	"github.com/ava-labs/ortelius/cfg"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/modelsc"
-	"github.com/ava-labs/ortelius/services"
-	"github.com/ava-labs/ortelius/services/indexes/cvm"
-	"github.com/ava-labs/ortelius/servicesctrl"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/utils/hashing"
+	"github.com/axiacoin/coreth/core/types"
+	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/modelsc"
+	"github.com/axiacoin/ortelius/services"
+	"github.com/axiacoin/ortelius/services/indexes/cvm"
+	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/ortelius/utils"
 )
 
 type consumerAXChainDB struct {

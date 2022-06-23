@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/ortelius/db"
-	"github.com/ava-labs/ortelius/models"
-	"github.com/ava-labs/ortelius/services/indexes/params"
-	"github.com/ava-labs/ortelius/utils"
+	"github.com/axiacoin/avalanchego/ids"
+	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/ortelius/services/indexes/params"
+	"github.com/axiacoin/ortelius/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

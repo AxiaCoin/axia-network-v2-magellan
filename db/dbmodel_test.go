@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ava-labs/ortelius/models"
+	"github.com/axiacoin/ortelius/models"
 	"github.com/gocraft/dbr/v2"
 )
 
