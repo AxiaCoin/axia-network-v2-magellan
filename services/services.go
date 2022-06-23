@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/modelsc"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

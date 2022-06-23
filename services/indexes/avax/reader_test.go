@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia/utils/logging"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/magellan/services/indexes/params"
+	"github.com/axiacoin/magellan/servicesctrl"
 )
 
 func TestCollectInsAndOuts(t *testing.T) {
@@ -183,7 +183,7 @@ func newTestIndex(t *testing.T) (*Reader, func()) {
 		Logging: logConf,
 		DB: &cfg.DB{
 			Driver: "mysql",
-			DSN:    "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true",
+			DSN:    "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true",
 		},
 	}
 

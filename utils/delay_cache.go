@@ -7,7 +7,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/magellan/cfg"
 )
 
 const (

@@ -8,17 +8,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/avax"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/stream/consumers"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/magellan/services/indexes/avax"
+	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/magellan/stream/consumers"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/gocraft/web"
 )
 
-// Server is an HTTP server configured with various ortelius APIs
+// Server is an HTTP server configured with various magellan APIs
 type Server struct {
 	sc     *servicesctrl.Control
 	server *http.Server

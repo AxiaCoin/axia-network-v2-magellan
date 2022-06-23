@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/magellan/utils"
 )
 
 // consumer takes events from db and sends them to a service consumer

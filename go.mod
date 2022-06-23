@@ -1,6 +1,6 @@
-module github.com/axiacoin/ortelius
+module github.com/axiacoin/magellan
 
-go 1.17
+go 1.18
 
 require (
 	github.com/axiacoin/axia v1.7.10

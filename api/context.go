@@ -12,11 +12,11 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/services/indexes/avax"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/services/indexes/avax"
+	"github.com/axiacoin/magellan/services/indexes/params"
+	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/gocraft/web"
 )
 
@@ -26,7 +26,7 @@ var (
 	ErrCacheableFnFailed = errors.New("failed to load resource")
 )
 
-// Context is the base context for APIs in the ortelius systems
+// Context is the base context for APIs in the magellan systems
 type Context struct {
 	sc *servicesctrl.Control
 

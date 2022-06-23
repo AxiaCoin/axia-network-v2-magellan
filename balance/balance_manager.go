@@ -9,9 +9,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

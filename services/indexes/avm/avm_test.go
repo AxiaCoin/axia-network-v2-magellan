@@ -16,14 +16,14 @@ import (
 	"github.com/axiacoin/axia/vms/avm"
 	axiaAvax "github.com/axiacoin/axia/vms/components/avax"
 	"github.com/axiacoin/axia/vms/secp256k1fx"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/avax"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/magellan/services/indexes/avax"
+	"github.com/axiacoin/magellan/services/indexes/params"
+	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/magellan/utils"
 )
 
 var (
@@ -134,7 +134,7 @@ func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *a
 		Logging: logConf,
 		DB: &cfg.DB{
 			Driver: "mysql",
-			DSN:    "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true",
+			DSN:    "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true",
 		},
 	}
 

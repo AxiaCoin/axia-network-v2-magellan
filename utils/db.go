@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/magellan/cfg"
 	"github.com/gocraft/dbr/v2"
 	"github.com/gocraft/dbr/v2/dialect"
 )

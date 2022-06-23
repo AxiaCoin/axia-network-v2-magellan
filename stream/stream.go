@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/axiacoin/ortelius/services"
+	"github.com/axiacoin/magellan/services"
 )
 
 var (

@@ -7,10 +7,10 @@ import (
 	"context"
 
 	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services/indexes/params"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

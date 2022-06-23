@@ -9,22 +9,22 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/magellan/servicesctrl"
 
-	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/magellan/db"
 
 	"github.com/axiacoin/axia/ids"
 	avlancheGoUtils "github.com/axiacoin/axia/utils"
 	"github.com/axiacoin/coreth/core/types"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/avm"
-	"github.com/axiacoin/ortelius/services/indexes/cvm"
-	"github.com/axiacoin/ortelius/services/indexes/pvm"
-	"github.com/axiacoin/ortelius/stream"
-	"github.com/axiacoin/ortelius/stream/consumers"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/modelsc"
+	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/magellan/services/indexes/avm"
+	"github.com/axiacoin/magellan/services/indexes/cvm"
+	"github.com/axiacoin/magellan/services/indexes/pvm"
+	"github.com/axiacoin/magellan/stream"
+	"github.com/axiacoin/magellan/stream/consumers"
+	"github.com/axiacoin/magellan/utils"
 )
 
 type Replay interface {

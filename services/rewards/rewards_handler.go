@@ -10,12 +10,12 @@ import (
 	"github.com/axiacoin/axia/utils/formatting"
 	axiaAvax "github.com/axiacoin/axia/vms/components/avax"
 	"github.com/axiacoin/axia/vms/platformvm"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/avax"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/magellan/services/indexes/avax"
+	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/magellan/utils"
 )
 
 type Handler struct {

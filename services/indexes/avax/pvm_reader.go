@@ -7,9 +7,9 @@ import (
 	"context"
 
 	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services/indexes/params"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services/indexes/params"
 )
 
 func (r *Reader) ListBlocks(ctx context.Context, params *params.ListBlocksParams) (*models.BlockList, error) {

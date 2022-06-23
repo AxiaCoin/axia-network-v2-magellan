@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 
 	"github.com/axiacoin/axia/ids"
-	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/magellan/models"
 )
 
 const (

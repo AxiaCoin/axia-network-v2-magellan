@@ -11,7 +11,7 @@ import (
 	"github.com/axiacoin/axia/version"
 )
 
-const appName = "ortelius"
+const appName = "magellan"
 
 var (
 	ErrChainsConfigMustBeStringMap = errors.New("Chain config must a string map")

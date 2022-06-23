@@ -8,9 +8,9 @@ import (
 
 	avlancheGoUtils "github.com/axiacoin/axia/utils"
 	"github.com/axiacoin/axia/utils/logging"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/utils"
 )
 
 const (

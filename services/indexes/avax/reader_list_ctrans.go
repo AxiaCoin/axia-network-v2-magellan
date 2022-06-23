@@ -8,12 +8,12 @@ import (
 	"strings"
 
 	"github.com/axiacoin/coreth/core/types"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/modelsc"
+	"github.com/axiacoin/magellan/services/indexes/params"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/gocraft/dbr/v2"
 )

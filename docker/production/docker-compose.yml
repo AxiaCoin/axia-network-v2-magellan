@@ -5,13 +5,13 @@ services:
   mysql:
     image: "mysql:8.0.26"
     volumes:
-      - /var/lib/ortelius/mysql:/var/lib/mysql
+      - /var/lib/magellan/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: ortelius
+      MYSQL_DATABASE: magellan
     restart: on-failure
   migrate:
     image: "migrate/migrate:v4.14.1"
@@ -21,7 +21,7 @@ services:
       - mysql
     entrypoint: ["/bin/sh"]
     command: |
-      -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/ortelius" up; do
+      -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up; do
         sleep 1
       done'
     restart: on-failure
@@ -36,15 +36,15 @@ services:
     ports:
       - "9650:9650"
     volumes:
-      - /var/lib/ortelius/axia:/var/lib/axia
+      - /var/lib/magellan/axia:/var/lib/axia
       - ./../axia_config.json:/opt/config.json
       - ./../axia_chain_config:/opt/axia
       - axia-ipcs:/tmp
     depends_on:
       - indexer
     restart: always
-  indexer: &ortelius-app
-    image: "avaplatform/ortelius:v1.7.10"
+  indexer: &magellan-app
+    image: "avaplatform/magellan:v1.7.10"
     command: ["stream", "indexer", "-c", "/opt/config.json"]
     external_links:
       - mysql
@@ -56,7 +56,7 @@ services:
       - ./../config.json:/opt/config.json
     restart: on-failure
   api:
-    <<: *ortelius-app
+    <<: *magellan-app
     command: ["api", "-c", "/opt/config.json"]
     ports:
       - 8080:8080

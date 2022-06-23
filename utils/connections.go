@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"github.com/axiacoin/axia/utils/wrappers"
-	"github.com/axiacoin/ortelius/cfg"
+	"github.com/axiacoin/magellan/cfg"
 )
 
 type Connections struct {

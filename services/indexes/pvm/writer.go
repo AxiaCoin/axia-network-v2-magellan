@@ -24,12 +24,12 @@ import (
 	"github.com/axiacoin/axia/vms/platformvm"
 	"github.com/axiacoin/axia/vms/proposervm/block"
 	"github.com/axiacoin/axia/vms/secp256k1fx"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	avaxIndexer "github.com/axiacoin/ortelius/services/indexes/avax"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/magellan/db"
+	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/magellan/services"
+	avaxIndexer "github.com/axiacoin/magellan/services/indexes/avax"
+	"github.com/axiacoin/magellan/utils"
 	"github.com/palantir/stacktrace"
 )
 
