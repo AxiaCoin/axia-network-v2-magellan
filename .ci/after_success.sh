@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-# (c) 2020, Ava Labs, Inc. All rights reserved.
+# (c) 2020, AXIA Systems, Inc. All rights reserved.
 # See the file LICENSE for licensing terms.
 
 # Decrypt and export secrets
