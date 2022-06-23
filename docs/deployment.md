@@ -69,7 +69,7 @@ git checkout tags/{tag-id}
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "chainID": "11111111111111111111111111111111LpoYY",
-      "chainAlias": "p",
+      "chainAlias": "core",
       "vm": "pvm",
       "avaxAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1

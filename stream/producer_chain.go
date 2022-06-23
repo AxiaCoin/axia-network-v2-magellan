@@ -53,7 +53,7 @@ type IndexedChain byte
 
 const (
 	IndexXChain IndexedChain = iota
-	IndexPChain
+	IndexCoreChain
 	IndexAXChain
 )
 
@@ -61,10 +61,10 @@ func (t IndexedChain) String() string {
 	switch t {
 	case IndexXChain:
 		return "X"
-	case IndexPChain:
-		return "P"
+	case IndexCoreChain:
+		return "Core"
 	case IndexAXChain:
-		return "C"
+		return "AX"
 	}
 	// Should never happen
 	return typeUnknown

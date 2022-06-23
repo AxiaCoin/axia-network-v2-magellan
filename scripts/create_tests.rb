@@ -9,7 +9,7 @@ Password = "ASDFasdf1245asdfASDFasdf234"
 
 keystoreURI = "http://127.0.0.1:9650/ext/keystore"
 XChainURI = "http://127.0.0.1:9650/ext/bc/X"
-pChainURI = "http://127.0.0.1:9650/ext/bc/P"
+coreChainURI = "http://127.0.0.1:9650/ext/bc/P"
 
 
 def send(uri, data)

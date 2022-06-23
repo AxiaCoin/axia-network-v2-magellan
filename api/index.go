@@ -14,7 +14,7 @@ const (
 	AVMName     = "avm"
 	XChainAlias = "x"
 	PVMName     = "pvm"
-	PChainAlias = "p"
+	CoreChainAlias = "core"
 )
 
 func newIndexResponse(networkID uint32, xChainID ids.ID, avaxAssetID ids.ID) ([]byte, error) {
@@ -33,7 +33,7 @@ func newIndexResponse(networkID uint32, xChainID ids.ID, avaxAssetID ids.ID) ([]
 			},
 			ids.Empty.String(): {
 				VM:          PVMName,
-				Alias:       PChainAlias,
+				Alias:       CoreChainAlias,
 				NetworkID:   networkID,
 				AVAXAssetID: models.StringID(avaxAssetID.String()),
 				ID:          models.StringID(ids.Empty.String()),
