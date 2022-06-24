@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/modelsc"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

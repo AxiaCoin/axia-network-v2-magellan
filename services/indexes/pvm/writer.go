@@ -24,12 +24,12 @@ import (
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/proposervm/block"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/magellan/cfg"
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/models"
-	"github.com/axiacoin/magellan/services"
-	avaxIndexer "github.com/axiacoin/magellan/services/indexes/avax"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	avaxIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/palantir/stacktrace"
 )
 

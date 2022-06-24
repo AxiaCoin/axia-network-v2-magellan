@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/axiacoin/magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
 )
 
 var (

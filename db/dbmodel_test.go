@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/gocraft/dbr/v2"
 )
 

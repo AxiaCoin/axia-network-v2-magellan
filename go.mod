@@ -1,4 +1,4 @@
-module github.com/axiacoin/magellan
+module github.com/axiacoin/axia-network-v2-magellan
 
 go 1.18
 

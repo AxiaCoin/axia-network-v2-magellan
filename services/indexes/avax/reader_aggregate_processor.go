@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/models"
-	"github.com/axiacoin/magellan/services/indexes/params"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

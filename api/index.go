@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 
 	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
 )
 
 const (

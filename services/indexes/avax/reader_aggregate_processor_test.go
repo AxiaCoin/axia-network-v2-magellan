@@ -3,7 +3,7 @@ package avax
 import (
 	"testing"
 
-	"github.com/axiacoin/magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
 )
 
 func TestReaderAggregate(t *testing.T) {

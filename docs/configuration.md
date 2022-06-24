@@ -1,3 +1,3 @@
 # Magellan Configuration
 
-[configuration](https://github.com/axiacoin/magellan/blob/master/docker/config.json)
+[configuration](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/config.json)

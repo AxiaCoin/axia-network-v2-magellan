@@ -1,6 +1,6 @@
 # Create base builder image
 FROM golang:1.17.9-alpine3.14 AS builder
-WORKDIR /go/src/github.com/axiacoin/magellan
+WORKDIR /go/src/github.com/axiacoin/axia-network-v2-magellan
 RUN apk add --no-cache alpine-sdk bash git make gcc musl-dev linux-headers git ca-certificates g++ libstdc++
 
 
@@ -17,6 +17,6 @@ WORKDIR /opt
 
 # Copy in and wire up build artifacts
 COPY --from=builder /opt/magelland /opt/magelland
-COPY --from=builder /go/src/github.com/axiacoin/magellan/docker/config.json /opt/config.json
-COPY --from=builder /go/src/github.com/axiacoin/magellan/services/db/migrations /opt/migrations
+COPY --from=builder /go/src/github.com/axiacoin/axia-network-v2-magellan/docker/config.json /opt/config.json
+COPY --from=builder /go/src/github.com/axiacoin/axia-network-v2-magellan/services/db/migrations /opt/migrations
 ENTRYPOINT ["/opt/magelland"]

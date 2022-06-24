@@ -8,13 +8,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/axiacoin/magellan/cfg"
-	"github.com/axiacoin/magellan/models"
-	"github.com/axiacoin/magellan/services"
-	"github.com/axiacoin/magellan/services/indexes/avax"
-	"github.com/axiacoin/magellan/servicesctrl"
-	"github.com/axiacoin/magellan/stream/consumers"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/stream/consumers"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/web"
 )
 

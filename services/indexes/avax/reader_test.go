@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia-network-v2/utils/logging"
-	"github.com/axiacoin/magellan/cfg"
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/models"
-	"github.com/axiacoin/magellan/services"
-	"github.com/axiacoin/magellan/services/indexes/params"
-	"github.com/axiacoin/magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 )
 
 func TestCollectInsAndOuts(t *testing.T) {

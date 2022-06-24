@@ -38,7 +38,7 @@ https://docs.docker.com/engine/install/linux-postinstall/
 
 # Clone the repo
 ```
-# git clone https://github.com/axiacoin/magellan
+# git clone https://github.com/axiacoin/axia-network-v2-magellan
 # cd magellan
 ```
 
@@ -56,7 +56,7 @@ https://docs.docker.com/engine/install/linux-postinstall/
 git fetch --all
 git checkout tags/{tag-id}
 ```
-*note* [magellan tags](https://github.com/axiacoin/magellan/tags)
+*note* [magellan tags](https://github.com/axiacoin/axia-network-v2-magellan/tags)
 ```
 # make production_start
 ```
@@ -145,19 +145,19 @@ Magellan requires an updated mysql compatible DB.  This will work with aurora in
 ## *optional* mysql docker container -- adjust as necessary
 [dockerhub mysql](https://hub.docker.com/_/mysql)
 ```
-docker run --volume .../github.com/axiacoin/magellan/docker/my.cnf:/etc/mysql/my.cnf --network host -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=magellan mysql:8.0.26
+docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/docker/my.cnf:/etc/mysql/my.cnf --network host -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=magellan mysql:8.0.26
 ```
-The standard mysql defaults can cause issues, please configure the customizations [here](https://github.com/axiacoin/magellan/blob/master/docker/my.cnf)
+The standard mysql defaults can cause issues, please configure the customizations [here](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/my.cnf)
 
 ## run migrations -- *required* for all magellan updates.
 [dockerhub migrate](https://hub.docker.com/r/migrate/migrate)
 ```
-docker run --volume .../github.com/axiacoin/magellan/services/db/migrations:/migrations --network host "migrate/migrate:v4.14.1"  -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up
+docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/services/db/migrations:/migrations --network host "migrate/migrate:v4.14.1"  -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up
 ```
 Update the docker params as needed to match the user/password/host/database as appropriate.
 
 ## update magellan configs
-Update [config](https://github.com/axiacoin/magellan/blob/master/docker/config.json) with the correct dsn in your local github repo.
+Update [config](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/config.json) with the correct dsn in your local github repo.
 
 
 # Customized setup
@@ -194,7 +194,7 @@ Example: `docker run --rm avaplatform/magellan --help`
 
 ## Configuring Magellan
 
-[Configuration for Magellan](https://github.com/axiacoin/magellan/blob/master/docker/config.json).
+[Configuration for Magellan](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/config.json).
 
 ## Running Magellan
 

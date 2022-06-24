@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 )
 
 func TestParse(t *testing.T) {

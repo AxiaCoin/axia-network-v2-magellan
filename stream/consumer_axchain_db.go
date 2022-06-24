@@ -11,13 +11,13 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
-	"github.com/axiacoin/magellan/cfg"
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/modelsc"
-	"github.com/axiacoin/magellan/services"
-	"github.com/axiacoin/magellan/services/indexes/cvm"
-	"github.com/axiacoin/magellan/servicesctrl"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/cvm"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 type consumerAXChainDB struct {

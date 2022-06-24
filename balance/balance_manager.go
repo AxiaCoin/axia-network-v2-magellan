@@ -9,9 +9,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/servicesctrl"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 

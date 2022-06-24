@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/magellan/cfg"
-	"github.com/axiacoin/magellan/db"
-	"github.com/axiacoin/magellan/services"
-	"github.com/axiacoin/magellan/servicesctrl"
-	"github.com/axiacoin/magellan/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 // consumer takes events from db and sends them to a service consumer

@@ -7,7 +7,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/axiacoin/magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 )
 
 const (
