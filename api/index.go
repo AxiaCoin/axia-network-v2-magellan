@@ -17,7 +17,7 @@ const (
 	CoreChainAlias = "core"
 )
 
-func newIndexResponse(networkID uint32, swapChainID ids.ID, avaxAssetID ids.ID) ([]byte, error) {
+func newIndexResponse(networkID uint32, swapChainID ids.ID, axcAssetID ids.ID) ([]byte, error) {
 	return json.Marshal(&struct {
 		NetworkID uint32                      `json:"network_id"`
 		Chains    map[string]models.ChainInfo `json:"chains"`
@@ -28,26 +28,26 @@ func newIndexResponse(networkID uint32, swapChainID ids.ID, avaxAssetID ids.ID) 
 				VM:          AVMName,
 				Alias:       SwapChainAlias,
 				NetworkID:   networkID,
-				AVAXAssetID: models.StringID(avaxAssetID.String()),
+				AXCAssetID: models.StringID(axcAssetID.String()),
 				ID:          models.StringID(swapChainID.String()),
 			},
 			ids.Empty.String(): {
 				VM:          PVMName,
 				Alias:       CoreChainAlias,
 				NetworkID:   networkID,
-				AVAXAssetID: models.StringID(avaxAssetID.String()),
+				AXCAssetID: models.StringID(axcAssetID.String()),
 				ID:          models.StringID(ids.Empty.String()),
 			},
 		},
 	})
 }
 
-func newLegacyIndexResponse(networkID uint32, swapChainID ids.ID, avaxAssetID ids.ID) ([]byte, error) {
+func newLegacyIndexResponse(networkID uint32, swapChainID ids.ID, axcAssetID ids.ID) ([]byte, error) {
 	return json.Marshal(&models.ChainInfo{
 		VM:          AVMName,
 		NetworkID:   networkID,
 		Alias:       SwapChainAlias,
-		AVAXAssetID: models.StringID(avaxAssetID.String()),
+		AXCAssetID: models.StringID(axcAssetID.String()),
 		ID:          models.StringID(swapChainID.String()),
 	})
 }

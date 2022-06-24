@@ -24,7 +24,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	avaxIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/ethereum/go-ethereum/common"
 )
@@ -35,15 +35,15 @@ var (
 
 type Writer struct {
 	networkID   uint32
-	avaxAssetID ids.ID
+	axcAssetID ids.ID
 
 	codec         codec.Manager
-	avax          *avaxIndexer.Writer
+	axc          *axcIndexer.Writer
 	ap5Activation uint64
 }
 
 func NewWriter(networkID uint32, chainID string) (*Writer, error) {
-	_, avaxAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
+	_, axcAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
 	if err != nil {
 		return nil, err
 	}
@@ -52,9 +52,9 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 
 	return &Writer{
 		networkID:     networkID,
-		avaxAssetID:   avaxAssetID,
+		axcAssetID:   axcAssetID,
 		codec:         evm.Codec,
-		avax:          avaxIndexer.NewWriter(chainID, avaxAssetID),
+		axc:          axcIndexer.NewWriter(chainID, axcAssetID),
 		ap5Activation: uint64(ap5Activation),
 	}, nil
 }
@@ -332,7 +332,7 @@ func (w *Writer) indexTransaction(
 		avmTxtype = "atomic_export_tx"
 	}
 
-	return w.avax.InsertTransactionBase(
+	return w.axc.InsertTransactionBase(
 		ctx,
 		id,
 		blockChainID.String(),
@@ -381,7 +381,7 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		if err != nil {
 			return err
 		}
-		if in.AssetID == w.avaxAssetID {
+		if in.AssetID == w.axcAssetID {
 			totalin, err = math.Add64(totalin, in.Amount)
 			if err != nil {
 				return err
@@ -392,7 +392,7 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalout uint64
 	var idx uint32
 	for _, out := range tx.ExportedOutputs {
-		totalout, err = w.avax.InsertTransactionOuts(idx, ctx, totalout, out, txID, tx.DestinationChain.String(), false, false)
+		totalout, err = w.axc.InsertTransactionOuts(idx, ctx, totalout, out, txID, tx.DestinationChain.String(), false, false)
 		if err != nil {
 			return err
 		}
@@ -412,7 +412,7 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		if err != nil {
 			return err
 		}
-		if out.AssetID == w.avaxAssetID {
+		if out.AssetID == w.axcAssetID {
 			totalout, err = math.Add64(totalout, out.Amount)
 			if err != nil {
 				return err
@@ -422,7 +422,7 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 
 	var totalin uint64
 	for inidx, in := range tx.ImportedInputs {
-		totalin, err = w.avax.InsertTransactionIns(inidx, ctx, totalin, in, txID, creds, unsignedBytes, tx.SourceChain.String())
+		totalin, err = w.axc.InsertTransactionIns(inidx, ctx, totalin, in, txID, creds, unsignedBytes, tx.SourceChain.String())
 		if err != nil {
 			return err
 		}

@@ -1,3 +1,3 @@
 # Magellan API
 
-[API](https://docs.avax.network/build/tools/magellan)
+[API](https://docs.axc.network/build/tools/magellan)

@@ -13,7 +13,7 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
@@ -31,10 +31,10 @@ type Context struct {
 	sc *servicesctrl.Control
 
 	networkID   uint32
-	avaxAssetID ids.ID
+	axcAssetID ids.ID
 
 	delayCache  *utils.DelayCache
-	avaxReader  *avax.Reader
+	axcReader  *axc.Reader
 	connections *utils.Connections
 }
 
@@ -118,11 +118,11 @@ func (*Context) notFoundHandler(w web.ResponseWriter, r *web.Request) {
 }
 
 func (c *Context) cacheKeyForID(name string, id string) []string {
-	return []string{"avax", name, params.CacheKey("id", id)}
+	return []string{"axc", name, params.CacheKey("id", id)}
 }
 
 func (c *Context) cacheKeyForParams(name string, p params.Param) []string {
-	return append([]string{"avax", name}, p.CacheKey()...)
+	return append([]string{"axc", name}, p.CacheKey()...)
 }
 
 func newContextSetter(sc *servicesctrl.Control, networkID uint32, connections *utils.Connections, delayCache *utils.DelayCache) func(*Context, web.ResponseWriter, *web.Request, web.NextMiddlewareFunc) {

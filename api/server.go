@@ -11,7 +11,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/stream/consumers"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
@@ -63,12 +63,12 @@ func (s *Server) Close() error {
 func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 	sc.Log.Info("Router chainID %s", sc.GenesisContainer.SwapChainID.String())
 
-	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AvaxAssetID)
+	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AxcAssetID)
 	if err != nil {
 		return nil, err
 	}
 
-	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AvaxAssetID)
+	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AxcAssetID)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 	if err != nil {
 		return nil, err
 	}
-	avaxReader, err := avax.NewReader(conf.NetworkID, connections, consumersmap, consumeraxchain, sc)
+	axcReader, err := axc.NewReader(conf.NetworkID, connections, consumersmap, consumeraxchain, sc)
 	if err != nil {
 		return nil, err
 	}
@@ -112,8 +112,8 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 		}).
 		NotFound((*Context).notFoundHandler).
 		Middleware(func(c *Context, w web.ResponseWriter, r *web.Request, next web.NextMiddlewareFunc) {
-			c.avaxReader = avaxReader
-			c.avaxAssetID = sc.GenesisContainer.AvaxAssetID
+			c.axcReader = axcReader
+			c.axcAssetID = sc.GenesisContainer.AxcAssetID
 
 			next(w, r)
 		})

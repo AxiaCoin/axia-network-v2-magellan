@@ -19,7 +19,7 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/utils/wrappers"
-	"github.com/axiacoin/axia-network-v2/vms/components/avax"
+	"github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/proposervm/block"
@@ -28,7 +28,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	avaxIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/palantir/stacktrace"
 )
@@ -44,15 +44,15 @@ var (
 type Writer struct {
 	chainID     string
 	networkID   uint32
-	avaxAssetID ids.ID
+	axcAssetID ids.ID
 
 	codec codec.Manager
-	avax  *avaxIndexer.Writer
+	axc  *axcIndexer.Writer
 	ctx   *snow.Context
 }
 
 func NewWriter(networkID uint32, chainID string) (*Writer, error) {
-	_, avaxAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
+	_, axcAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
 	if err != nil {
 		return nil, err
 	}
@@ -77,9 +77,9 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	return &Writer{
 		chainID:     chainID,
 		networkID:   networkID,
-		avaxAssetID: avaxAssetID,
+		axcAssetID: axcAssetID,
 		codec:       platformvm.Codec,
-		avax:        avaxIndexer.NewWriter(chainID, avaxAssetID),
+		axc:        axcIndexer.NewWriter(chainID, axcAssetID),
 		ctx:         ctx,
 	}, nil
 }
@@ -295,7 +295,7 @@ func (w *Writer) Bootstrap(ctx context.Context, conns *utils.Connections, persis
 		default:
 		}
 
-		_, _, err = w.avax.ProcessStateOut(
+		_, _, err = w.axc.ProcessStateOut(
 			cCtx,
 			utxo.Out,
 			ChainID,
@@ -453,18 +453,18 @@ func (w *Writer) indexCommonBlock(
 
 func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx platformvm.Tx, genesis bool) error {
 	var (
-		baseTx avax.BaseTx
+		baseTx axc.BaseTx
 		typ    models.TransactionType
 	)
 
-	var ins *avaxIndexer.AddInsContainer
-	var outs *avaxIndexer.AddOutsContainer
+	var ins *axcIndexer.AddInsContainer
+	var outs *axcIndexer.AddOutsContainer
 
 	var err error
 	switch castTx := tx.UnsignedTx.(type) {
 	case *platformvm.UnsignedAddValidatorTx:
 		baseTx = castTx.BaseTx.BaseTx
-		outs = &avaxIndexer.AddOutsContainer{
+		outs = &axcIndexer.AddOutsContainer{
 			Outs:    castTx.Stake,
 			Stake:   true,
 			ChainID: w.chainID,
@@ -493,7 +493,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		}
 	case *platformvm.UnsignedAddDelegatorTx:
 		baseTx = castTx.BaseTx.BaseTx
-		outs = &avaxIndexer.AddOutsContainer{
+		outs = &axcIndexer.AddOutsContainer{
 			Outs:    castTx.Stake,
 			Stake:   true,
 			ChainID: w.chainID,
@@ -529,7 +529,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		}
 	case *platformvm.UnsignedImportTx:
 		baseTx = castTx.BaseTx.BaseTx
-		ins = &avaxIndexer.AddInsContainer{
+		ins = &axcIndexer.AddInsContainer{
 			Ins:     castTx.ImportedInputs,
 			ChainID: castTx.SourceChain.String(),
 		}
@@ -540,7 +540,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		}
 	case *platformvm.UnsignedExportTx:
 		baseTx = castTx.BaseTx.BaseTx
-		outs = &avaxIndexer.AddOutsContainer{
+		outs = &axcIndexer.AddOutsContainer{
 			Outs:    castTx.ExportedOutputs,
 			ChainID: castTx.DestinationChain.String(),
 		}
@@ -564,7 +564,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		return fmt.Errorf("unknown tx type %s", reflect.TypeOf(castTx))
 	}
 
-	return w.avax.InsertTransaction(
+	return w.axc.InsertTransaction(
 		ctx,
 		tx.Bytes(),
 		tx.UnsignedBytes(),
@@ -578,7 +578,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 	)
 }
 
-func (w *Writer) insertTransactionsRewardsOwners(ctx services.ConsumerCtx, rewardsOwner verify.Verifiable, baseTx avax.BaseTx, stakeOuts []*avax.TransferableOutput) error {
+func (w *Writer) insertTransactionsRewardsOwners(ctx services.ConsumerCtx, rewardsOwner verify.Verifiable, baseTx axc.BaseTx, stakeOuts []*axc.TransferableOutput) error {
 	var err error
 
 	owner, ok := rewardsOwner.(*secp256k1fx.OutputOwners)

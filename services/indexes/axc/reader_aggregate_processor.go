@@ -1,4 +1,4 @@
-package avax
+package axc
 
 import (
 	"context"
@@ -280,7 +280,7 @@ func (r *Reader) processorTxAscFetch(conns *utils.Connections) {
 			return
 		}
 
-		err := dressTransactions(ctx, sess, txsAsc, r.sc.GenesisContainer.AvaxAssetID, nil, false)
+		err := dressTransactions(ctx, sess, txsAsc, r.sc.GenesisContainer.AxcAssetID, nil, false)
 		if err != nil {
 			r.sc.Log.Warn("ascending tx dress tx fail %v", err)
 			txsAsc = nil
@@ -370,7 +370,7 @@ func (r *Reader) fetchAssets(
 		From("avm_outputs").
 		Where("created_at > ? and asset_id <> ?",
 			runTm.Add(-runDuration),
-			r.sc.GenesisContainer.AvaxAssetID.String(),
+			r.sc.GenesisContainer.AxcAssetID.String(),
 		).
 		GroupBy("asset_id").
 		OrderDesc("tamt").
@@ -391,7 +391,7 @@ func (r *Reader) fetchAssets(
 		return nil, nil, err
 	}
 
-	assets := append([]string{}, r.sc.GenesisContainer.AvaxAssetID.String())
+	assets := append([]string{}, r.sc.GenesisContainer.AxcAssetID.String())
 	return append(assets, assetsFound...), addlAssetsFound, nil
 }
 
