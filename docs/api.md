@@ -1,3 +1,3 @@
-# Ortelius API
+# Magellan API
 
-[API](https://docs.axc.network/build/tools/ortelius)
+[API](https://docs.axc.network/build/tools/magellan)

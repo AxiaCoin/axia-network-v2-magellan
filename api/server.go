@@ -18,7 +18,7 @@ import (
 	"github.com/gocraft/web"
 )
 
-// Server is an HTTP server configured with various ortelius APIs
+// Server is an HTTP server configured with various magellan APIs
 type Server struct {
 	sc     *servicesctrl.Control
 	server *http.Server
