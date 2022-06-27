@@ -30,7 +30,6 @@ services:
       - production.env
     image: "avaplatform/avalanchego:v1.7.10"
     command: /bin/sh -cx "exec /avalanchego/build/avalanchego
-      --config-file=/opt/config.json
       --network-id=$${NETWORKID}
       --bootstrap-ips=$${IP} --bootstrap-ids=$${NODEID}
       "
