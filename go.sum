@@ -104,8 +104,12 @@ github.com/aws/aws-sdk-go-v2/service/sts v1.1.1/go.mod h1:Wi0EBZwiz/K44YliU0EKxq
 github.com/aws/smithy-go v1.1.0/go.mod h1:EzMw8dbp/YJL4A5/sbhGddag+NPT7q084agLbB9LgIw=
 github.com/axiacoin/axia-network-v2 v0.0.0-20220627142445-7808722ac299 h1:wvMuYo+m5hU1n4HRkLYYOF6BTqYmzhp4xtXtAemVwKM=
 github.com/axiacoin/axia-network-v2 v0.0.0-20220627142445-7808722ac299/go.mod h1:xHknoyxw2V8qaV3J+YKZ4OR2ojc3d7FhDJFlxHqsmfk=
+github.com/axiacoin/axia-network-v2 v0.0.0-20220627170155-1ca24406a715 h1:Jyd1H/kPMke+ywApO4NDzZotO6yPQGt/d4mjlXLCoSs=
+github.com/axiacoin/axia-network-v2 v0.0.0-20220627170155-1ca24406a715/go.mod h1:il26sBGE9GC1rp65rT5iACFQyaRubiWTrViE3Lg3W4M=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220627142251-465f0b899d06 h1:WRsr86zU+z+TG7ZXdyKJnscxqf8WIJ7sqUHl8lPLb1o=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220627142251-465f0b899d06/go.mod h1:QWAaVoYlDRZ2xkPgK1mLCW+Stim+jlzFYSz+9nGmTds=
+github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220627165749-860377b824c9 h1:eAiiInF0OdB1Zbb895sL5F3QFkoQg5/UdToXTqr/8EA=
+github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220627165749-860377b824c9/go.mod h1:7sApdNsv/MaG4PUve268bTdBjy+dfUVQQaGAxXibcJc=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
