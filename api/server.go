@@ -8,13 +8,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/axc"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/stream/consumers"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/stream/consumers"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/web"
 )
 
@@ -61,14 +61,14 @@ func (s *Server) Close() error {
 }
 
 func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
-	sc.Log.Info("Router chainID %s", sc.GenesisContainer.XChainID.String())
+	sc.Log.Info("Router chainID %s", sc.GenesisContainer.SwapChainID.String())
 
-	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.XChainID, sc.GenesisContainer.AxcAssetID)
+	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AxcAssetID)
 	if err != nil {
 		return nil, err
 	}
 
-	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.XChainID, sc.GenesisContainer.AxcAssetID)
+	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AxcAssetID)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 		}
 		consumersmap[chid] = consumer
 	}
-	consumercchain, err := consumers.IndexerConsumerCChain(conf.NetworkID, conf.CchainID)
+	consumercchain, err := consumers.IndexerConsumerAXCChain(conf.NetworkID, conf.AXCchainID)
 	if err != nil {
 		return nil, err
 	}
@@ -121,8 +121,8 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 	AddV2Routes(&ctx, router, "/v2", indexBytes, nil)
 
 	// Legacy routes.
-	AddV2Routes(&ctx, router, "/x", legacyIndexResponse, &sc.GenesisContainer.XChainID)
-	AddV2Routes(&ctx, router, "/X", legacyIndexResponse, &sc.GenesisContainer.XChainID)
+	AddV2Routes(&ctx, router, "/x", legacyIndexResponse, &sc.GenesisContainer.SwapChainID)
+	AddV2Routes(&ctx, router, "/X", legacyIndexResponse, &sc.GenesisContainer.SwapChainID)
 
 	return router, nil
 }

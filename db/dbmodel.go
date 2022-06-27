@@ -10,8 +10,8 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 )
 
@@ -1091,7 +1091,7 @@ func (p *persist) InsertCvmBlocks(
 
 type CvmAddresses struct {
 	ID            string
-	Type          models.CChainType
+	Type          models.AXCChainType
 	Idx           uint64
 	TransactionID string
 	Address       string
@@ -1168,7 +1168,7 @@ func (p *persist) InsertCvmAddresses(
 type CvmTransactions struct {
 	ID            string
 	TransactionID string
-	Type          models.CChainType
+	Type          models.AXCChainType
 	BlockchainID  string
 	Block         string
 	CreatedAt     time.Time
@@ -2482,7 +2482,7 @@ type PvmProposer struct {
 	ParentID      string
 	BlkID         string
 	ProposerBlkID string
-	PChainHeight  uint64
+	CoreChainHeight  uint64
 	Proposer      string
 	TimeStamp     time.Time
 	CreatedAt     time.Time
@@ -2521,7 +2521,7 @@ func (p *persist) InsertPvmProposer(
 		Pair("id", v.ID).
 		Pair("parent_id", v.ParentID).
 		Pair("blk_id", v.BlkID).
-		Pair("p_chain_height", v.PChainHeight).
+		Pair("p_chain_height", v.CoreChainHeight).
 		Pair("proposer", v.Proposer).
 		Pair("time_stamp", v.TimeStamp).
 		Pair("created_at", v.CreatedAt).
@@ -2535,7 +2535,7 @@ func (p *persist) InsertPvmProposer(
 			Update(TablePvmProposer).
 			Set("parent_id", v.ParentID).
 			Set("blk_id", v.BlkID).
-			Set("p_chain_height", v.PChainHeight).
+			Set("p_chain_height", v.CoreChainHeight).
 			Set("proposer", v.Proposer).
 			Set("time_stamp", v.TimeStamp).
 			Set("created_at", v.CreatedAt).

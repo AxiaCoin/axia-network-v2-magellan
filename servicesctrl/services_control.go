@@ -8,9 +8,9 @@ import (
 
 	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 const (
@@ -42,7 +42,7 @@ type Control struct {
 	IsAccumulateBalanceReader  bool
 	IsDisableBootstrap         bool
 	IsAggregateCache           bool
-	IsCChainIndex              bool
+	IsAXCChainIndex              bool
 	IndexedList                utils.IndexedList
 	LocalTxPool                chan *LocalTxPoolJob
 }
@@ -71,8 +71,8 @@ func (s *Control) Init(networkID uint32) error {
 	if _, ok := s.Features["aggregate_cache"]; ok {
 		s.IsAggregateCache = true
 	}
-	if _, ok := s.Features["cchain_index"]; ok {
-		s.IsCChainIndex = true
+	if _, ok := s.Features["axcchain_index"]; ok {
+		s.IsAXCChainIndex = true
 	}
 	var err error
 	s.GenesisContainer, err = utils.NewGenesisContainer(networkID)

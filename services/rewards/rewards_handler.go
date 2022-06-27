@@ -8,14 +8,14 @@ import (
 	"github.com/axiacoin/axia-network-v2/api"
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/utils/formatting"
-	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	axiaAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/axc"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 type Handler struct {
@@ -52,7 +52,7 @@ func (r *Handler) runTicker(sc *servicesctrl.Control, conns *utils.Connections) 
 	r.doneCh = make(chan struct{}, 1)
 
 	r.conns = conns
-	r.client = platformvm.NewClient(sc.ServicesCfg.AxiaGO)
+	r.client = platformvm.NewClient(sc.ServicesCfg.Axia)
 	r.perist = db.NewPersist()
 
 	r.axcAssetID = sc.GenesisContainer.AxcAssetID
@@ -161,7 +161,7 @@ func (r *Handler) processRewardUtxos(rewardsUtxos [][]byte, createdAt time.Time)
 	ctx := context.Background()
 
 	for _, reawrdUtxo := range rewardsUtxos {
-		var utxo *axiaGoAxc.UTXO
+		var utxo *axiaAxc.UTXO
 		_, err = platformvm.Codec.Unmarshal(reawrdUtxo, &utxo)
 		if err != nil {
 			return err

@@ -69,14 +69,14 @@ git checkout tags/{tag-id}
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "chainID": "11111111111111111111111111111111LpoYY",
-      "chainAlias": "p",
+      "chainAlias": "core",
       "vm": "pvm",
       "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
     },
     "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": {
       "chainID": "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
-      "chainAlias": "x",
+      "chainAlias": "swap",
       "vm": "avm",
       "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
@@ -145,14 +145,14 @@ Ortelius requires an updated mysql compatible DB.  This will work with aurora in
 ## *optional* mysql docker container -- adjust as necessary
 [dockerhub mysql](https://hub.docker.com/_/mysql)
 ```
-docker run --volume .../github.com/axiacoin/ortelius/docker/my.cnf:/etc/mysql/my.cnf --network host -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ortelius mysql:8.0.26
+docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/docker/my.cnf:/etc/mysql/my.cnf --network host -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ortelius mysql:8.0.26
 ```
 The standard mysql defaults can cause issues, please configure the customizations [here](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/my.cnf)
 
 ## run migrations -- *required* for all ortelius updates.
 [dockerhub migrate](https://hub.docker.com/r/migrate/migrate)
 ```
-docker run --volume .../github.com/axiacoin/ortelius/services/db/migrations:/migrations --network host "migrate/migrate:v4.14.1"  -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/ortelius" up
+docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/services/db/migrations:/migrations --network host "migrate/migrate:v4.14.1"  -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/ortelius" up
 ```
 Update the docker params as needed to match the user/password/host/database as appropriate.
 

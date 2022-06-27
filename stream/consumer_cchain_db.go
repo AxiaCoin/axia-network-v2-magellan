@@ -11,16 +11,16 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/cvm"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/cvm"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
-type consumerCChainDB struct {
+type consumerAXCChainDB struct {
 	id string
 	sc *servicesctrl.Control
 
@@ -41,16 +41,16 @@ type consumerCChainDB struct {
 	topicLogsName string
 }
 
-func NewConsumerCChainDB() ProcessorFactoryInstDB {
+func NewConsumerAXCChainDB() ProcessorFactoryInstDB {
 	return func(sc *servicesctrl.Control, conf cfg.Config) (ProcessorDB, error) {
-		c := &consumerCChainDB{
+		c := &consumerAXCChainDB{
 			conf:                          conf,
 			sc:                            sc,
-			metricProcessedCountKey:       fmt.Sprintf("consume_records_processed_%s_cchain", conf.CchainID),
-			metricProcessMillisCounterKey: fmt.Sprintf("consume_records_process_millis_%s_cchain", conf.CchainID),
-			metricSuccessCountKey:         fmt.Sprintf("consume_records_success_%s_cchain", conf.CchainID),
-			metricFailureCountKey:         fmt.Sprintf("consume_records_failure_%s_cchain", conf.CchainID),
-			id:                            fmt.Sprintf("consumer %d %s cchain", conf.NetworkID, conf.CchainID),
+			metricProcessedCountKey:       fmt.Sprintf("consume_records_processed_%s_cchain", conf.AXCchainID),
+			metricProcessMillisCounterKey: fmt.Sprintf("consume_records_process_millis_%s_cchain", conf.AXCchainID),
+			metricSuccessCountKey:         fmt.Sprintf("consume_records_success_%s_cchain", conf.AXCchainID),
+			metricFailureCountKey:         fmt.Sprintf("consume_records_failure_%s_cchain", conf.AXCchainID),
+			id:                            fmt.Sprintf("consumer %d %s cchain", conf.NetworkID, conf.AXCchainID),
 
 			quitCh: make(chan struct{}),
 		}
@@ -61,39 +61,39 @@ func NewConsumerCChainDB() ProcessorFactoryInstDB {
 		sc.InitConsumeMetrics()
 
 		var err error
-		c.consumer, err = cvm.NewWriter(c.conf.NetworkID, c.conf.CchainID)
+		c.consumer, err = cvm.NewWriter(c.conf.NetworkID, c.conf.AXCchainID)
 		if err != nil {
 			_ = c.Close()
 			return nil, err
 		}
 
-		c.topicName = fmt.Sprintf("%d-%s-cchain", c.conf.NetworkID, c.conf.CchainID)
-		c.topicTrcName = fmt.Sprintf("%d-%s-cchain-trc", c.conf.NetworkID, c.conf.CchainID)
-		c.topicLogsName = fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.CchainID)
+		c.topicName = fmt.Sprintf("%d-%s-cchain", c.conf.NetworkID, c.conf.AXCchainID)
+		c.topicTrcName = fmt.Sprintf("%d-%s-cchain-trc", c.conf.NetworkID, c.conf.AXCchainID)
+		c.topicLogsName = fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.AXCchainID)
 
 		return c, nil
 	}
 }
 
 // Close shuts down the producer
-func (c *consumerCChainDB) Close() error {
+func (c *consumerAXCChainDB) Close() error {
 	return nil
 }
 
-func (c *consumerCChainDB) ID() string {
+func (c *consumerAXCChainDB) ID() string {
 	return c.id
 }
 
-func (c *consumerCChainDB) Topic() []string {
+func (c *consumerAXCChainDB) Topic() []string {
 	return []string{c.topicName, c.topicTrcName, c.topicLogsName}
 }
 
-func (c *consumerCChainDB) Process(conns *utils.Connections, row *db.TxPool) error {
+func (c *consumerAXCChainDB) Process(conns *utils.Connections, row *db.TxPool) error {
 	switch row.Topic {
 	case c.topicName:
 		msg := &Message{
 			id:         row.MsgKey,
-			chainID:    c.conf.CchainID,
+			chainID:    c.conf.AXCchainID,
 			body:       row.Serialization,
 			timestamp:  row.CreatedAt.UTC().Unix(),
 			nanosecond: int64(row.CreatedAt.UTC().Nanosecond()),
@@ -102,7 +102,7 @@ func (c *consumerCChainDB) Process(conns *utils.Connections, row *db.TxPool) err
 	case c.topicTrcName:
 		msg := &Message{
 			id:         row.MsgKey,
-			chainID:    c.conf.CchainID,
+			chainID:    c.conf.AXCchainID,
 			body:       row.Serialization,
 			timestamp:  row.CreatedAt.UTC().Unix(),
 			nanosecond: int64(row.CreatedAt.UTC().Nanosecond()),
@@ -111,7 +111,7 @@ func (c *consumerCChainDB) Process(conns *utils.Connections, row *db.TxPool) err
 	case c.topicLogsName:
 		msg := &Message{
 			id:         row.MsgKey,
-			chainID:    c.conf.CchainID,
+			chainID:    c.conf.AXCchainID,
 			body:       row.Serialization,
 			timestamp:  row.CreatedAt.UTC().Unix(),
 			nanosecond: int64(row.CreatedAt.UTC().Nanosecond()),
@@ -122,7 +122,7 @@ func (c *consumerCChainDB) Process(conns *utils.Connections, row *db.TxPool) err
 	return nil
 }
 
-func (c *consumerCChainDB) ConsumeLogs(conns *utils.Connections, msg services.Consumable) error {
+func (c *consumerAXCChainDB) ConsumeLogs(conns *utils.Connections, msg services.Consumable) error {
 	txLogs := &types.Log{}
 	err := json.Unmarshal(msg.Body(), txLogs)
 	if err != nil {
@@ -165,7 +165,7 @@ func (c *consumerCChainDB) ConsumeLogs(conns *utils.Connections, msg services.Co
 	return nil
 }
 
-func (c *consumerCChainDB) ConsumeTrace(conns *utils.Connections, msg services.Consumable) error {
+func (c *consumerAXCChainDB) ConsumeTrace(conns *utils.Connections, msg services.Consumable) error {
 	transactionTrace := &modelsc.TransactionTrace{}
 	err := json.Unmarshal(msg.Body(), transactionTrace)
 	if err != nil {
@@ -208,7 +208,7 @@ func (c *consumerCChainDB) ConsumeTrace(conns *utils.Connections, msg services.C
 	return nil
 }
 
-func (c *consumerCChainDB) Consume(conns *utils.Connections, msg services.Consumable) error {
+func (c *consumerAXCChainDB) Consume(conns *utils.Connections, msg services.Consumable) error {
 	block, err := modelsc.Unmarshal(msg.Body())
 	if err != nil {
 		return err
@@ -256,30 +256,30 @@ func (c *consumerCChainDB) Consume(conns *utils.Connections, msg services.Consum
 	return nil
 }
 
-func (c *consumerCChainDB) persistConsumeLogs(conns *utils.Connections, msg services.Consumable, txLogs *types.Log) error {
+func (c *consumerAXCChainDB) persistConsumeLogs(conns *utils.Connections, msg services.Consumable, txLogs *types.Log) error {
 	ctx, cancelFn := context.WithTimeout(context.Background(), cfg.DefaultConsumeProcessWriteTimeout)
 	defer cancelFn()
 	return c.consumer.ConsumeLogs(ctx, conns, msg, txLogs, c.sc.Persist)
 }
 
-func (c *consumerCChainDB) persistConsumeTrace(conns *utils.Connections, msg services.Consumable, transactionTrace *modelsc.TransactionTrace) error {
+func (c *consumerAXCChainDB) persistConsumeTrace(conns *utils.Connections, msg services.Consumable, transactionTrace *modelsc.TransactionTrace) error {
 	ctx, cancelFn := context.WithTimeout(context.Background(), cfg.DefaultConsumeProcessWriteTimeout)
 	defer cancelFn()
 	return c.consumer.ConsumeTrace(ctx, conns, msg, transactionTrace, c.sc.Persist)
 }
 
-func (c *consumerCChainDB) persistConsume(conns *utils.Connections, msg services.Consumable, block *modelsc.Block) error {
+func (c *consumerAXCChainDB) persistConsume(conns *utils.Connections, msg services.Consumable, block *modelsc.Block) error {
 	ctx, cancelFn := context.WithTimeout(context.Background(), cfg.DefaultConsumeProcessWriteTimeout)
 	defer cancelFn()
 	return c.consumer.Consume(ctx, conns, msg, block, c.sc.Persist)
 }
 
-func (c *consumerCChainDB) Failure() {
+func (c *consumerAXCChainDB) Failure() {
 	_ = utils.Prometheus.CounterInc(c.metricFailureCountKey)
 	_ = utils.Prometheus.CounterInc(servicesctrl.MetricConsumeFailureCountKey)
 }
 
-func (c *consumerCChainDB) Success() {
+func (c *consumerAXCChainDB) Success() {
 	_ = utils.Prometheus.CounterInc(c.metricSuccessCountKey)
 	_ = utils.Prometheus.CounterInc(servicesctrl.MetricConsumeSuccessCountKey)
 }

@@ -16,10 +16,10 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/json"
 	"github.com/axiacoin/axia-network-v2/utils/wrappers"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 const (
@@ -52,19 +52,19 @@ func (t IndexType) String() string {
 type IndexedChain byte
 
 const (
-	IndexXChain IndexedChain = iota
-	IndexPChain
-	IndexCChain
+	IndexSwapChain IndexedChain = iota
+	IndexCoreChain
+	IndexAXCChain
 )
 
 func (t IndexedChain) String() string {
 	switch t {
-	case IndexXChain:
-		return "X"
-	case IndexPChain:
-		return "P"
-	case IndexCChain:
-		return "C"
+	case IndexSwapChain:
+		return "Swap"
+	case IndexCoreChain:
+		return "Core"
+	case IndexAXCChain:
+		return "AXC"
 	}
 	// Should never happen
 	return typeUnknown
@@ -183,7 +183,7 @@ func (p *producerChainContainer) ProcessNextMessage() error {
 
 		var id ids.ID
 		switch p.indexerChain {
-		case IndexCChain:
+		case IndexAXCChain:
 			id = container.ID
 		default:
 			// x and p we compute the hash
@@ -280,7 +280,7 @@ func NewProducerChain(sc *servicesctrl.Control, conf cfg.Config, chainID string,
 
 	endpoint := fmt.Sprintf("/ext/index/%s/%s", indexerChain, indexerType)
 
-	nodeIndexer := indexer.NewClient(conf.AxiaGO, endpoint)
+	nodeIndexer := indexer.NewClient(conf.Axia, endpoint)
 
 	p := &ProducerChain{
 		indexerType:             indexerType,

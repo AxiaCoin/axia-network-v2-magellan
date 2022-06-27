@@ -11,15 +11,15 @@ import (
 	"time"
 
 	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/avm"
-	"github.com/axiacoin/ortelius/services/indexes/cvm"
-	"github.com/axiacoin/ortelius/services/indexes/pvm"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/stream"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avm"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/cvm"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/pvm"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/stream"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 const (
@@ -46,7 +46,7 @@ var IndexerConsumer = func(networkID uint32, chainVM string, chainID string) (in
 	return indexer, err
 }
 
-var IndexerConsumerCChain = func(networkID uint32, chainID string) (indexer services.ConsumerCChain, err error) {
+var IndexerConsumerAXCChain = func(networkID uint32, chainID string) (indexer services.ConsumerCChain, err error) {
 	return cvm.NewWriter(networkID, chainID)
 }
 
@@ -54,7 +54,7 @@ type ConsumerDBFactory func(uint32, string, string) (stream.ProcessorFactoryChai
 
 var IndexerDB = stream.NewConsumerDBFactory(IndexerConsumer, stream.EventTypeDecisions)
 var IndexerConsensusDB = stream.NewConsumerDBFactory(IndexerConsumer, stream.EventTypeConsensus)
-var IndexerCChainDB = stream.NewConsumerCChainDB
+var IndexerAXCChainDB = stream.NewConsumerAXCChainDB
 
 func Bootstrap(sc *servicesctrl.Control, networkID uint32, chains cfg.Chains, factories []ConsumerFactory) error {
 	if sc.IsDisableBootstrap {

@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services/indexes/params"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/gocraft/dbr/v2"
 )
 
@@ -340,7 +340,7 @@ func newPvmProposerModel(pvmProposer db.PvmProposer) *models.PvmProposerModel {
 	return &models.PvmProposerModel{
 		ID:           models.StringID(pvmProposer.ID),
 		ParentID:     models.StringID(pvmProposer.ParentID),
-		PChainHeight: pvmProposer.PChainHeight,
+		CoreChainHeight: pvmProposer.CoreChainHeight,
 		Proposer:     models.StringID(pvmProposer.Proposer),
 		TimeStamp:    pvmProposer.TimeStamp,
 	}
@@ -662,9 +662,9 @@ func collectCvmTransactions(ctx context.Context, dbRunner dbr.SessionRunner, txI
 			outs[a.TransactionID] = make([]models.Output, 0)
 		}
 		switch a.Type {
-		case models.CChainIn:
+		case models.AXCChainIn:
 			ins[a.TransactionID] = append(ins[a.TransactionID], mapOutput(a))
-		case models.CchainOut:
+		case models.AXCchainOut:
 			outs[a.TransactionID] = append(outs[a.TransactionID], mapOutput(a))
 		}
 	}
@@ -682,9 +682,9 @@ func mapOutput(a models.CvmOutput) models.Output {
 	o.ChainID = a.ChainID
 	o.CreatedAt = a.CreatedAt
 	switch a.TransactionType {
-	case models.CChainExport:
+	case models.AXCChainExport:
 		o.OutputType = models.OutputTypesAtomicExportTx
-	case models.CChainImport:
+	case models.AXCChainImport:
 		o.OutputType = models.OutputTypesAtomicImportTx
 	}
 	o.CAddresses = []string{a.Address}

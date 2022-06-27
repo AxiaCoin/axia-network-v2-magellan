@@ -29,8 +29,8 @@ type Config struct {
 	MetricsListenAddr string `json:"metricsListenAddr"`
 	AdminListenAddr   string `json:"adminListenAddr"`
 	Features          map[string]struct{}
-	CchainID          string `json:"cchainId"`
-	AxiaGO       string `json:"axia"`
+	AXCchainID          string `json:"axcchainId"`
+	Axia       string `json:"axia"`
 	NodeInstance      string `json:"nodeInstance"`
 	AP5Activation     uint64
 }
@@ -122,8 +122,8 @@ func NewFromFile(filePath string) (*Config, error) {
 				RODSN:  dbrodsn,
 			},
 		},
-		CchainID:      v.GetString(keysStreamProducerCchainID),
-		AxiaGO:   v.GetString(keysStreamProducerAxia),
+		AXCchainID:      v.GetString(keysStreamProducerAXCchainID),
+		Axia:   v.GetString(keysStreamProducerAxia),
 		NodeInstance:  v.GetString(keysStreamProducerNodeInstance),
 		AP5Activation: uint64(ap5Activation),
 	}, nil

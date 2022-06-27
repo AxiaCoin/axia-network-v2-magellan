@@ -21,8 +21,8 @@ https://docs.docker.com/compose/install/
 The easiest way to get started is to try out the standalone mode.
 
 ```shell script
-git clone https://github.com/axiacoin/axia-network-v2-magellan.git $GOPATH/github.com/axiacoin/ortelius
-cd $GOPATH/github.com/axiacoin/ortelius
+git clone https://github.com/axiacoin/axia-network-v2-magellan.git $GOPATH/github.com/axiacoin/axia-network-v2-magellan
+cd $GOPATH/github.com/axiacoin/axia-network-v2-magellan
 make dev_env_start
 make standalone_run
 ```

@@ -10,20 +10,20 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
-	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	axiaAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/axia-network-v2-coreth/plugin/evm"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 var (
-	testXChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
+	testSwapChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
 )
 
 func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connections, *Writer, func()) {
@@ -55,7 +55,7 @@ func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connec
 }
 
 func TestInsertTxInternalExport(t *testing.T) {
-	conns, writer, closeFn := newTestIndex(t, 5, testXChainID)
+	conns, writer, closeFn := newTestIndex(t, 5, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 
@@ -64,9 +64,9 @@ func TestInsertTxInternalExport(t *testing.T) {
 	extx := &evm.UnsignedExportTx{}
 	extxIn := evm.EVMInput{}
 	extx.Ins = []evm.EVMInput{extxIn}
-	transferableOut := &axiaGoAxc.TransferableOutput{}
+	transferableOut := &axiaAxc.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	extx.ExportedOutputs = []*axiaGoAxc.TransferableOutput{transferableOut}
+	extx.ExportedOutputs = []*axiaAxc.TransferableOutput{transferableOut}
 
 	tx.UnsignedAtomicTx = extx
 	header := types.Header{}
@@ -88,7 +88,7 @@ func TestInsertTxInternalExport(t *testing.T) {
 }
 
 func TestInsertTxInternalImport(t *testing.T) {
-	conns, writer, closeFn := newTestIndex(t, 5, testXChainID)
+	conns, writer, closeFn := newTestIndex(t, 5, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 	tx := &evm.Tx{}
@@ -96,9 +96,9 @@ func TestInsertTxInternalImport(t *testing.T) {
 	extx := &evm.UnsignedImportTx{}
 	evtxOut := evm.EVMOutput{}
 	extx.Outs = []evm.EVMOutput{evtxOut}
-	transferableIn := &axiaGoAxc.TransferableInput{}
+	transferableIn := &axiaAxc.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	extx.ImportedInputs = []*axiaGoAxc.TransferableInput{transferableIn}
+	extx.ImportedInputs = []*axiaAxc.TransferableInput{transferableIn}
 
 	tx.UnsignedAtomicTx = extx
 	header := types.Header{}

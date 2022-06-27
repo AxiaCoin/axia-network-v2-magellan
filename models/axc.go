@@ -10,7 +10,7 @@ import (
 type PvmProposerModel struct {
 	ID           StringID  `json:"id"`
 	ParentID     StringID  `json:"parentID"`
-	PChainHeight uint64    `json:"pchainHeight"`
+	CoreChainHeight uint64    `json:"corechainHeight"`
 	Proposer     StringID  `json:"proposer"`
 	TimeStamp    time.Time `json:"timestamp"`
 }
@@ -150,8 +150,8 @@ type OutputList struct {
 }
 
 type CvmOutput struct {
-	Type            CChainType  `json:"type"`
-	TransactionType CChainType  `json:"transactionType"`
+	Type            AXCChainType  `json:"type"`
+	TransactionType AXCChainType  `json:"transactionType"`
 	Idx             uint64      `json:"idx"`
 	Amount          TokenAmount `json:"amount"`
 	Nonce           uint64      `json:"nonce"`

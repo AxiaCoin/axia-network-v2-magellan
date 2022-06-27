@@ -3,7 +3,7 @@ package axc
 import (
 	"testing"
 
-	"github.com/axiacoin/ortelius/models"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
 )
 
 func TestReaderAggregate(t *testing.T) {

@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia-network-v2/utils/logging"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 )
 
 func TestCollectInsAndOuts(t *testing.T) {

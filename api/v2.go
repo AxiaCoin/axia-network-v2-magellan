@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/web"
 )
 

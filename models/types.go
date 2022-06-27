@@ -3,13 +3,13 @@
 
 package models
 
-type CChainType uint16
+type AXCChainType uint16
 
 var (
-	CChainIn     CChainType = 1
-	CchainOut    CChainType = 2
-	CChainImport CChainType = 1
-	CChainExport CChainType = 2
+	AXCChainIn     AXCChainType = 1
+	AXCchainOut    AXCChainType = 2
+	AXCChainImport AXCChainType = 1
+	AXCChainExport AXCChainType = 2
 
 	OutputTypesSECP2556K1Transfer OutputType = 7
 	OutputTypesSECP2556K1Mint     OutputType = 6

@@ -19,13 +19,13 @@ import (
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/axia-network-v2-coreth/plugin/evm"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/services"
-	axcIndexer "github.com/axiacoin/ortelius/services/indexes/axc"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -228,14 +228,14 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 		return err
 	}
 
-	var typ models.CChainType = 0
+	var typ models.AXCChainType = 0
 	var blockchainID string
 	for i, atomicTX := range atomicTXs {
 		txID := atomicTX.ID()
 		txIDs[i] = txID.String()
 		switch atx := atomicTX.UnsignedAtomicTx.(type) {
 		case *evm.UnsignedExportTx:
-			typ = models.CChainExport
+			typ = models.AXCChainExport
 			blockchainID = atx.BlockchainID.String()
 			err = w.indexExportTx(ctx, txID, atx, blockBytes)
 			if err != nil {
@@ -247,7 +247,7 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 				return err
 			}
 
-			typ = models.CChainImport
+			typ = models.AXCChainImport
 			blockchainID = atx.BlockchainID.String()
 			err = w.indexImportTx(ctx, txID, atx, atomicTX.Creds, blockBytes, unsignedBytes)
 			if err != nil {
@@ -319,16 +319,16 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 func (w *Writer) indexTransaction(
 	ctx services.ConsumerCtx,
 	id ids.ID,
-	typ models.CChainType,
+	typ models.AXCChainType,
 	blockChainID ids.ID,
 	txFee uint64,
 	unsignedBytes []byte,
 ) error {
 	avmTxtype := ""
 	switch typ {
-	case models.CChainImport:
+	case models.AXCChainImport:
 		avmTxtype = "atomic_import_tx"
-	case models.CChainExport:
+	case models.AXCChainExport:
 		avmTxtype = "atomic_export_tx"
 	}
 
@@ -346,7 +346,7 @@ func (w *Writer) indexTransaction(
 }
 
 func (w *Writer) insertAddress(
-	typ models.CChainType,
+	typ models.AXCChainType,
 	ctx services.ConsumerCtx,
 	idx uint64,
 	id ids.ID,
@@ -377,7 +377,7 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalin uint64
 	for icnt, in := range tx.Ins {
 		icntval := uint64(icnt)
-		err = w.insertAddress(models.CChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
+		err = w.insertAddress(models.AXCChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
 		if err != nil {
 			return err
 		}
@@ -399,7 +399,7 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		idx++
 	}
 
-	return w.indexTransaction(ctx, txID, models.CChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.AXCChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
 }
 
 func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.UnsignedImportTx, creds []verify.Verifiable, blockBytes []byte, unsignedBytes []byte) error {
@@ -408,7 +408,7 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalout uint64
 	for icnt, out := range tx.Outs {
 		icntval := uint64(icnt)
-		err = w.insertAddress(models.CchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
+		err = w.insertAddress(models.AXCchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
 		if err != nil {
 			return err
 		}
@@ -428,5 +428,5 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		}
 	}
 
-	return w.indexTransaction(ctx, txID, models.CChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.AXCChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
 }

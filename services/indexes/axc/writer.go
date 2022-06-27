@@ -19,10 +19,10 @@ import (
 	"github.com/axiacoin/axia-network-v2/vms/nftfx"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
 )
 
 var (

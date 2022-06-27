@@ -20,16 +20,16 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	axiaAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/axc"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 	"github.com/palantir/stacktrace"
 )
@@ -65,7 +65,7 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err = bcLookup.Alias(id, "X"); err != nil {
+	if err = bcLookup.Alias(id, "Swap"); err != nil {
 		return nil, err
 	}
 
@@ -383,7 +383,7 @@ func (w *Writer) insertOperationTx(
 	}
 	for _, txOps := range tx.Ops {
 		for _, u := range txOps.UTXOIDs {
-			ti := &axiaGoAxc.TransferableInput{
+			ti := &axiaAxc.TransferableInput{
 				Asset:  txOps.Asset,
 				UTXOID: *u,
 				In:     &secp256k1fx.TransferInput{},

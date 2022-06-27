@@ -14,24 +14,24 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/crypto"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	axiaAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/db"
-	"github.com/axiacoin/ortelius/models"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/axc"
-	"github.com/axiacoin/ortelius/services/indexes/params"
-	"github.com/axiacoin/ortelius/servicesctrl"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 var (
-	testXChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
+	testSwapChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
 )
 
 func TestIndexBootstrap(t *testing.T) {
-	conns, writer, reader, closeFn := newTestIndex(t, testXChainID)
+	conns, writer, reader, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 
 	persist := db.NewPersist()
@@ -41,7 +41,7 @@ func TestIndexBootstrap(t *testing.T) {
 	}
 
 	txList, err := reader.ListTransactions(context.Background(), &params.ListTransactionsParams{
-		ChainIDs: []string{testXChainID.String()},
+		ChainIDs: []string{testSwapChainID.String()},
 	}, ids.Empty)
 	if err != nil {
 		t.Fatal("Failed to list transactions:", err.Error())
@@ -108,7 +108,7 @@ func TestIndexBootstrap(t *testing.T) {
 
 	// invoke the address and asset logic to test the db.
 	txList, err = reader.ListTransactions(context.Background(), &params.ListTransactionsParams{
-		ChainIDs:  []string{testXChainID.String()},
+		ChainIDs:  []string{testSwapChainID.String()},
 		Addresses: []ids.ShortID{ids.ShortEmpty},
 	}, ids.Empty)
 
@@ -164,22 +164,22 @@ func newTestContext() context.Context {
 }
 
 func TestInsertTxInternal(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, testXChainID)
+	conns, writer, _, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 
 	tx := &avm.Tx{}
 	baseTx := &avm.BaseTx{}
 
-	transferableOut := &axiaGoAxc.TransferableOutput{}
+	transferableOut := &axiaAxc.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{
 		OutputOwners: secp256k1fx.OutputOwners{Addrs: []ids.ShortID{ids.ShortEmpty}},
 	}
-	baseTx.Outs = []*axiaGoAxc.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaAxc.TransferableOutput{transferableOut}
 
-	transferableIn := &axiaGoAxc.TransferableInput{}
+	transferableIn := &axiaAxc.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*axiaGoAxc.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaAxc.TransferableInput{transferableIn}
 
 	f := crypto.FactorySECP256K1R{}
 	pk, _ := f.NewPrivateKey()
@@ -232,20 +232,20 @@ func TestInsertTxInternal(t *testing.T) {
 }
 
 func TestInsertTxInternalCreateAsset(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, testXChainID)
+	conns, writer, _, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 
 	tx := &avm.Tx{}
 	baseTx := &avm.CreateAssetTx{}
 
-	transferableOut := &axiaGoAxc.TransferableOutput{}
+	transferableOut := &axiaAxc.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	baseTx.Outs = []*axiaGoAxc.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaAxc.TransferableOutput{transferableOut}
 
-	transferableIn := &axiaGoAxc.TransferableInput{}
+	transferableIn := &axiaAxc.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*axiaGoAxc.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaAxc.TransferableInput{transferableIn}
 
 	tx.UnsignedTx = baseTx
 
@@ -280,7 +280,7 @@ func TestInsertTxInternalCreateAsset(t *testing.T) {
 }
 
 func TestTransactionNext(t *testing.T) {
-	conns, _, reader, closeFn := newTestIndex(t, testXChainID)
+	conns, _, reader, closeFn := newTestIndex(t, testSwapChainID)
 	defer closeFn()
 	ctx := context.Background()
 

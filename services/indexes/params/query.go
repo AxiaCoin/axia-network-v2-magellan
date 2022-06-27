@@ -98,7 +98,7 @@ func GetQueryAddress(q url.Values, key string) (*ids.ShortID, error) {
 	return &addr, nil
 }
 
-var addressPrefixes = []string{"X", "P", "C"}
+var addressPrefixes = []string{"Swap", "Core", "AXC"}
 
 func AddressFromString(addrStr string) (ids.ShortID, error) {
 	for _, prefix := range addressPrefixes {

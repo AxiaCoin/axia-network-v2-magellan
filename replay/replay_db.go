@@ -9,22 +9,22 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/axiacoin/ortelius/servicesctrl"
+	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 
-	"github.com/axiacoin/ortelius/db"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
 
 	"github.com/axiacoin/axia-network-v2/ids"
 	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
-	"github.com/axiacoin/ortelius/cfg"
-	"github.com/axiacoin/ortelius/modelsc"
-	"github.com/axiacoin/ortelius/services"
-	"github.com/axiacoin/ortelius/services/indexes/avm"
-	"github.com/axiacoin/ortelius/services/indexes/cvm"
-	"github.com/axiacoin/ortelius/services/indexes/pvm"
-	"github.com/axiacoin/ortelius/stream"
-	"github.com/axiacoin/ortelius/stream/consumers"
-	"github.com/axiacoin/ortelius/utils"
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avm"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/cvm"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/pvm"
+	"github.com/axiacoin/axia-network-v2-magellan/stream"
+	"github.com/axiacoin/axia-network-v2-magellan/stream/consumers"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 type Replay interface {
@@ -104,9 +104,9 @@ func (replay *dbReplay) Start() error {
 		}
 	}
 
-	err = replay.handleCReader(replay.config.CchainID, waitGroup, worker)
+	err = replay.handleCReader(replay.config.AXCchainID, waitGroup, worker)
 	if err != nil {
-		log.Fatalln("reader failed", replay.config.CchainID, ":", err.Error())
+		log.Fatalln("reader failed", replay.config.AXCchainID, ":", err.Error())
 		return err
 	}
 
