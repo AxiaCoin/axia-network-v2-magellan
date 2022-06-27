@@ -32,6 +32,7 @@ services:
     command: /bin/sh -cx "exec /axia/build/axia
       --config-file=/opt/config.json
       --network-id=$${NETWORKID}
+      --bootstrap-ips=$${IP} --bootstrap-ids=$${NODEID}
       "
     ports:
       - "9650:9650"
