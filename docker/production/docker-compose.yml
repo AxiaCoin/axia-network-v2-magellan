@@ -45,7 +45,7 @@ services:
       - indexer
     restart: always
   indexer: &magellan-app
-    image: "avaplatform/magellan:v1.7.10"
+    image: "avaplatform/ortelius:v1.7.10"
     command: ["stream", "indexer", "-c", "/opt/config.json"]
     external_links:
       - mysql
