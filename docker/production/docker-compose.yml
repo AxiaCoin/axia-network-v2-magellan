@@ -28,7 +28,7 @@ services:
   axia:
     env_file:
       - production.env
-    image: "avaplatform/axia:v1.7.10"
+    image: "avaplatform/avalanchego:v1.7.10"
     command: /bin/sh -cx "exec /axia/build/axia
       --config-file=/opt/config.json
       --network-id=$${NETWORKID}
