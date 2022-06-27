@@ -1,14 +1,12 @@
-🔴WARNING: This has been deprecated, please read [this.](https://docs.axc.network/build/tools/deprecating-ortelius) 🔴
+# Magellon
 
-# Ortelius
-
-A data processing pipeline for the [Axia network](https://axc.network).
+A data processing pipeline for the [AXIA network](https://axc.network).
 
 ## Features
 
 - Maintains a persistent log of all consensus events and decisions made on the Axia network.
-- Indexes Exchange (X), Platform (P), and Contract (C) chain transactions.
-- An [API](https://docs.axc.network/build/tools/ortelius) allowing easy exploration of the index.
+- Indexes SwapChain, CoreChain, and AXChain transactions.
+- An API allowing easy exploration of the index.
 
 ## Prerequisite
 
