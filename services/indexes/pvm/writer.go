@@ -96,7 +96,7 @@ func (w *Writer) initCtxPtx(p *platformvm.Tx) {
 			utxo.Out.InitCtx(w.ctx)
 		}
 		castTx.InitCtx(w.ctx)
-	case *platformvm.UnsignedAddSubnetValidatorTx:
+	case *platformvm.UnsignedAddAllychainValidatorTx:
 		for _, utxo := range castTx.UTXOs() {
 			utxo.Out.InitCtx(w.ctx)
 		}
@@ -109,7 +109,7 @@ func (w *Writer) initCtxPtx(p *platformvm.Tx) {
 			utxo.Out.InitCtx(w.ctx)
 		}
 		castTx.InitCtx(w.ctx)
-	case *platformvm.UnsignedCreateSubnetTx:
+	case *platformvm.UnsignedCreateAllychainTx:
 		for _, utxo := range castTx.UTXOs() {
 			utxo.Out.InitCtx(w.ctx)
 		}
@@ -484,9 +484,9 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 				return err
 			}
 		}
-	case *platformvm.UnsignedAddSubnetValidatorTx:
+	case *platformvm.UnsignedAddAllychainValidatorTx:
 		baseTx = castTx.BaseTx.BaseTx
-		typ = models.TransactionTypeAddSubnetValidator
+		typ = models.TransactionTypeAddAllychainValidator
 		err = w.InsertTransactionBlock(ctx, baseTx.ID(), blkID)
 		if err != nil {
 			return err
@@ -513,9 +513,9 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 				return err
 			}
 		}
-	case *platformvm.UnsignedCreateSubnetTx:
+	case *platformvm.UnsignedCreateAllychainTx:
 		baseTx = castTx.BaseTx.BaseTx
-		typ = models.TransactionTypeCreateSubnet
+		typ = models.TransactionTypeCreateAllychain
 		err = w.InsertTransactionBlock(ctx, baseTx.ID(), blkID)
 		if err != nil {
 			return err

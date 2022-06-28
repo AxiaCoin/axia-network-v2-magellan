@@ -30,10 +30,10 @@ var (
 	TransactionTypeAVMImport          TransactionType = 0x3
 	TransactionTypeAVMExport          TransactionType = 0x4
 	TransactionTypeAddValidator       TransactionType = 0xc
-	TransactionTypeAddSubnetValidator TransactionType = 0xd
+	TransactionTypeAddAllychainValidator TransactionType = 0xd
 	TransactionTypeAddDelegator       TransactionType = 0xe
 	TransactionTypeCreateChain        TransactionType = 0xf
-	TransactionTypeCreateSubnet       TransactionType = 0x10
+	TransactionTypeCreateAllychain       TransactionType = 0x10
 	TransactionTypePVMImport          TransactionType = 0x11
 	TransactionTypePVMExport          TransactionType = 0x12
 	TransactionTypeAdvanceTime        TransactionType = 0x13
@@ -71,14 +71,14 @@ func (t TransactionType) String() string {
 		// PVM
 	case TransactionTypeAddValidator:
 		return "add_validator"
-	case TransactionTypeAddSubnetValidator:
-		return "add_subnet_validator"
+	case TransactionTypeAddAllychainValidator:
+		return "add_allychain_validator"
 	case TransactionTypeAddDelegator:
 		return "add_delegator"
 	case TransactionTypeCreateChain:
 		return "create_chain"
-	case TransactionTypeCreateSubnet:
-		return "create_subnet"
+	case TransactionTypeCreateAllychain:
+		return "create_allychain"
 	case TransactionTypePVMImport:
 		return "pvm_import"
 	case TransactionTypePVMExport:
