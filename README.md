@@ -1,12 +1,14 @@
-# Magellon
+🔴WARNING: This has been deprecated, please read [this.](https://docs.avax.network/build/tools/deprecating-ortelius) 🔴
 
-A data processing pipeline for the [AXIA network](https://axc.network).
+# Ortelius
+
+A data processing pipeline for the [Avalanche network](https://avax.network).
 
 ## Features
 
-- Maintains a persistent log of all consensus events and decisions made on the Axia network.
-- Indexes SwapChain, CoreChain, and AXChain transactions.
-- An API allowing easy exploration of the index.
+- Maintains a persistent log of all consensus events and decisions made on the Avalanche network.
+- Indexes Exchange (X), Platform (P), and Contract (C) chain transactions.
+- An [API](https://docs.avax.network/build/tools/ortelius) allowing easy exploration of the index.
 
 ## Prerequisite
 
@@ -14,7 +16,7 @@ https://docs.docker.com/engine/install/ubuntu/
 
 https://docs.docker.com/compose/install/
 
-## Quick Start with Standalone Mode on Test (testnet) network
+## Quick Start with Standalone Mode on Fuji (testnet) network
 
 The easiest way to get started is to try out the standalone mode.
 

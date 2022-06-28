@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package stream
@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/axiacoin/axia-network-v2/ids"
-	axiaUtils "github.com/axiacoin/axia-network-v2/utils"
+	avalancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/wrappers"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
@@ -49,7 +49,7 @@ type producerCChainContainer struct {
 
 	runningControl utils.Running
 
-	catchupErrs axiaUtils.AtomicInterface
+	catchupErrs avalancheGoUtils.AtomicInterface
 }
 
 func newContainerC(
@@ -75,7 +75,7 @@ func newContainerC(
 		return nil, err
 	}
 
-	cl, err := modelsc.NewClient(conf.Axia + "/ext/bc/C/rpc")
+	cl, err := modelsc.NewClient(conf.AvalancheGO + "/ext/bc/C/rpc")
 	if err != nil {
 		_ = conns.Close()
 		return nil, err
@@ -201,7 +201,7 @@ func (p *producerCChainContainer) ProcessNextMessage() error {
 		return ErrNoMessage
 	}
 
-	errs := &axiaUtils.AtomicInterface{}
+	errs := &avalancheGoUtils.AtomicInterface{}
 	for lblocknext.Cmp(p.block) > 0 {
 		if p.runningControl.IsStopped() {
 			break
@@ -228,7 +228,7 @@ func (p *producerCChainContainer) ProcessNextMessage() error {
 	return nil
 }
 
-type ProducerAXCChain struct {
+type ProducerCChain struct {
 	id string
 	sc *servicesctrl.Control
 
@@ -246,21 +246,21 @@ type ProducerAXCChain struct {
 	topicLogs string
 }
 
-func NewProducerAXCChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenCloser {
-	topicName := fmt.Sprintf("%d-%s-cchain", conf.NetworkID, conf.AXCchainID)
-	topicTrcName := fmt.Sprintf("%d-%s-cchain-trc", conf.NetworkID, conf.AXCchainID)
-	topicLogsName := fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.AXCchainID)
+func NewProducerCChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenCloser {
+	topicName := fmt.Sprintf("%d-%s-cchain", conf.NetworkID, conf.CchainID)
+	topicTrcName := fmt.Sprintf("%d-%s-cchain-trc", conf.NetworkID, conf.CchainID)
+	topicLogsName := fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.CchainID)
 
-	p := &ProducerAXCChain{
+	p := &ProducerCChain{
 		topic:                   topicName,
 		topicTrc:                topicTrcName,
 		topicLogs:               topicLogsName,
 		conf:                    conf,
 		sc:                      sc,
-		metricProcessedCountKey: fmt.Sprintf("produce_records_processed_%s_cchain", conf.AXCchainID),
-		metricSuccessCountKey:   fmt.Sprintf("produce_records_success_%s_cchain", conf.AXCchainID),
-		metricFailureCountKey:   fmt.Sprintf("produce_records_failure_%s_cchain", conf.AXCchainID),
-		id:                      fmt.Sprintf("producer %d %s cchain", conf.NetworkID, conf.AXCchainID),
+		metricProcessedCountKey: fmt.Sprintf("produce_records_processed_%s_cchain", conf.CchainID),
+		metricSuccessCountKey:   fmt.Sprintf("produce_records_success_%s_cchain", conf.CchainID),
+		metricFailureCountKey:   fmt.Sprintf("produce_records_failure_%s_cchain", conf.CchainID),
+		id:                      fmt.Sprintf("producer %d %s cchain", conf.NetworkID, conf.CchainID),
 		runningControl:          utils.NewRunning(),
 	}
 	utils.Prometheus.CounterInit(p.metricProcessedCountKey, "records processed")
@@ -271,16 +271,16 @@ func NewProducerAXCChain(sc *servicesctrl.Control, conf cfg.Config) utils.Listen
 	return p
 }
 
-func (p *ProducerAXCChain) Close() error {
+func (p *ProducerCChain) Close() error {
 	p.runningControl.Close()
 	return nil
 }
 
-func (p *ProducerAXCChain) ID() string {
+func (p *ProducerCChain) ID() string {
 	return p.id
 }
 
-func (p *ProducerAXCChain) updateBlock(conns *utils.Connections, blockNumber *big.Int, updateTime time.Time) error {
+func (p *ProducerCChain) updateBlock(conns *utils.Connections, blockNumber *big.Int, updateTime time.Time) error {
 	sess := conns.DB().NewSessionForEventReceiver(conns.Stream().NewJob("update-block"))
 
 	ctx, cancelCtx := context.WithTimeout(context.Background(), dbWriteTimeout)
@@ -293,17 +293,17 @@ func (p *ProducerAXCChain) updateBlock(conns *utils.Connections, blockNumber *bi
 	return p.sc.Persist.InsertCvmBlocks(ctx, sess, cvmBlocks)
 }
 
-func (p *ProducerAXCChain) Failure() {
+func (p *ProducerCChain) Failure() {
 	_ = utils.Prometheus.CounterInc(p.metricFailureCountKey)
 	_ = utils.Prometheus.CounterInc(servicesctrl.MetricProduceFailureCountKey)
 }
 
-func (p *ProducerAXCChain) Success() {
+func (p *ProducerCChain) Success() {
 	_ = utils.Prometheus.CounterInc(p.metricSuccessCountKey)
 	_ = utils.Prometheus.CounterInc(servicesctrl.MetricProduceSuccessCountKey)
 }
 
-func (p *ProducerAXCChain) Listen() error {
+func (p *ProducerCChain) Listen() error {
 	p.sc.Log.Info("Started worker manager for cchain")
 	defer p.sc.Log.Info("Exiting worker manager for cchain")
 
@@ -344,7 +344,7 @@ func CChainNotReady(err error) bool {
 
 // runProcessor starts the processing loop for the backend and closes it when
 // finished
-func (p *ProducerAXCChain) runProcessor() error {
+func (p *ProducerCChain) runProcessor() error {
 	if p.runningControl.IsStopped() {
 		p.sc.Log.Info("Not starting worker for cchain because we're stopping")
 		return nil
@@ -385,7 +385,7 @@ func (p *ProducerAXCChain) runProcessor() error {
 	}
 
 	for icnt := 0; icnt < maxWorkers; icnt++ {
-		cl, err := modelsc.NewClient(p.conf.Axia + "/ext/bc/C/rpc")
+		cl, err := modelsc.NewClient(p.conf.AvalancheGO + "/ext/bc/C/rpc")
 		if err != nil {
 			return err
 		}
@@ -460,7 +460,7 @@ type localBlockObject struct {
 	time           time.Time
 }
 
-func (p *ProducerAXCChain) processWork(conns *utils.Connections, localBlock *localBlockObject) error {
+func (p *ProducerCChain) processWork(conns *utils.Connections, localBlock *localBlockObject) error {
 	cblk, err := modelsc.New(localBlock.blockContainer.Block)
 	if err != nil {
 		return err
@@ -480,7 +480,7 @@ func (p *ProducerAXCChain) processWork(conns *utils.Connections, localBlock *loc
 
 		txPool := &db.TxPool{
 			NetworkID:     p.conf.NetworkID,
-			ChainID:       p.conf.AXCchainID,
+			ChainID:       p.conf.CchainID,
 			MsgKey:        id.String(),
 			Serialization: txTransactionTracesBits,
 			Processed:     0,
@@ -511,7 +511,7 @@ func (p *ProducerAXCChain) processWork(conns *utils.Connections, localBlock *loc
 
 		txPool := &db.TxPool{
 			NetworkID:     p.conf.NetworkID,
-			ChainID:       p.conf.AXCchainID,
+			ChainID:       p.conf.CchainID,
 			MsgKey:        id.String(),
 			Serialization: logBits,
 			Processed:     0,
@@ -540,7 +540,7 @@ func (p *ProducerAXCChain) processWork(conns *utils.Connections, localBlock *loc
 
 	txPool := &db.TxPool{
 		NetworkID:     p.conf.NetworkID,
-		ChainID:       p.conf.AXCchainID,
+		ChainID:       p.conf.CchainID,
 		MsgKey:        id.String(),
 		Serialization: block,
 		Processed:     0,
@@ -560,11 +560,11 @@ func (p *ProducerAXCChain) processWork(conns *utils.Connections, localBlock *loc
 }
 
 type blockWorkContainer struct {
-	errs        *axiaUtils.AtomicInterface
+	errs        *avalancheGoUtils.AtomicInterface
 	blockNumber *big.Int
 }
 
-func (p *ProducerAXCChain) blockProcessor(pc *producerCChainContainer, client *modelsc.Client, conns *utils.Connections, wg *sync.WaitGroup) {
+func (p *ProducerCChain) blockProcessor(pc *producerCChainContainer, client *modelsc.Client, conns *utils.Connections, wg *sync.WaitGroup) {
 	defer func() {
 		wg.Done()
 		_ = conns.Close()

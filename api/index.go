@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package api
@@ -12,42 +12,42 @@ import (
 
 const (
 	AVMName     = "avm"
-	SwapChainAlias = "swap"
+	XChainAlias = "x"
 	PVMName     = "pvm"
-	CoreChainAlias = "core"
+	PChainAlias = "p"
 )
 
-func newIndexResponse(networkID uint32, swapChainID ids.ID, axcAssetID ids.ID) ([]byte, error) {
+func newIndexResponse(networkID uint32, xChainID ids.ID, avaxAssetID ids.ID) ([]byte, error) {
 	return json.Marshal(&struct {
 		NetworkID uint32                      `json:"network_id"`
 		Chains    map[string]models.ChainInfo `json:"chains"`
 	}{
 		NetworkID: networkID,
 		Chains: map[string]models.ChainInfo{
-			swapChainID.String(): {
+			xChainID.String(): {
 				VM:          AVMName,
-				Alias:       SwapChainAlias,
+				Alias:       XChainAlias,
 				NetworkID:   networkID,
-				AXCAssetID: models.StringID(axcAssetID.String()),
-				ID:          models.StringID(swapChainID.String()),
+				AVAXAssetID: models.StringID(avaxAssetID.String()),
+				ID:          models.StringID(xChainID.String()),
 			},
 			ids.Empty.String(): {
 				VM:          PVMName,
-				Alias:       CoreChainAlias,
+				Alias:       PChainAlias,
 				NetworkID:   networkID,
-				AXCAssetID: models.StringID(axcAssetID.String()),
+				AVAXAssetID: models.StringID(avaxAssetID.String()),
 				ID:          models.StringID(ids.Empty.String()),
 			},
 		},
 	})
 }
 
-func newLegacyIndexResponse(networkID uint32, swapChainID ids.ID, axcAssetID ids.ID) ([]byte, error) {
+func newLegacyIndexResponse(networkID uint32, xChainID ids.ID, avaxAssetID ids.ID) ([]byte, error) {
 	return json.Marshal(&models.ChainInfo{
 		VM:          AVMName,
 		NetworkID:   networkID,
-		Alias:       SwapChainAlias,
-		AXCAssetID: models.StringID(axcAssetID.String()),
-		ID:          models.StringID(swapChainID.String()),
+		Alias:       XChainAlias,
+		AVAXAssetID: models.StringID(avaxAssetID.String()),
+		ID:          models.StringID(xChainID.String()),
 	})
 }

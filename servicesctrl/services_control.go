@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package servicesctrl
@@ -42,7 +42,7 @@ type Control struct {
 	IsAccumulateBalanceReader  bool
 	IsDisableBootstrap         bool
 	IsAggregateCache           bool
-	IsAXCChainIndex              bool
+	IsCChainIndex              bool
 	IndexedList                utils.IndexedList
 	LocalTxPool                chan *LocalTxPoolJob
 }
@@ -71,8 +71,8 @@ func (s *Control) Init(networkID uint32) error {
 	if _, ok := s.Features["aggregate_cache"]; ok {
 		s.IsAggregateCache = true
 	}
-	if _, ok := s.Features["axcchain_index"]; ok {
-		s.IsAXCChainIndex = true
+	if _, ok := s.Features["cchain_index"]; ok {
+		s.IsCChainIndex = true
 	}
 	var err error
 	s.GenesisContainer, err = utils.NewGenesisContainer(networkID)

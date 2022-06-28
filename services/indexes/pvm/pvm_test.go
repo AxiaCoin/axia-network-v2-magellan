@@ -12,14 +12,14 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 var (
-	testSwapChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
+	testXChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
 )
 
 func TestBootstrap(t *testing.T) {
@@ -47,14 +47,14 @@ func TestBootstrap(t *testing.T) {
 	}
 }
 
-func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connections, *Writer, *axc.Reader, func()) {
+func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connections, *Writer, *avax.Reader, func()) {
 	logConf := logging.DefaultConfig
 
 	conf := cfg.Services{
 		Logging: logConf,
 		DB: &cfg.DB{
 			Driver: "mysql",
-			DSN:    "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true",
+			DSN:    "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true",
 		},
 	}
 
@@ -71,14 +71,14 @@ func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connec
 	}
 
 	cmap := make(map[string]services.Consumer)
-	reader, _ := axc.NewReader(networkID, conns, cmap, nil, sc)
+	reader, _ := avax.NewReader(networkID, conns, cmap, nil, sc)
 	return conns, writer, reader, func() {
 		_ = conns.Close()
 	}
 }
 
 func TestInsertTxInternal(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, 5, testSwapChainID)
+	conns, writer, _, closeFn := newTestIndex(t, 5, testXChainID)
 	defer closeFn()
 	ctx := context.Background()
 
@@ -105,7 +105,7 @@ func TestInsertTxInternal(t *testing.T) {
 }
 
 func TestInsertTxInternalRewards(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, 5, testSwapChainID)
+	conns, writer, _, closeFn := newTestIndex(t, 5, testXChainID)
 	defer closeFn()
 	ctx := context.Background()
 
@@ -135,7 +135,7 @@ func TestInsertTxInternalRewards(t *testing.T) {
 }
 
 func TestCommonBlock(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, 5, testSwapChainID)
+	conns, writer, _, closeFn := newTestIndex(t, 5, testXChainID)
 	defer closeFn()
 	ctx := context.Background()
 

@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package cfg
@@ -11,7 +11,7 @@ import (
 	"github.com/axiacoin/axia-network-v2/version"
 )
 
-const appName = "magellan"
+const appName = "ortelius"
 
 var (
 	ErrChainsConfigMustBeStringMap = errors.New("Chain config must a string map")
@@ -29,8 +29,8 @@ type Config struct {
 	MetricsListenAddr string `json:"metricsListenAddr"`
 	AdminListenAddr   string `json:"adminListenAddr"`
 	Features          map[string]struct{}
-	AXCchainID          string `json:"axcchainId"`
-	Axia       string `json:"axia"`
+	CchainID          string `json:"cchainId"`
+	AvalancheGO       string `json:"avalanchego"`
 	NodeInstance      string `json:"nodeInstance"`
 	AP5Activation     uint64
 }
@@ -122,8 +122,8 @@ func NewFromFile(filePath string) (*Config, error) {
 				RODSN:  dbrodsn,
 			},
 		},
-		AXCchainID:      v.GetString(keysStreamProducerAXCchainID),
-		Axia:   v.GetString(keysStreamProducerAxia),
+		CchainID:      v.GetString(keysStreamProducerCchainID),
+		AvalancheGO:   v.GetString(keysStreamProducerAvalanchego),
 		NodeInstance:  v.GetString(keysStreamProducerNodeInstance),
 		AP5Activation: uint64(ap5Activation),
 	}, nil

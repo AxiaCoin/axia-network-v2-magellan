@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package db
@@ -1091,7 +1091,7 @@ func (p *persist) InsertCvmBlocks(
 
 type CvmAddresses struct {
 	ID            string
-	Type          models.AXCChainType
+	Type          models.CChainType
 	Idx           uint64
 	TransactionID string
 	Address       string
@@ -1168,7 +1168,7 @@ func (p *persist) InsertCvmAddresses(
 type CvmTransactions struct {
 	ID            string
 	TransactionID string
-	Type          models.AXCChainType
+	Type          models.CChainType
 	BlockchainID  string
 	Block         string
 	CreatedAt     time.Time
@@ -2482,7 +2482,7 @@ type PvmProposer struct {
 	ParentID      string
 	BlkID         string
 	ProposerBlkID string
-	CoreChainHeight  uint64
+	PChainHeight  uint64
 	Proposer      string
 	TimeStamp     time.Time
 	CreatedAt     time.Time
@@ -2521,7 +2521,7 @@ func (p *persist) InsertPvmProposer(
 		Pair("id", v.ID).
 		Pair("parent_id", v.ParentID).
 		Pair("blk_id", v.BlkID).
-		Pair("p_chain_height", v.CoreChainHeight).
+		Pair("p_chain_height", v.PChainHeight).
 		Pair("proposer", v.Proposer).
 		Pair("time_stamp", v.TimeStamp).
 		Pair("created_at", v.CreatedAt).
@@ -2535,7 +2535,7 @@ func (p *persist) InsertPvmProposer(
 			Update(TablePvmProposer).
 			Set("parent_id", v.ParentID).
 			Set("blk_id", v.BlkID).
-			Set("p_chain_height", v.CoreChainHeight).
+			Set("p_chain_height", v.PChainHeight).
 			Set("proposer", v.Proposer).
 			Set("time_stamp", v.TimeStamp).
 			Set("created_at", v.CreatedAt).

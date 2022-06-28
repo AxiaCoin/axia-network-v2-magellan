@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package db
@@ -14,7 +14,7 @@ import (
 )
 
 const TestDB = "mysql"
-const TestDSN = "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true"
+const TestDSN = "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true"
 
 func TestTransaction(t *testing.T) {
 	p := NewPersist()
@@ -575,7 +575,7 @@ func TestCvmAddresses(t *testing.T) {
 
 	v := &CvmAddresses{}
 	v.ID = "id1"
-	v.Type = models.AXCChainIn
+	v.Type = models.CChainIn
 	v.Idx = 1
 	v.TransactionID = "tid1"
 	v.Address = "addr1"
@@ -604,7 +604,7 @@ func TestCvmAddresses(t *testing.T) {
 		t.Fatal("compare fail")
 	}
 
-	v.Type = models.AXCchainOut
+	v.Type = models.CchainOut
 	v.Idx = 2
 	v.TransactionID = "tid2"
 	v.Address = "addr2"
@@ -638,7 +638,7 @@ func TestCvmTransactions(t *testing.T) {
 	v := &CvmTransactions{}
 	v.ID = "id1"
 	v.TransactionID = "trid1"
-	v.Type = models.AXCChainIn
+	v.Type = models.CChainIn
 	v.BlockchainID = "bid1"
 	v.Block = "1"
 	v.CreatedAt = tm
@@ -670,7 +670,7 @@ func TestCvmTransactions(t *testing.T) {
 
 	txtime2 := time.Now().UTC().Truncate(1 * time.Second).Add(-1 * time.Hour)
 
-	v.Type = models.AXCchainOut
+	v.Type = models.CchainOut
 	v.TransactionID = "trid2"
 	v.BlockchainID = "bid2"
 	v.Block = "2"
@@ -1672,7 +1672,7 @@ func TestPvmProposer(t *testing.T) {
 	v.ParentID = "pid"
 	v.BlkID = "blk"
 	v.ProposerBlkID = "oblk"
-	v.CoreChainHeight = 1
+	v.PChainHeight = 1
 	v.Proposer = "proposer"
 	v.TimeStamp = tm
 	v.CreatedAt = tm
@@ -1700,7 +1700,7 @@ func TestPvmProposer(t *testing.T) {
 	v.ParentID = "pid2"
 	v.BlkID = "blk2"
 	v.ProposerBlkID = "oblk2"
-	v.CoreChainHeight = 2
+	v.PChainHeight = 2
 	v.Proposer = "proposer2"
 	v.TimeStamp = tm
 	v.CreatedAt = tm

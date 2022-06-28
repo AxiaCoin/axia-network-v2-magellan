@@ -8,12 +8,12 @@ import (
 	"github.com/axiacoin/axia-network-v2/api"
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/utils/formatting"
-	axiaAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	avalancheGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
@@ -22,8 +22,8 @@ type Handler struct {
 	client      platformvm.Client
 	conns       *utils.Connections
 	perist      db.Persist
-	axcAssetID ids.ID
-	writer      *axc.Writer
+	avaxAssetID ids.ID
+	writer      *avax.Writer
 	cid         ids.ID
 	doneCh      chan struct{}
 }
@@ -52,13 +52,13 @@ func (r *Handler) runTicker(sc *servicesctrl.Control, conns *utils.Connections) 
 	r.doneCh = make(chan struct{}, 1)
 
 	r.conns = conns
-	r.client = platformvm.NewClient(sc.ServicesCfg.Axia)
+	r.client = platformvm.NewClient(sc.ServicesCfg.AvalancheGO)
 	r.perist = db.NewPersist()
 
-	r.axcAssetID = sc.GenesisContainer.AxcAssetID
+	r.avaxAssetID = sc.GenesisContainer.AvaxAssetID
 
 	r.cid = ids.Empty
-	r.writer = axc.NewWriter(r.cid.String(), r.axcAssetID)
+	r.writer = avax.NewWriter(r.cid.String(), r.avaxAssetID)
 
 	defer func() {
 		ticker.Stop()
@@ -161,7 +161,7 @@ func (r *Handler) processRewardUtxos(rewardsUtxos [][]byte, createdAt time.Time)
 	ctx := context.Background()
 
 	for _, reawrdUtxo := range rewardsUtxos {
-		var utxo *axiaAxc.UTXO
+		var utxo *avalancheGoAvax.UTXO
 		_, err = platformvm.Codec.Unmarshal(reawrdUtxo, &utxo)
 		if err != nil {
 			return err

@@ -1,4 +1,4 @@
-package axc
+package avax
 
 import (
 	"context"
@@ -240,7 +240,7 @@ func (r *Reader) listTxs(
 	return txs, false, nil
 }
 
-func (r *Reader) ListTransactions(ctx context.Context, p *params.ListTransactionsParams, axcAssetID ids.ID) (*models.TransactionList, error) {
+func (r *Reader) ListTransactions(ctx context.Context, p *params.ListTransactionsParams, avaxAssetID ids.ID) (*models.TransactionList, error) {
 	dbRunner, err := r.conns.DB().NewSession("get_transactions", cfg.RequestTimeout)
 	if err != nil {
 		return nil, err
@@ -252,7 +252,7 @@ func (r *Reader) ListTransactions(ctx context.Context, p *params.ListTransaction
 	}
 
 	if !dressed {
-		if err := dressTransactions(ctx, dbRunner, txs, axcAssetID, p.ListParams.ID, p.DisableGenesis); err != nil {
+		if err := dressTransactions(ctx, dbRunner, txs, avaxAssetID, p.ListParams.ID, p.DisableGenesis); err != nil {
 			return nil, err
 		}
 	}
@@ -340,7 +340,7 @@ func newPvmProposerModel(pvmProposer db.PvmProposer) *models.PvmProposerModel {
 	return &models.PvmProposerModel{
 		ID:           models.StringID(pvmProposer.ID),
 		ParentID:     models.StringID(pvmProposer.ParentID),
-		CoreChainHeight: pvmProposer.CoreChainHeight,
+		PChainHeight: pvmProposer.PChainHeight,
 		Proposer:     models.StringID(pvmProposer.Proposer),
 		TimeStamp:    pvmProposer.TimeStamp,
 	}
@@ -350,7 +350,7 @@ func dressTransactions(
 	ctx context.Context,
 	dbRunner dbr.SessionRunner,
 	txs []*models.Transaction,
-	axcAssetID ids.ID,
+	avaxAssetID ids.ID,
 	txID *ids.ID,
 	disableGenesis bool,
 ) error {
@@ -481,7 +481,7 @@ func dressTransactions(
 		return err
 	}
 
-	dressTransactionsTx(txs, disableGenesis, txID, axcAssetID, inputsMap, outputsMap, inputTotalsMap, outputTotalsMap, rewardsTypesMap, cvmin, cvmout)
+	dressTransactionsTx(txs, disableGenesis, txID, avaxAssetID, inputsMap, outputsMap, inputTotalsMap, outputTotalsMap, rewardsTypesMap, cvmin, cvmout)
 	return nil
 }
 
@@ -489,7 +489,7 @@ func dressTransactionsTx(
 	txs []*models.Transaction,
 	disableGenesis bool,
 	txID *ids.ID,
-	axcAssetID ids.ID,
+	avaxAssetID ids.ID,
 	inputsMap map[models.StringID]map[models.StringID]*models.Input,
 	outputsMap map[models.StringID]map[models.StringID]*models.Output,
 	inputTotalsMap map[models.StringID]map[models.StringID]*big.Int,
@@ -500,7 +500,7 @@ func dressTransactionsTx(
 ) {
 	// Add the data we've built up for each transaction
 	for _, tx := range txs {
-		if disableGenesis && (txID == nil && string(tx.ID) == axcAssetID.String()) {
+		if disableGenesis && (txID == nil && string(tx.ID) == avaxAssetID.String()) {
 			continue
 		}
 		if inputs, ok := inputsMap[tx.ID]; ok {
@@ -662,9 +662,9 @@ func collectCvmTransactions(ctx context.Context, dbRunner dbr.SessionRunner, txI
 			outs[a.TransactionID] = make([]models.Output, 0)
 		}
 		switch a.Type {
-		case models.AXCChainIn:
+		case models.CChainIn:
 			ins[a.TransactionID] = append(ins[a.TransactionID], mapOutput(a))
-		case models.AXCchainOut:
+		case models.CchainOut:
 			outs[a.TransactionID] = append(outs[a.TransactionID], mapOutput(a))
 		}
 	}
@@ -682,9 +682,9 @@ func mapOutput(a models.CvmOutput) models.Output {
 	o.ChainID = a.ChainID
 	o.CreatedAt = a.CreatedAt
 	switch a.TransactionType {
-	case models.AXCChainExport:
+	case models.CChainExport:
 		o.OutputType = models.OutputTypesAtomicExportTx
-	case models.AXCChainImport:
+	case models.CChainImport:
 		o.OutputType = models.OutputTypesAtomicImportTx
 	}
 	o.CAddresses = []string{a.Address}

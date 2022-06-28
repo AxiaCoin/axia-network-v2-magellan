@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package api
@@ -13,7 +13,7 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
@@ -26,15 +26,15 @@ var (
 	ErrCacheableFnFailed = errors.New("failed to load resource")
 )
 
-// Context is the base context for APIs in the magellan systems
+// Context is the base context for APIs in the ortelius systems
 type Context struct {
 	sc *servicesctrl.Control
 
 	networkID   uint32
-	axcAssetID ids.ID
+	avaxAssetID ids.ID
 
 	delayCache  *utils.DelayCache
-	axcReader  *axc.Reader
+	avaxReader  *avax.Reader
 	connections *utils.Connections
 }
 
@@ -118,11 +118,11 @@ func (*Context) notFoundHandler(w web.ResponseWriter, r *web.Request) {
 }
 
 func (c *Context) cacheKeyForID(name string, id string) []string {
-	return []string{"axc", name, params.CacheKey("id", id)}
+	return []string{"avax", name, params.CacheKey("id", id)}
 }
 
 func (c *Context) cacheKeyForParams(name string, p params.Param) []string {
-	return append([]string{"axc", name}, p.CacheKey()...)
+	return append([]string{"avax", name}, p.CacheKey()...)
 }
 
 func newContextSetter(sc *servicesctrl.Control, networkID uint32, connections *utils.Connections, delayCache *utils.DelayCache) func(*Context, web.ResponseWriter, *web.Request, web.NextMiddlewareFunc) {

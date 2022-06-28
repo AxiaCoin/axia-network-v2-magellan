@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package api
@@ -119,7 +119,7 @@ func AddV2Routes(ctx *Context, router *web.Router, path string, indexBytes []byt
 }
 
 //
-// AXC
+// AVAX
 //
 
 func (c *V2Context) Search(w web.ResponseWriter, r *web.Request) {
@@ -142,7 +142,7 @@ func (c *V2Context) Search(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForParams("search", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.Search(ctx, p, c.axcAssetID)
+			return c.avaxReader.Search(ctx, p, c.avaxAssetID)
 		},
 	})
 }
@@ -167,7 +167,7 @@ func (c *V2Context) TxfeeAggregate(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForParams("aggregate_txfee", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.TxfeeAggregate(ctx, p)
+			return c.avaxReader.TxfeeAggregate(ctx, p)
 		},
 	})
 }
@@ -194,7 +194,7 @@ func (c *V2Context) Aggregate(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForParams("aggregate", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.Aggregate(ctx, p, nil)
+			return c.avaxReader.Aggregate(ctx, p, nil)
 		},
 	})
 }
@@ -227,7 +227,7 @@ func (c *V2Context) ListTransactions(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("list_transactions", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListTransactions(ctx, p, c.axcAssetID)
+			return c.avaxReader.ListTransactions(ctx, p, c.avaxAssetID)
 		},
 	})
 }
@@ -265,7 +265,7 @@ func (c *V2Context) ListTransactionsPost(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("list_transactions", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListTransactions(ctx, p, c.axcAssetID)
+			return c.avaxReader.ListTransactions(ctx, p, c.avaxAssetID)
 		},
 	})
 }
@@ -291,7 +291,7 @@ func (c *V2Context) GetTransaction(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForID("get_transaction", r.PathParams["id"]),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.GetTransaction(ctx, id, c.axcAssetID)
+			return c.avaxReader.GetTransaction(ctx, id, c.avaxAssetID)
 		},
 	})
 }
@@ -322,7 +322,7 @@ func (c *V2Context) ListCTransactions(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("list_ctransactions", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListCTransactions(ctx, p)
+			return c.avaxReader.ListCTransactions(ctx, p)
 		},
 	})
 }
@@ -351,7 +351,7 @@ func (c *V2Context) ListAddresses(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("list_addresses", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListAddresses(ctx, p)
+			return c.avaxReader.ListAddresses(ctx, p)
 		},
 	})
 }
@@ -386,7 +386,7 @@ func (c *V2Context) GetAddress(w web.ResponseWriter, r *web.Request) {
 		TTL: 1 * time.Second,
 		Key: c.cacheKeyForParams("get_address", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.GetAddress(ctx, p)
+			return c.avaxReader.GetAddress(ctx, p)
 		},
 	})
 }
@@ -412,7 +412,7 @@ func (c *V2Context) AddressChains(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("address_chains", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.AddressChains(ctx, p)
+			return c.avaxReader.AddressChains(ctx, p)
 		},
 	})
 }
@@ -443,7 +443,7 @@ func (c *V2Context) AddressChainsPost(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("address_chains", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.AddressChains(ctx, p)
+			return c.avaxReader.AddressChains(ctx, p)
 		},
 	})
 }
@@ -469,7 +469,7 @@ func (c *V2Context) ListOutputs(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("list_outputs", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListOutputs(ctx, p)
+			return c.avaxReader.ListOutputs(ctx, p)
 		},
 	})
 }
@@ -492,7 +492,7 @@ func (c *V2Context) GetOutput(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForID("get_output", r.PathParams["id"]),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.GetOutput(ctx, id)
+			return c.avaxReader.GetOutput(ctx, id)
 		},
 	})
 }
@@ -520,7 +520,7 @@ func (c *V2Context) ListAssets(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForParams("list_assets", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListAssets(ctx, p, nil)
+			return c.avaxReader.ListAssets(ctx, p, nil)
 		},
 	})
 }
@@ -547,7 +547,7 @@ func (c *V2Context) GetAsset(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForParams("get_asset", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.GetAsset(ctx, p, id)
+			return c.avaxReader.GetAsset(ctx, p, id)
 		},
 	})
 }
@@ -574,7 +574,7 @@ func (c *V2Context) ListBlocks(w web.ResponseWriter, r *web.Request) {
 		TTL: 5 * time.Second,
 		Key: c.cacheKeyForParams("list_blocks", p),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.ListBlocks(ctx, p)
+			return c.avaxReader.ListBlocks(ctx, p)
 		},
 	})
 }
@@ -597,7 +597,7 @@ func (c *V2Context) GetBlock(w web.ResponseWriter, r *web.Request) {
 	c.WriteCacheable(w, utils.Cacheable{
 		Key: c.cacheKeyForID("get_block", r.PathParams["id"]),
 		CacheableFn: func(ctx context.Context) (interface{}, error) {
-			return c.axcReader.GetBlock(ctx, id)
+			return c.avaxReader.GetBlock(ctx, id)
 		},
 	})
 }
@@ -613,7 +613,7 @@ func (c *V2Context) ATxData(w web.ResponseWriter, r *web.Request) {
 	id := r.PathParams["id"]
 	p.ID = id
 
-	b, err := c.axcReader.ATxDATA(ctx, p)
+	b, err := c.avaxReader.ATxDATA(ctx, p)
 	if err != nil {
 		c.WriteErr(w, 400, err)
 		return
@@ -632,7 +632,7 @@ func (c *V2Context) PTxData(w web.ResponseWriter, r *web.Request) {
 	id := r.PathParams["id"]
 	p.ID = id
 
-	b, err := c.axcReader.PTxDATA(ctx, p)
+	b, err := c.avaxReader.PTxDATA(ctx, p)
 	if err != nil {
 		c.WriteErr(w, 400, err)
 		return
@@ -651,7 +651,7 @@ func (c *V2Context) CTxData(w web.ResponseWriter, r *web.Request) {
 	id := r.PathParams["id"]
 	p.ID = id
 
-	b, err := c.axcReader.CTxDATA(ctx, p)
+	b, err := c.avaxReader.CTxDATA(ctx, p)
 	if err != nil {
 		c.WriteErr(w, 400, err)
 		return
@@ -670,7 +670,7 @@ func (c *V2Context) ETxData(w web.ResponseWriter, r *web.Request) {
 	id := r.PathParams["id"]
 	p.ID = id
 
-	b, err := c.axcReader.ETxDATA(ctx, p)
+	b, err := c.avaxReader.ETxDATA(ctx, p)
 	if err != nil {
 		c.WriteErr(w, 400, err)
 		return
@@ -688,7 +688,7 @@ func (c *V2Context) RawTransaction(w web.ResponseWriter, r *web.Request) {
 		return
 	}
 
-	rawdata, err := c.axcReader.RawTransaction(ctx, id)
+	rawdata, err := c.avaxReader.RawTransaction(ctx, id)
 	if err != nil {
 		c.WriteErr(w, 400, err)
 		return
@@ -704,7 +704,7 @@ func (c *V2Context) RawTransaction(w web.ResponseWriter, r *web.Request) {
 }
 
 func (c *V2Context) CacheAddressCounts(w web.ResponseWriter, r *web.Request) {
-	res := c.axcReader.CacheAddressCounts()
+	res := c.avaxReader.CacheAddressCounts()
 	b, err := json.Marshal(res)
 	if err != nil {
 		c.WriteErr(w, 400, err)
@@ -715,7 +715,7 @@ func (c *V2Context) CacheAddressCounts(w web.ResponseWriter, r *web.Request) {
 }
 
 func (c *V2Context) CacheTxCounts(w web.ResponseWriter, r *web.Request) {
-	res := c.axcReader.CacheTxCounts()
+	res := c.avaxReader.CacheTxCounts()
 	b, err := json.Marshal(res)
 	if err != nil {
 		c.WriteErr(w, 400, err)
@@ -726,7 +726,7 @@ func (c *V2Context) CacheTxCounts(w web.ResponseWriter, r *web.Request) {
 }
 
 func (c *V2Context) CacheAssets(w web.ResponseWriter, r *web.Request) {
-	res := c.axcReader.CacheAssets()
+	res := c.avaxReader.CacheAssets()
 	b, err := json.Marshal(res)
 	if err != nil {
 		c.WriteErr(w, 400, err)
@@ -737,7 +737,7 @@ func (c *V2Context) CacheAssets(w web.ResponseWriter, r *web.Request) {
 }
 
 func (c *V2Context) CacheAssetAggregates(w web.ResponseWriter, r *web.Request) {
-	res := c.axcReader.CacheAssetAggregates()
+	res := c.avaxReader.CacheAssetAggregates()
 	b, err := json.Marshal(res)
 	if err != nil {
 		c.WriteErr(w, 400, err)
@@ -749,7 +749,7 @@ func (c *V2Context) CacheAssetAggregates(w web.ResponseWriter, r *web.Request) {
 
 func (c *V2Context) CacheAggregates(w web.ResponseWriter, r *web.Request) {
 	id := r.PathParams["id"]
-	res := c.axcReader.CacheAggregates(id)
+	res := c.avaxReader.CacheAggregates(id)
 	b, err := json.Marshal(res)
 	if err != nil {
 		c.WriteErr(w, 400, err)

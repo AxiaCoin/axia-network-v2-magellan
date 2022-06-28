@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package cvm
@@ -24,7 +24,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/modelsc"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	avaxIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/ethereum/go-ethereum/common"
 )
@@ -35,15 +35,15 @@ var (
 
 type Writer struct {
 	networkID   uint32
-	axcAssetID ids.ID
+	avaxAssetID ids.ID
 
 	codec         codec.Manager
-	axc          *axcIndexer.Writer
+	avax          *avaxIndexer.Writer
 	ap5Activation uint64
 }
 
 func NewWriter(networkID uint32, chainID string) (*Writer, error) {
-	_, axcAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
+	_, avaxAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
 	if err != nil {
 		return nil, err
 	}
@@ -52,9 +52,9 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 
 	return &Writer{
 		networkID:     networkID,
-		axcAssetID:   axcAssetID,
+		avaxAssetID:   avaxAssetID,
 		codec:         evm.Codec,
-		axc:          axcIndexer.NewWriter(chainID, axcAssetID),
+		avax:          avaxIndexer.NewWriter(chainID, avaxAssetID),
 		ap5Activation: uint64(ap5Activation),
 	}, nil
 }
@@ -228,14 +228,14 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 		return err
 	}
 
-	var typ models.AXCChainType = 0
+	var typ models.CChainType = 0
 	var blockchainID string
 	for i, atomicTX := range atomicTXs {
 		txID := atomicTX.ID()
 		txIDs[i] = txID.String()
 		switch atx := atomicTX.UnsignedAtomicTx.(type) {
 		case *evm.UnsignedExportTx:
-			typ = models.AXCChainExport
+			typ = models.CChainExport
 			blockchainID = atx.BlockchainID.String()
 			err = w.indexExportTx(ctx, txID, atx, blockBytes)
 			if err != nil {
@@ -247,7 +247,7 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 				return err
 			}
 
-			typ = models.AXCChainImport
+			typ = models.CChainImport
 			blockchainID = atx.BlockchainID.String()
 			err = w.indexImportTx(ctx, txID, atx, atomicTX.Creds, blockBytes, unsignedBytes)
 			if err != nil {
@@ -319,20 +319,20 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 func (w *Writer) indexTransaction(
 	ctx services.ConsumerCtx,
 	id ids.ID,
-	typ models.AXCChainType,
+	typ models.CChainType,
 	blockChainID ids.ID,
 	txFee uint64,
 	unsignedBytes []byte,
 ) error {
 	avmTxtype := ""
 	switch typ {
-	case models.AXCChainImport:
+	case models.CChainImport:
 		avmTxtype = "atomic_import_tx"
-	case models.AXCChainExport:
+	case models.CChainExport:
 		avmTxtype = "atomic_export_tx"
 	}
 
-	return w.axc.InsertTransactionBase(
+	return w.avax.InsertTransactionBase(
 		ctx,
 		id,
 		blockChainID.String(),
@@ -346,7 +346,7 @@ func (w *Writer) indexTransaction(
 }
 
 func (w *Writer) insertAddress(
-	typ models.AXCChainType,
+	typ models.CChainType,
 	ctx services.ConsumerCtx,
 	idx uint64,
 	id ids.ID,
@@ -377,11 +377,11 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalin uint64
 	for icnt, in := range tx.Ins {
 		icntval := uint64(icnt)
-		err = w.insertAddress(models.AXCChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
+		err = w.insertAddress(models.CChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
 		if err != nil {
 			return err
 		}
-		if in.AssetID == w.axcAssetID {
+		if in.AssetID == w.avaxAssetID {
 			totalin, err = math.Add64(totalin, in.Amount)
 			if err != nil {
 				return err
@@ -392,14 +392,14 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalout uint64
 	var idx uint32
 	for _, out := range tx.ExportedOutputs {
-		totalout, err = w.axc.InsertTransactionOuts(idx, ctx, totalout, out, txID, tx.DestinationChain.String(), false, false)
+		totalout, err = w.avax.InsertTransactionOuts(idx, ctx, totalout, out, txID, tx.DestinationChain.String(), false, false)
 		if err != nil {
 			return err
 		}
 		idx++
 	}
 
-	return w.indexTransaction(ctx, txID, models.AXCChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.CChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
 }
 
 func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.UnsignedImportTx, creds []verify.Verifiable, blockBytes []byte, unsignedBytes []byte) error {
@@ -408,11 +408,11 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalout uint64
 	for icnt, out := range tx.Outs {
 		icntval := uint64(icnt)
-		err = w.insertAddress(models.AXCchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
+		err = w.insertAddress(models.CchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
 		if err != nil {
 			return err
 		}
-		if out.AssetID == w.axcAssetID {
+		if out.AssetID == w.avaxAssetID {
 			totalout, err = math.Add64(totalout, out.Amount)
 			if err != nil {
 				return err
@@ -422,11 +422,11 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 
 	var totalin uint64
 	for inidx, in := range tx.ImportedInputs {
-		totalin, err = w.axc.InsertTransactionIns(inidx, ctx, totalin, in, txID, creds, unsignedBytes, tx.SourceChain.String())
+		totalin, err = w.avax.InsertTransactionIns(inidx, ctx, totalin, in, txID, creds, unsignedBytes, tx.SourceChain.String())
 		if err != nil {
 			return err
 		}
 	}
 
-	return w.indexTransaction(ctx, txID, models.AXCChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.CChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
 }

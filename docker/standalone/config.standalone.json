@@ -1,12 +1,12 @@
 {
   "networkID": 5,
-  "logDirectory": "/var/log/magellan",
+  "logDirectory": "/var/log/ortelius",
   "listenAddr": ":8080",
   "features": [
   ],
-  "axia": "http://axia:9650",
+  "avalanchego": "http://avalanche:9650",
   "nodeInstance": "default",
-  "axcchainId": "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
+  "cchainId": "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "id": "11111111111111111111111111111111LpoYY",
@@ -19,7 +19,7 @@
   },
   "services": {
     "db": {
-      "dsn": "root:password@tcp(mysql:3306)/magellan",
+      "dsn": "root:password@tcp(mysql:3306)/ortelius",
       "driver": "mysql"
     }
   }

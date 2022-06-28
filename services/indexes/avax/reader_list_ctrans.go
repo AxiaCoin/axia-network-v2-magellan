@@ -1,4 +1,4 @@
-package axc
+package avax
 
 import (
 	"context"

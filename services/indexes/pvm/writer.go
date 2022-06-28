@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package pvm
@@ -19,7 +19,7 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/utils/wrappers"
-	"github.com/axiacoin/axia-network-v2/vms/components/axc"
+	"github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/proposervm/block"
@@ -28,7 +28,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	avaxIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/palantir/stacktrace"
 )
@@ -44,15 +44,15 @@ var (
 type Writer struct {
 	chainID     string
 	networkID   uint32
-	axcAssetID ids.ID
+	avaxAssetID ids.ID
 
 	codec codec.Manager
-	axc  *axcIndexer.Writer
+	avax  *avaxIndexer.Writer
 	ctx   *snow.Context
 }
 
 func NewWriter(networkID uint32, chainID string) (*Writer, error) {
-	_, axcAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
+	_, avaxAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err = bcLookup.Alias(id, "Core"); err != nil {
+	if err = bcLookup.Alias(id, "P"); err != nil {
 		return nil, err
 	}
 
@@ -77,9 +77,9 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	return &Writer{
 		chainID:     chainID,
 		networkID:   networkID,
-		axcAssetID: axcAssetID,
+		avaxAssetID: avaxAssetID,
 		codec:       platformvm.Codec,
-		axc:        axcIndexer.NewWriter(chainID, axcAssetID),
+		avax:        avaxIndexer.NewWriter(chainID, avaxAssetID),
 		ctx:         ctx,
 	}, nil
 }
@@ -96,7 +96,7 @@ func (w *Writer) initCtxPtx(p *platformvm.Tx) {
 			utxo.Out.InitCtx(w.ctx)
 		}
 		castTx.InitCtx(w.ctx)
-	case *platformvm.UnsignedAddAllychainValidatorTx:
+	case *platformvm.UnsignedAddSubnetValidatorTx:
 		for _, utxo := range castTx.UTXOs() {
 			utxo.Out.InitCtx(w.ctx)
 		}
@@ -109,7 +109,7 @@ func (w *Writer) initCtxPtx(p *platformvm.Tx) {
 			utxo.Out.InitCtx(w.ctx)
 		}
 		castTx.InitCtx(w.ctx)
-	case *platformvm.UnsignedCreateAllychainTx:
+	case *platformvm.UnsignedCreateSubnetTx:
 		for _, utxo := range castTx.UTXOs() {
 			utxo.Out.InitCtx(w.ctx)
 		}
@@ -162,7 +162,7 @@ func (w *Writer) initCtx(b platformvm.Block) {
 type PtxDataProposerModel struct {
 	ID           string    `json:"tx"`
 	ParentID     string    `json:"parentID"`
-	CoreChainHeight uint64    `json:"coreChainHeight"`
+	PChainHeight uint64    `json:"pChainHeight"`
 	Proposer     string    `json:"proposer"`
 	TimeStamp    time.Time `json:"timeStamp"`
 }
@@ -173,14 +173,14 @@ func NewPtxDataProposerModel(b block.Block) *PtxDataProposerModel {
 		return &PtxDataProposerModel{
 			ID:           properBlockDetail.ID().String(),
 			ParentID:     properBlockDetail.ParentID().String(),
-			CoreChainHeight: properBlockDetail.CoreChainHeight(),
+			PChainHeight: properBlockDetail.PChainHeight(),
 			Proposer:     properBlockDetail.Proposer().String(),
 			TimeStamp:    properBlockDetail.Timestamp(),
 		}
 	default:
 		return &PtxDataProposerModel{
 			ID:           properBlockDetail.ID().String(),
-			CoreChainHeight: 0,
+			PChainHeight: 0,
 			Proposer:     "",
 		}
 	}
@@ -295,7 +295,7 @@ func (w *Writer) Bootstrap(ctx context.Context, conns *utils.Connections, persis
 		default:
 		}
 
-		_, _, err = w.axc.ProcessStateOut(
+		_, _, err = w.avax.ProcessStateOut(
 			cCtx,
 			utxo.Out,
 			ChainID,
@@ -371,7 +371,7 @@ func (w *Writer) indexBlock(ctx services.ConsumerCtx, proposerblockBytes []byte)
 				ParentID:      properBlockDetail.ParentID().String(),
 				BlkID:         blkID.String(),
 				ProposerBlkID: proposerBlkID.String(),
-				CoreChainHeight:  properBlockDetail.CoreChainHeight(),
+				PChainHeight:  properBlockDetail.PChainHeight(),
 				Proposer:      properBlockDetail.Proposer().String(),
 				TimeStamp:     properBlockDetail.Timestamp(),
 				CreatedAt:     ctx.Time(),
@@ -382,7 +382,7 @@ func (w *Writer) indexBlock(ctx services.ConsumerCtx, proposerblockBytes []byte)
 				ParentID:      properBlockDetail.ParentID().String(),
 				BlkID:         blkID.String(),
 				ProposerBlkID: proposerBlkID.String(),
-				CoreChainHeight:  0,
+				PChainHeight:  0,
 				Proposer:      "",
 				TimeStamp:     ctx.Time(),
 				CreatedAt:     ctx.Time(),
@@ -453,18 +453,18 @@ func (w *Writer) indexCommonBlock(
 
 func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx platformvm.Tx, genesis bool) error {
 	var (
-		baseTx axc.BaseTx
+		baseTx avax.BaseTx
 		typ    models.TransactionType
 	)
 
-	var ins *axcIndexer.AddInsContainer
-	var outs *axcIndexer.AddOutsContainer
+	var ins *avaxIndexer.AddInsContainer
+	var outs *avaxIndexer.AddOutsContainer
 
 	var err error
 	switch castTx := tx.UnsignedTx.(type) {
 	case *platformvm.UnsignedAddValidatorTx:
 		baseTx = castTx.BaseTx.BaseTx
-		outs = &axcIndexer.AddOutsContainer{
+		outs = &avaxIndexer.AddOutsContainer{
 			Outs:    castTx.Stake,
 			Stake:   true,
 			ChainID: w.chainID,
@@ -484,16 +484,16 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 				return err
 			}
 		}
-	case *platformvm.UnsignedAddAllychainValidatorTx:
+	case *platformvm.UnsignedAddSubnetValidatorTx:
 		baseTx = castTx.BaseTx.BaseTx
-		typ = models.TransactionTypeAddAllychainValidator
+		typ = models.TransactionTypeAddSubnetValidator
 		err = w.InsertTransactionBlock(ctx, baseTx.ID(), blkID)
 		if err != nil {
 			return err
 		}
 	case *platformvm.UnsignedAddDelegatorTx:
 		baseTx = castTx.BaseTx.BaseTx
-		outs = &axcIndexer.AddOutsContainer{
+		outs = &avaxIndexer.AddOutsContainer{
 			Outs:    castTx.Stake,
 			Stake:   true,
 			ChainID: w.chainID,
@@ -513,9 +513,9 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 				return err
 			}
 		}
-	case *platformvm.UnsignedCreateAllychainTx:
+	case *platformvm.UnsignedCreateSubnetTx:
 		baseTx = castTx.BaseTx.BaseTx
-		typ = models.TransactionTypeCreateAllychain
+		typ = models.TransactionTypeCreateSubnet
 		err = w.InsertTransactionBlock(ctx, baseTx.ID(), blkID)
 		if err != nil {
 			return err
@@ -529,7 +529,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		}
 	case *platformvm.UnsignedImportTx:
 		baseTx = castTx.BaseTx.BaseTx
-		ins = &axcIndexer.AddInsContainer{
+		ins = &avaxIndexer.AddInsContainer{
 			Ins:     castTx.ImportedInputs,
 			ChainID: castTx.SourceChain.String(),
 		}
@@ -540,7 +540,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		}
 	case *platformvm.UnsignedExportTx:
 		baseTx = castTx.BaseTx.BaseTx
-		outs = &axcIndexer.AddOutsContainer{
+		outs = &avaxIndexer.AddOutsContainer{
 			Outs:    castTx.ExportedOutputs,
 			ChainID: castTx.DestinationChain.String(),
 		}
@@ -564,7 +564,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		return fmt.Errorf("unknown tx type %s", reflect.TypeOf(castTx))
 	}
 
-	return w.axc.InsertTransaction(
+	return w.avax.InsertTransaction(
 		ctx,
 		tx.Bytes(),
 		tx.UnsignedBytes(),
@@ -578,7 +578,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 	)
 }
 
-func (w *Writer) insertTransactionsRewardsOwners(ctx services.ConsumerCtx, rewardsOwner verify.Verifiable, baseTx axc.BaseTx, stakeOuts []*axc.TransferableOutput) error {
+func (w *Writer) insertTransactionsRewardsOwners(ctx services.ConsumerCtx, rewardsOwner verify.Verifiable, baseTx avax.BaseTx, stakeOuts []*avax.TransferableOutput) error {
 	var err error
 
 	owner, ok := rewardsOwner.(*secp256k1fx.OutputOwners)

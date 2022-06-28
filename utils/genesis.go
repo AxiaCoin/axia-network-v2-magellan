@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package utils
@@ -13,15 +13,15 @@ import (
 type GenesisContainer struct {
 	NetworkID       uint32
 	XChainGenesisTx *platformvm.Tx
-	SwapChainID        ids.ID
-	AxcAssetID     ids.ID
+	XChainID        ids.ID
+	AvaxAssetID     ids.ID
 	GenesisBytes    []byte
 }
 
 func NewGenesisContainer(networkID uint32) (*GenesisContainer, error) {
 	gc := &GenesisContainer{NetworkID: networkID}
 	var err error
-	gc.GenesisBytes, gc.AxcAssetID, err = genesis.FromConfig(genesis.GetConfig(gc.NetworkID))
+	gc.GenesisBytes, gc.AvaxAssetID, err = genesis.FromConfig(genesis.GetConfig(gc.NetworkID))
 	if err != nil {
 		return nil, err
 	}
@@ -31,6 +31,6 @@ func NewGenesisContainer(networkID uint32) (*GenesisContainer, error) {
 		return nil, err
 	}
 
-	gc.SwapChainID = gc.XChainGenesisTx.ID()
+	gc.XChainID = gc.XChainGenesisTx.ID()
 	return gc, nil
 }

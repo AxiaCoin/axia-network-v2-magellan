@@ -1,15 +1,15 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package models
 
-type AXCChainType uint16
+type CChainType uint16
 
 var (
-	AXCChainIn     AXCChainType = 1
-	AXCchainOut    AXCChainType = 2
-	AXCChainImport AXCChainType = 1
-	AXCChainExport AXCChainType = 2
+	CChainIn     CChainType = 1
+	CchainOut    CChainType = 2
+	CChainImport CChainType = 1
+	CChainExport CChainType = 2
 
 	OutputTypesSECP2556K1Transfer OutputType = 7
 	OutputTypesSECP2556K1Mint     OutputType = 6
@@ -30,10 +30,10 @@ var (
 	TransactionTypeAVMImport          TransactionType = 0x3
 	TransactionTypeAVMExport          TransactionType = 0x4
 	TransactionTypeAddValidator       TransactionType = 0xc
-	TransactionTypeAddAllychainValidator TransactionType = 0xd
+	TransactionTypeAddSubnetValidator TransactionType = 0xd
 	TransactionTypeAddDelegator       TransactionType = 0xe
 	TransactionTypeCreateChain        TransactionType = 0xf
-	TransactionTypeCreateAllychain       TransactionType = 0x10
+	TransactionTypeCreateSubnet       TransactionType = 0x10
 	TransactionTypePVMImport          TransactionType = 0x11
 	TransactionTypePVMExport          TransactionType = 0x12
 	TransactionTypeAdvanceTime        TransactionType = 0x13
@@ -71,14 +71,14 @@ func (t TransactionType) String() string {
 		// PVM
 	case TransactionTypeAddValidator:
 		return "add_validator"
-	case TransactionTypeAddAllychainValidator:
-		return "add_allychain_validator"
+	case TransactionTypeAddSubnetValidator:
+		return "add_subnet_validator"
 	case TransactionTypeAddDelegator:
 		return "add_delegator"
 	case TransactionTypeCreateChain:
 		return "create_chain"
-	case TransactionTypeCreateAllychain:
-		return "create_allychain"
+	case TransactionTypeCreateSubnet:
+		return "create_subnet"
 	case TransactionTypePVMImport:
 		return "pvm_import"
 	case TransactionTypePVMExport:

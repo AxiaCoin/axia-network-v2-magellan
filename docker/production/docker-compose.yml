@@ -1,17 +1,17 @@
 version: '3.5'
 volumes:
-  axia-ipcs:
+  avalanche-ipcs:
 services:
   mysql:
     image: "mysql:8.0.26"
     volumes:
-      - /var/lib/magellan/mysql:/var/lib/mysql
+      - /var/lib/ortelius/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: magellan
+      MYSQL_DATABASE: ortelius
     restart: on-failure
   migrate:
     image: "migrate/migrate:v4.14.1"
@@ -21,29 +21,29 @@ services:
       - mysql
     entrypoint: ["/bin/sh"]
     command: |
-      -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up; do
+      -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/ortelius" up; do
         sleep 1
       done'
     restart: on-failure
-  axia:
+  avalanche:
     env_file:
       - production.env
     image: "avaplatform/avalanchego:v1.7.10"
     command: /bin/sh -cx "exec /avalanchego/build/avalanchego
+      --config-file=/opt/config.json
       --network-id=$${NETWORKID}
-      --bootstrap-ips=$${IP} --bootstrap-ids=$${NODEID}
       "
     ports:
       - "9650:9650"
     volumes:
-      - /var/lib/magellan/axia:/var/lib/axia
-      - ./../axia_config.json:/opt/config.json
-      - ./../axia_chain_config:/opt/axia
-      - axia-ipcs:/tmp
+      - /var/lib/ortelius/avalanche:/var/lib/avalanche
+      - ./../avalanchego_config.json:/opt/config.json
+      - ./../avalanchego_chain_config:/opt/avalanchego
+      - avalanche-ipcs:/tmp
     depends_on:
       - indexer
     restart: always
-  indexer: &magellan-app
+  indexer: &ortelius-app
     image: "avaplatform/ortelius:v1.7.10"
     command: ["stream", "indexer", "-c", "/opt/config.json"]
     external_links:
@@ -52,11 +52,11 @@ services:
       - mysql
       - migrate
     volumes:
-      - axia-ipcs:/tmp
+      - avalanche-ipcs:/tmp
       - ./../config.json:/opt/config.json
     restart: on-failure
   api:
-    <<: *magellan-app
+    <<: *ortelius-app
     command: ["api", "-c", "/opt/config.json"]
     ports:
       - 8080:8080

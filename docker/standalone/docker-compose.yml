@@ -1,43 +1,43 @@
 version: '3'
 volumes:
-  axia-data:
-  axia-ipcs:
+  avalanche-data:
+  avalanche-ipcs:
 networks:
   services:
     external:
-      name: magellan_services
+      name: ortelius_services
 services:
-  axia:
+  avalanche:
     env_file:
       - standalone.env
-    image: "avaplatform/axia:v1.7.10"
-    command: /bin/sh -cx "exec /axia/build/axia
+    image: "avaplatform/avalanchego:v1.7.10"
+    command: /bin/sh -cx "exec /avalanchego/build/avalanchego
       --config-file=/opt/config.json
       --network-id=$${NETWORKID}
       "
     ports:
       - "9650:9650"
     volumes:
-      - axia-data:/var/lib/axia
-      - ./../axia_config.json:/opt/config.json
-      - ./../axia_chain_config:/opt/axia
-      - axia-ipcs:/tmp
+      - avalanche-data:/var/lib/avalanche
+      - ./../avalanchego_config.json:/opt/config.json
+      - ./../avalanchego_chain_config:/opt/avalanchego
+      - avalanche-ipcs:/tmp
     depends_on:
       - indexer
     restart: always
-  indexer: &magellan-app
-    image: "avaplatform/magellan:v1.7.10"
+  indexer: &ortelius-app
+    image: "avaplatform/ortelius:v1.7.10"
     command: ["stream", "indexer", "-c", "/opt/config.json"]
     networks:
       - services
     external_links:
       - mysql
     volumes:
-      - axia-ipcs:/tmp
+      - avalanche-ipcs:/tmp
       - ./config.standalone.json:/opt/config.json
     restart: on-failure
   api:
-    <<: *magellan-app
+    <<: *ortelius-app
     command: ["api", "-c", "/opt/config.json"]
     ports:
       - 8080:8080

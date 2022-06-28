@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package api
@@ -11,14 +11,14 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/stream/consumers"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/web"
 )
 
-// Server is an HTTP server configured with various magellan APIs
+// Server is an HTTP server configured with various ortelius APIs
 type Server struct {
 	sc     *servicesctrl.Control
 	server *http.Server
@@ -61,14 +61,14 @@ func (s *Server) Close() error {
 }
 
 func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
-	sc.Log.Info("Router chainID %s", sc.GenesisContainer.SwapChainID.String())
+	sc.Log.Info("Router chainID %s", sc.GenesisContainer.XChainID.String())
 
-	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AxcAssetID)
+	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.XChainID, sc.GenesisContainer.AvaxAssetID)
 	if err != nil {
 		return nil, err
 	}
 
-	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AxcAssetID)
+	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.XChainID, sc.GenesisContainer.AvaxAssetID)
 	if err != nil {
 		return nil, err
 	}
@@ -90,11 +90,11 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 		}
 		consumersmap[chid] = consumer
 	}
-	consumercchain, err := consumers.IndexerConsumerAXCChain(conf.NetworkID, conf.AXCchainID)
+	consumercchain, err := consumers.IndexerConsumerCChain(conf.NetworkID, conf.CchainID)
 	if err != nil {
 		return nil, err
 	}
-	axcReader, err := axc.NewReader(conf.NetworkID, connections, consumersmap, consumercchain, sc)
+	avaxReader, err := avax.NewReader(conf.NetworkID, connections, consumersmap, consumercchain, sc)
 	if err != nil {
 		return nil, err
 	}
@@ -112,8 +112,8 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 		}).
 		NotFound((*Context).notFoundHandler).
 		Middleware(func(c *Context, w web.ResponseWriter, r *web.Request, next web.NextMiddlewareFunc) {
-			c.axcReader = axcReader
-			c.axcAssetID = sc.GenesisContainer.AxcAssetID
+			c.avaxReader = avaxReader
+			c.avaxAssetID = sc.GenesisContainer.AvaxAssetID
 
 			next(w, r)
 		})
@@ -121,8 +121,8 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 	AddV2Routes(&ctx, router, "/v2", indexBytes, nil)
 
 	// Legacy routes.
-	AddV2Routes(&ctx, router, "/x", legacyIndexResponse, &sc.GenesisContainer.SwapChainID)
-	AddV2Routes(&ctx, router, "/X", legacyIndexResponse, &sc.GenesisContainer.SwapChainID)
+	AddV2Routes(&ctx, router, "/x", legacyIndexResponse, &sc.GenesisContainer.XChainID)
+	AddV2Routes(&ctx, router, "/X", legacyIndexResponse, &sc.GenesisContainer.XChainID)
 
 	return router, nil
 }

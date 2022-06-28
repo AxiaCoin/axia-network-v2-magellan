@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package stream
@@ -52,19 +52,19 @@ func (t IndexType) String() string {
 type IndexedChain byte
 
 const (
-	IndexSwapChain IndexedChain = iota
-	IndexCoreChain
-	IndexAXCChain
+	IndexXChain IndexedChain = iota
+	IndexPChain
+	IndexCChain
 )
 
 func (t IndexedChain) String() string {
 	switch t {
-	case IndexSwapChain:
-		return "Swap"
-	case IndexCoreChain:
-		return "Core"
-	case IndexAXCChain:
-		return "AXC"
+	case IndexXChain:
+		return "X"
+	case IndexPChain:
+		return "P"
+	case IndexCChain:
+		return "C"
 	}
 	// Should never happen
 	return typeUnknown
@@ -183,7 +183,7 @@ func (p *producerChainContainer) ProcessNextMessage() error {
 
 		var id ids.ID
 		switch p.indexerChain {
-		case IndexAXCChain:
+		case IndexCChain:
 			id = container.ID
 		default:
 			// x and p we compute the hash
@@ -280,7 +280,7 @@ func NewProducerChain(sc *servicesctrl.Control, conf cfg.Config, chainID string,
 
 	endpoint := fmt.Sprintf("/ext/index/%s/%s", indexerChain, indexerType)
 
-	nodeIndexer := indexer.NewClient(conf.Axia, endpoint)
+	nodeIndexer := indexer.NewClient(conf.AvalancheGO, endpoint)
 
 	p := &ProducerChain{
 		indexerType:             indexerType,

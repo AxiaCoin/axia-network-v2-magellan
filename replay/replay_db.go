@@ -104,9 +104,9 @@ func (replay *dbReplay) Start() error {
 		}
 	}
 
-	err = replay.handleCReader(replay.config.AXCchainID, waitGroup, worker)
+	err = replay.handleCReader(replay.config.CchainID, waitGroup, worker)
 	if err != nil {
-		log.Fatalln("reader failed", replay.config.AXCchainID, ":", err.Error())
+		log.Fatalln("reader failed", replay.config.CchainID, ":", err.Error())
 		return err
 	}
 

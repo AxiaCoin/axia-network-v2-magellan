@@ -28,10 +28,10 @@ create table pvm_transactions
 
 
 ##
-## Allychains
+## Subnets
 ##
 
-create table pvm_allychains
+create table pvm_subnets
 (
     id         varchar(50)  not null primary key,
     network_id int unsigned not null,
@@ -40,14 +40,14 @@ create table pvm_allychains
     created_at timestamp    not null default current_timestamp
 );
 
-create table pvm_allychain_control_keys
+create table pvm_subnet_control_keys
 (
-    allychain_id  varchar(50) not null,
+    subnet_id  varchar(50) not null,
     address    varchar(50) not null,
     public_key binary(33)  null
 
 );
-create unique index pvm_allychain_control_keys_allychain_id_address_idx ON pvm_allychain_control_keys (allychain_id, address);
+create unique index pvm_subnet_control_keys_subnet_id_address_idx ON pvm_subnet_control_keys (subnet_id, address);
 
 ##
 ## Validators
@@ -65,15 +65,15 @@ create table pvm_validators
     start_time     datetime        not null,
     end_time       datetime        not null,
 
-    # Default allychain validator
+    # Default subnet validator
     destination    varchar(50)     not null,
     shares         int unsigned    not null,
 
-    # Allychain validator
-    allychain_id      varchar(50)     not null
+    # Subnet validator
+    subnet_id      varchar(50)     not null
 );
 create index pvm_validators_node_id_idx ON pvm_validators (node_id);
-create index pvm_validators_allychain_id_idx ON pvm_validators (allychain_id);
+create index pvm_validators_subnet_id_idx ON pvm_validators (subnet_id);
 create unique index pvm_validators_tx_id_idx ON pvm_validators (transaction_id);
 
 ##
@@ -84,7 +84,7 @@ create table pvm_chains
 (
     id           varchar(50)      not null primary key,
     network_id   int unsigned     not null,
-    allychain_id    varchar(50)      not null,
+    subnet_id    varchar(50)      not null,
 
     name         varchar(255)     not null,
     vm_id        varchar(50)      not null,

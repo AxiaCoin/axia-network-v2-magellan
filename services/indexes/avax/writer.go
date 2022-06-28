@@ -1,7 +1,7 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
-package axc
+package avax
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/crypto"
 	"github.com/axiacoin/axia-network-v2/utils/formatting"
 	"github.com/axiacoin/axia-network-v2/utils/math"
-	"github.com/axiacoin/axia-network-v2/vms/components/axc"
+	"github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/nftfx"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
@@ -36,20 +36,20 @@ var ecdsaRecoveryFactory = crypto.FactorySECP256K1R{}
 
 type Writer struct {
 	chainID     string
-	axcAssetID ids.ID
+	avaxAssetID ids.ID
 }
 
-func NewWriter(chainID string, axcAssetID ids.ID) *Writer {
-	return &Writer{chainID: chainID, axcAssetID: axcAssetID}
+func NewWriter(chainID string, avaxAssetID ids.ID) *Writer {
+	return &Writer{chainID: chainID, avaxAssetID: avaxAssetID}
 }
 
 type AddInsContainer struct {
-	Ins     []*axc.TransferableInput
+	Ins     []*avax.TransferableInput
 	ChainID string
 }
 
 type AddOutsContainer struct {
-	Outs    []*axc.TransferableOutput
+	Outs    []*avax.TransferableOutput
 	Stake   bool
 	ChainID string
 }
@@ -58,7 +58,7 @@ func (w *Writer) InsertTransaction(
 	ctx services.ConsumerCtx,
 	txBytes []byte,
 	unsignedBytes []byte,
-	baseTx *axc.BaseTx,
+	baseTx *avax.BaseTx,
 	creds []verify.Verifiable,
 	txType models.TransactionType,
 	addIns *AddInsContainer,
@@ -168,14 +168,14 @@ func (w *Writer) InsertTransactionIns(
 	idx int,
 	ctx services.ConsumerCtx,
 	totalin uint64,
-	in *axc.TransferableInput,
+	in *avax.TransferableInput,
 	txID ids.ID,
 	creds []verify.Verifiable,
 	unsignedBytes []byte,
 	chainID string,
 ) (uint64, error) {
 	var err error
-	if in.AssetID() == w.axcAssetID {
+	if in.AssetID() == w.avaxAssetID {
 		totalin, err = math.Add64(totalin, in.Input().Amount())
 		if err != nil {
 			return 0, err
@@ -230,7 +230,7 @@ func (w *Writer) InsertTransactionOuts(
 	idx uint32,
 	ctx services.ConsumerCtx,
 	totalout uint64,
-	out *axc.TransferableOutput,
+	out *avax.TransferableOutput,
 	txID ids.ID,
 	chainID string,
 	stake bool,
@@ -426,7 +426,7 @@ func (w *Writer) ProcessStateOut(
 		if !ok {
 			return 0, 0, fmt.Errorf("invalid type *secp256k1fx.TransferOutput")
 		}
-		if assetID == w.axcAssetID {
+		if assetID == w.avaxAssetID {
 			totalout, err = math.Add64(totalout, xOut.Amt)
 			if err != nil {
 				return 0, 0, err
@@ -513,7 +513,7 @@ func (w *Writer) ProcessStateOut(
 			return 0, 0, err
 		}
 	case *secp256k1fx.TransferOutput:
-		if assetID == w.axcAssetID {
+		if assetID == w.avaxAssetID {
 			totalout, err = math.Add64(totalout, typedOut.Amount())
 			if err != nil {
 				return 0, 0, err

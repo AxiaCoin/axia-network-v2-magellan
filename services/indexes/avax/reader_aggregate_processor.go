@@ -1,4 +1,4 @@
-package axc
+package avax
 
 import (
 	"context"
@@ -280,7 +280,7 @@ func (r *Reader) processorTxAscFetch(conns *utils.Connections) {
 			return
 		}
 
-		err := dressTransactions(ctx, sess, txsAsc, r.sc.GenesisContainer.AxcAssetID, nil, false)
+		err := dressTransactions(ctx, sess, txsAsc, r.sc.GenesisContainer.AvaxAssetID, nil, false)
 		if err != nil {
 			r.sc.Log.Warn("ascending tx dress tx fail %v", err)
 			txsAsc = nil
@@ -370,7 +370,7 @@ func (r *Reader) fetchAssets(
 		From("avm_outputs").
 		Where("created_at > ? and asset_id <> ?",
 			runTm.Add(-runDuration),
-			r.sc.GenesisContainer.AxcAssetID.String(),
+			r.sc.GenesisContainer.AvaxAssetID.String(),
 		).
 		GroupBy("asset_id").
 		OrderDesc("tamt").
@@ -391,7 +391,7 @@ func (r *Reader) fetchAssets(
 		return nil, nil, err
 	}
 
-	assets := append([]string{}, r.sc.GenesisContainer.AxcAssetID.String())
+	assets := append([]string{}, r.sc.GenesisContainer.AvaxAssetID.String())
 	return append(assets, assetsFound...), addlAssetsFound, nil
 }
 
@@ -433,7 +433,7 @@ func (r *Reader) aggregateProcessorAssetAggr(conns *utils.Connections) {
 			}
 			p.ListParams.EndTime = runTm
 			p.ListParams.StartTime = p.ListParams.EndTime.Add(-runDuration)
-			p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.SwapChainID.String())
+			p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.XChainID.String())
 			id, err := ids.FromString(asset)
 			if err != nil {
 				r.sc.Log.Warn("Aggregate %v", err)
@@ -527,7 +527,7 @@ func (r *Reader) processAggregate(conns *utils.Connections, runTm time.Time, tag
 	}
 	p.ListParams.EndTime = runTm
 	p.ListParams.StartTime = p.ListParams.EndTime.Add(deltaTime)
-	p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.SwapChainID.String())
+	p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.XChainID.String())
 	r.sc.Log.Info("aggregate %s interval %s %v->%v", tag, intervalSize, p.ListParams.StartTime.Format(time.RFC3339), p.ListParams.EndTime.Format(time.RFC3339))
 	return r.Aggregate(ctx, p, conns)
 }

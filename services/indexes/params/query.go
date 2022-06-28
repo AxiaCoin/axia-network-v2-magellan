@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package params
@@ -98,7 +98,7 @@ func GetQueryAddress(q url.Values, key string) (*ids.ShortID, error) {
 	return &addr, nil
 }
 
-var addressPrefixes = []string{"Swap", "Core", "AXC"}
+var addressPrefixes = []string{"X", "P", "C"}
 
 func AddressFromString(addrStr string) (ids.ShortID, error) {
 	for _, prefix := range addressPrefixes {

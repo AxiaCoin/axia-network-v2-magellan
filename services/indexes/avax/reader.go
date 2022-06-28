@@ -1,7 +1,7 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
-package axc
+package avax
 
 import (
 	"context"
@@ -89,7 +89,7 @@ func NewReader(networkID uint32, conns *utils.Connections, chainConsumers map[st
 	return reader, nil
 }
 
-func (r *Reader) Search(ctx context.Context, p *params.SearchParams, axcAssetID ids.ID) (*models.SearchResults, error) {
+func (r *Reader) Search(ctx context.Context, p *params.SearchParams, avaxAssetID ids.ID) (*models.SearchResults, error) {
 	p.ListParams.DisableCounting = true
 
 	if len(p.ListParams.Query) < MinSearchQueryLength {
@@ -102,7 +102,7 @@ func (r *Reader) Search(ctx context.Context, p *params.SearchParams, axcAssetID 
 		return r.searchByShortID(ctx, shortID)
 	}
 	if id, err := ids.FromString(p.ListParams.Query); err == nil {
-		return r.searchByID(ctx, id, axcAssetID)
+		return r.searchByID(ctx, id, avaxAssetID)
 	}
 
 	var assets []*models.Asset
@@ -125,7 +125,7 @@ func (r *Reader) Search(ctx context.Context, p *params.SearchParams, axcAssetID 
 	if false {
 		// The query string was not an id/shortid so perform an ID prefix search
 		// against transactions and addresses.
-		transactionsRes, err := r.ListTransactions(ctx, &params.ListTransactionsParams{ListParams: p.ListParams}, axcAssetID)
+		transactionsRes, err := r.ListTransactions(ctx, &params.ListTransactionsParams{ListParams: p.ListParams}, avaxAssetID)
 		if err != nil {
 			return nil, err
 		}
@@ -155,10 +155,10 @@ func (r *Reader) Search(ctx context.Context, p *params.SearchParams, axcAssetID 
 		A regex search on address can't work..
 		And on output_id makes no sense...
 
-		Addresses are stored in the db in 20byte hex, and the query is by address 'test.....'
+		Addresses are stored in the db in 20byte hex, and the query is by address 'fuji.....'
 		There is no way to convert a part of an address into a "few" bytes...
 
-		Future: store the address in the db in the address format 'test.....'
+		Future: store the address in the db in the address format 'fuji.....'
 		then a part query could work.
 	*/
 	if false {
@@ -701,10 +701,10 @@ func (r *Reader) ListOutputs(ctx context.Context, p *params.ListOutputsParams) (
 	return &models.OutputList{ListMetadata: models.ListMetadata{Count: count}, Outputs: outputs}, err
 }
 
-func (r *Reader) GetTransaction(ctx context.Context, id ids.ID, axcAssetID ids.ID) (*models.Transaction, error) {
+func (r *Reader) GetTransaction(ctx context.Context, id ids.ID, avaxAssetID ids.ID) (*models.Transaction, error) {
 	txList, err := r.ListTransactions(ctx, &params.ListTransactionsParams{
 		ListParams: params.ListParams{ID: &id, DisableCounting: true},
-	}, axcAssetID)
+	}, avaxAssetID)
 	if err != nil {
 		return nil, err
 	}
@@ -818,7 +818,7 @@ func (r *Reader) getFirstTransactionTime(ctx context.Context, chainIDs []string)
 	return time.Unix(int64(math.Floor(ts)), 0).UTC(), nil
 }
 
-func (r *Reader) searchByID(ctx context.Context, id ids.ID, axcAssetID ids.ID) (*models.SearchResults, error) {
+func (r *Reader) searchByID(ctx context.Context, id ids.ID, avaxAssetID ids.ID) (*models.SearchResults, error) {
 	dbRunner, err := r.conns.DB().NewSession("search_by_id", cfg.RequestTimeout)
 	if err != nil {
 		return nil, err
@@ -841,7 +841,7 @@ func (r *Reader) searchByID(ctx context.Context, id ids.ID, axcAssetID ids.ID) (
 				DisableCounting: true,
 				ID:              &id,
 			},
-		}, axcAssetID); err != nil {
+		}, avaxAssetID); err != nil {
 			return nil, err
 		} else if len(txs.Transactions) > 0 {
 			return collateSearchResults(nil, nil, txs.Transactions)

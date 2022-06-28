@@ -8,11 +8,11 @@ Minimum _recommended_ specs:
 
 Expandable storage to accommodate growth or use an [external db](#external-db-setup).
 
-It is safe to run the magellan stack on multiple machines with a shared DB.
+It is safe to run the ortelius stack on multiple machines with a shared DB.
 
 # Local folders/ports
 
-Docker is configured to write data files into /var/lib/magellan/
+Docker is configured to write data files into /var/lib/ortelius/
 
 The api listens on port 8080.
 
@@ -39,16 +39,16 @@ https://docs.docker.com/engine/install/linux-postinstall/
 # Clone the repo
 ```
 # git clone https://github.com/axiacoin/axia-network-v2-magellan
-# cd magellan
+# cd ortelius
 ```
 
-# Start magellan
+# Start ortelius
 *note* docker requires root on linux [see](#non-root-docker-configuration-on-linux-optional)
 ```
 # make production_start
 ```
 
-# Upgrade magellan (with a specific tag)
+# Upgrade ortelius (with a specific tag)
 ```
 # make production_stop
 ```
@@ -56,7 +56,7 @@ https://docs.docker.com/engine/install/linux-postinstall/
 git fetch --all
 git checkout tags/{tag-id}
 ```
-*note* [magellan tags](https://github.com/axiacoin/axia-network-v2-magellan/tags)
+*note* [ortelius tags](https://github.com/axiacoin/axia-network-v2-magellan/tags)
 ```
 # make production_start
 ```
@@ -69,16 +69,16 @@ git checkout tags/{tag-id}
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "chainID": "11111111111111111111111111111111LpoYY",
-      "chainAlias": "core",
+      "chainAlias": "p",
       "vm": "pvm",
-      "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
+      "avaxAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
     },
     "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": {
       "chainID": "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
-      "chainAlias": "swap",
+      "chainAlias": "x",
       "vm": "avm",
-      "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
+      "avaxAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
     }
   }
@@ -91,7 +91,7 @@ git checkout tags/{tag-id}
 {container-id} of the mysql container can be found using `docker ps -a`
 
 ```
-# docker exec -i -t {container-id}  mysql -uroot -ppassword magellan -e "select topic,processed,count(*) from tx_pool group by topic,processed"
+# docker exec -i -t {container-id}  mysql -uroot -ppassword ortelius -e "select topic,processed,count(*) from tx_pool group by topic,processed"
 +---------------------------------------------------+-----------+----------+
 | topic                                             | processed | count(*) |
 +---------------------------------------------------+-----------+----------+
@@ -112,19 +112,19 @@ As items are consumed into the indexer the count of processed = 0 transactions d
 
 # Docker containers
 
-There are 2 magellan services api and indexer.
-There will be an axia, and mysql container.
+There are 2 ortelius services api and indexer.
+There will be an avalanchego, and mysql container.
 
 ```
 # docker ps -a
 CONTAINER ID   IMAGE                             COMMAND                  CREATED          STATUS                      PORTS                                              NAMES
-f9bd3c9d6f74   avaplatform/axia:v1.2.3    "/bin/sh -cx 'exec .…"   19 minutes ago   Up 19 minutes               0.0.0.0:9650->9650/tcp                             production_axia_1
-70c5b875c07d   avaplatform/magellan:140ac5c      "/opt/magelland api …"   19 minutes ago   Up 19 minutes               0.0.0.0:8080->8080/tcp                             production_api_1
-ee28fdea61c2   avaplatform/magellan:140ac5c      "/opt/magelland stre…"   19 minutes ago   Up 19 minutes                                                                  production_indexer_1
+f9bd3c9d6f74   avaplatform/avalanchego:v1.2.3    "/bin/sh -cx 'exec .…"   19 minutes ago   Up 19 minutes               0.0.0.0:9650->9650/tcp                             production_avalanche_1
+70c5b875c07d   avaplatform/ortelius:140ac5c      "/opt/orteliusd api …"   19 minutes ago   Up 19 minutes               0.0.0.0:8080->8080/tcp                             production_api_1
+ee28fdea61c2   avaplatform/ortelius:140ac5c      "/opt/orteliusd stre…"   19 minutes ago   Up 19 minutes                                                                  production_indexer_1
 ae923d0489f0   mysql:8.0.26                      "docker-entrypoint.s…"   19 minutes ago   Up 19 minutes               0.0.0.0:3306->3306/tcp, 33060/tcp                  production_mysql_1
 ```
 
-# Stop magellan
+# Stop ortelius
 
 ```
 # make production_stop
@@ -138,82 +138,82 @@ ae923d0489f0   mysql:8.0.26                      "docker-entrypoint.s…"   19 m
 
 # External DB setup
 
-Magellan requires an updated mysql compatible DB.  This will work with aurora in mysql mode.
+Ortelius requires an updated mysql compatible DB.  This will work with aurora in mysql mode.
 
 *note* DB needs to be up and migrated before use.
 
 ## *optional* mysql docker container -- adjust as necessary
 [dockerhub mysql](https://hub.docker.com/_/mysql)
 ```
-docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/docker/my.cnf:/etc/mysql/my.cnf --network host -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=magellan mysql:8.0.26
+docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/docker/my.cnf:/etc/mysql/my.cnf --network host -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=ortelius mysql:8.0.26
 ```
 The standard mysql defaults can cause issues, please configure the customizations [here](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/my.cnf)
 
-## run migrations -- *required* for all magellan updates.
+## run migrations -- *required* for all ortelius updates.
 [dockerhub migrate](https://hub.docker.com/r/migrate/migrate)
 ```
-docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/services/db/migrations:/migrations --network host "migrate/migrate:v4.14.1"  -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up
+docker run --volume .../github.com/axiacoin/axia-network-v2-magellan/services/db/migrations:/migrations --network host "migrate/migrate:v4.14.1"  -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/ortelius" up
 ```
 Update the docker params as needed to match the user/password/host/database as appropriate.
 
-## update magellan configs
+## update ortelius configs
 Update [config](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/config.json) with the correct dsn in your local github repo.
 
 
 # Customized setup
 
-The full Magellan pipeline requires the following services. This guide will not cover their installation but will discuss key configuration settings.
+The full Ortelius pipeline requires the following services. This guide will not cover their installation but will discuss key configuration settings.
 
-- **[Axia.go](https://github.com/axiacoin/axia-network-v2)** is the gateway to the Axia network
+- **[Avalanche.go](https://github.com/axiacoin/axia-network-v2)** is the gateway to the Avalanche network
 - **[MySQL](https://www.mysql.com/)** powers the index
 
 ## Configuring services
 
-### Axia.go
+### Avalanche.go
 
-The IPCs for the chains you want to consume must be available. This can be done by starting the Axia.go process with the `--index-enabled` flag.
+The IPCs for the chains you want to consume must be available. This can be done by starting the Avalanche.go process with the `--index-enabled` flag.
 
 see:
-[axia configs](https://docs.axc.network/build/references/command-line-interface)
+[avalanchego configs](https://docs.avax.network/build/references/command-line-interface)
 
-[axia chain configs](https://docs.axc.network/build/references/command-line-interface#chain-configs)
+[avalanchego chain configs](https://docs.avax.network/build/references/command-line-interface#chain-configs)
 
 ### MySQL
 
 The indexer requires that a MySQL compatible database be available. The migrations can be found in the repo's [services/db/migrations](../services/db/migrations) directory and can be applied with [golang-migrate](https://github.com/golang-migrate/migrate), example:
 
-`migrate -source file://services/db/migrations -database "mysql://root:password@tcp(127.0.0.1:3306)/magellan" up`
+`migrate -source file://services/db/migrations -database "mysql://root:password@tcp(127.0.0.1:3306)/ortelius" up`
 
 [external db setup](#external-db-setup)
 
-## Magellan Distribution
+## Ortelius Distribution
 
-Magellan can be built from source into a single binary or a Docker image. A public Docker image is also available on [Docker Hub](https://hub.docker.com/repository/docker/avaplatform/magellan).
+Ortelius can be built from source into a single binary or a Docker image. A public Docker image is also available on [Docker Hub](https://hub.docker.com/repository/docker/avaplatform/ortelius).
 
-Example: `docker run --rm avaplatform/magellan --help`
+Example: `docker run --rm avaplatform/ortelius --help`
 
-## Configuring Magellan
+## Configuring Ortelius
 
-[Configuration for Magellan](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/config.json).
+[Configuration for Ortelius](https://github.com/axiacoin/axia-network-v2-magellan/blob/master/docker/config.json).
 
-## Running Magellan
+## Running Ortelius
 
-Magellan is a collection of services. The full stack consists of the Indexer, and API which can all be started from the single binary:
-
-```
-magellan stream indexer -c path/to/config.json
-magellan api -c path/to/config.json
-```
-
-As Axia.go bootstraps the Producer will send all events to DB, the indexer will index, and the API will make them available. 
-You can test your setup [API](https://docs.axc.network/build/tools/magellan). 
-
-# Magellan re-indexing
-
-If you performed a standard install the axia database will be located at: /var/lib/magellan/axia/mainnet/.
+Ortelius is a collection of services. The full stack consists of the Indexer, and API which can all be started from the single binary:
 
 ```
-$ ls -altr /var/lib/magellan/axia/mainnet/
+ortelius stream indexer -c path/to/config.json
+ortelius api -c path/to/config.json
+```
+
+As Avalanche.go bootstraps the Producer will send all events to DB, the indexer will index, and the API will make them available. 
+You can test your setup [API](https://docs.avax.network/build/tools/ortelius). 
+
+# Ortelius re-indexing
+
+If you performed a standard install the avalanchego database will be located at: /var/lib/ortelius/avalanche/mainnet/.
+
+```
+$ ls -altr /var/lib/ortelius/avalanche/mainnet/
 total 12
 drwxr-xr-x 3 root root 4096 Mar 10 14:29 ..
 drwxr-xr-x 3 root root 4096 Mar 10 14:29 .
@@ -222,10 +222,10 @@ drwxr-xr-x 2 root root 4096 Mar 10 15:01 v1.4.5
 
 ## Steps
 
-Stop [magellan](#stop-magellan)
+Stop [ortelius](#stop-ortelius)
 
-Remove the directory /var/lib/magellan/axia/mainnet/
+Remove the directory /var/lib/ortelius/avalanche/mainnet/
 
-Restart [magellan](#start-magellan).
+Restart [ortelius](#start-ortelius).
 
 

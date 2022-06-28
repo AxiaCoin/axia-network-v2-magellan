@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package models
@@ -10,7 +10,7 @@ import (
 type PvmProposerModel struct {
 	ID           StringID  `json:"id"`
 	ParentID     StringID  `json:"parentID"`
-	CoreChainHeight uint64    `json:"corechainHeight"`
+	PChainHeight uint64    `json:"pchainHeight"`
 	Proposer     StringID  `json:"proposer"`
 	TimeStamp    time.Time `json:"timestamp"`
 }
@@ -150,8 +150,8 @@ type OutputList struct {
 }
 
 type CvmOutput struct {
-	Type            AXCChainType  `json:"type"`
-	TransactionType AXCChainType  `json:"transactionType"`
+	Type            CChainType  `json:"type"`
+	TransactionType CChainType  `json:"transactionType"`
 	Idx             uint64      `json:"idx"`
 	Amount          TokenAmount `json:"amount"`
 	Nonce           uint64      `json:"nonce"`

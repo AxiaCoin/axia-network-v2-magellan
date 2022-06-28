@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package avm
@@ -14,24 +14,24 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/crypto"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	axiaAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	avalancheGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 )
 
 var (
-	testSwapChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
+	testXChainID = ids.ID([32]byte{7, 193, 50, 215, 59, 55, 159, 112, 106, 206, 236, 110, 229, 14, 139, 125, 14, 101, 138, 65, 208, 44, 163, 38, 115, 182, 177, 179, 244, 34, 195, 120})
 )
 
 func TestIndexBootstrap(t *testing.T) {
-	conns, writer, reader, closeFn := newTestIndex(t, testSwapChainID)
+	conns, writer, reader, closeFn := newTestIndex(t, testXChainID)
 	defer closeFn()
 
 	persist := db.NewPersist()
@@ -41,7 +41,7 @@ func TestIndexBootstrap(t *testing.T) {
 	}
 
 	txList, err := reader.ListTransactions(context.Background(), &params.ListTransactionsParams{
-		ChainIDs: []string{testSwapChainID.String()},
+		ChainIDs: []string{testXChainID.String()},
 	}, ids.Empty)
 	if err != nil {
 		t.Fatal("Failed to list transactions:", err.Error())
@@ -108,7 +108,7 @@ func TestIndexBootstrap(t *testing.T) {
 
 	// invoke the address and asset logic to test the db.
 	txList, err = reader.ListTransactions(context.Background(), &params.ListTransactionsParams{
-		ChainIDs:  []string{testSwapChainID.String()},
+		ChainIDs:  []string{testXChainID.String()},
 		Addresses: []ids.ShortID{ids.ShortEmpty},
 	}, ids.Empty)
 
@@ -125,7 +125,7 @@ func TestIndexBootstrap(t *testing.T) {
 	}
 }
 
-func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *axc.Reader, func()) {
+func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *avax.Reader, func()) {
 	networkID := uint32(5)
 
 	logConf := logging.DefaultConfig
@@ -134,7 +134,7 @@ func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *a
 		Logging: logConf,
 		DB: &cfg.DB{
 			Driver: "mysql",
-			DSN:    "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true",
+			DSN:    "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true",
 		},
 	}
 
@@ -151,7 +151,7 @@ func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *a
 	}
 
 	cmap := make(map[string]services.Consumer)
-	reader, _ := axc.NewReader(networkID, conns, cmap, nil, sc)
+	reader, _ := avax.NewReader(networkID, conns, cmap, nil, sc)
 	return conns, writer, reader, func() {
 		_ = conns.Close()
 	}
@@ -164,22 +164,22 @@ func newTestContext() context.Context {
 }
 
 func TestInsertTxInternal(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, testSwapChainID)
+	conns, writer, _, closeFn := newTestIndex(t, testXChainID)
 	defer closeFn()
 	ctx := context.Background()
 
 	tx := &avm.Tx{}
 	baseTx := &avm.BaseTx{}
 
-	transferableOut := &axiaAxc.TransferableOutput{}
+	transferableOut := &avalancheGoAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{
 		OutputOwners: secp256k1fx.OutputOwners{Addrs: []ids.ShortID{ids.ShortEmpty}},
 	}
-	baseTx.Outs = []*axiaAxc.TransferableOutput{transferableOut}
+	baseTx.Outs = []*avalancheGoAvax.TransferableOutput{transferableOut}
 
-	transferableIn := &axiaAxc.TransferableInput{}
+	transferableIn := &avalancheGoAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*axiaAxc.TransferableInput{transferableIn}
+	baseTx.Ins = []*avalancheGoAvax.TransferableInput{transferableIn}
 
 	f := crypto.FactorySECP256K1R{}
 	pk, _ := f.NewPrivateKey()
@@ -232,20 +232,20 @@ func TestInsertTxInternal(t *testing.T) {
 }
 
 func TestInsertTxInternalCreateAsset(t *testing.T) {
-	conns, writer, _, closeFn := newTestIndex(t, testSwapChainID)
+	conns, writer, _, closeFn := newTestIndex(t, testXChainID)
 	defer closeFn()
 	ctx := context.Background()
 
 	tx := &avm.Tx{}
 	baseTx := &avm.CreateAssetTx{}
 
-	transferableOut := &axiaAxc.TransferableOutput{}
+	transferableOut := &avalancheGoAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	baseTx.Outs = []*axiaAxc.TransferableOutput{transferableOut}
+	baseTx.Outs = []*avalancheGoAvax.TransferableOutput{transferableOut}
 
-	transferableIn := &axiaAxc.TransferableInput{}
+	transferableIn := &avalancheGoAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*axiaAxc.TransferableInput{transferableIn}
+	baseTx.Ins = []*avalancheGoAvax.TransferableInput{transferableIn}
 
 	tx.UnsignedTx = baseTx
 
@@ -280,7 +280,7 @@ func TestInsertTxInternalCreateAsset(t *testing.T) {
 }
 
 func TestTransactionNext(t *testing.T) {
-	conns, _, reader, closeFn := newTestIndex(t, testSwapChainID)
+	conns, _, reader, closeFn := newTestIndex(t, testXChainID)
 	defer closeFn()
 	ctx := context.Background()
 

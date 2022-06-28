@@ -1,4 +1,4 @@
-// (c) 2021, Axia Systems, Inc. All rights reserved.
+// (c) 2021, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package cfg
@@ -23,8 +23,8 @@ const (
 	keysServicesDBDSN    = "dsn"
 	keysServicesDBRODSN  = "ro_dsn"
 
-	keysStreamProducerAxia  = "axia"
+	keysStreamProducerAvalanchego  = "avalanchego"
 	keysStreamProducerNodeInstance = "nodeInstance"
 
-	keysStreamProducerAXCchainID = "axcchainID"
+	keysStreamProducerCchainID = "cchainID"
 )
