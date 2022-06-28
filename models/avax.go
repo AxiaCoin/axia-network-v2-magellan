@@ -10,7 +10,7 @@ import (
 type PvmProposerModel struct {
 	ID           StringID  `json:"id"`
 	ParentID     StringID  `json:"parentID"`
-	PChainHeight uint64    `json:"pchainHeight"`
+	CoreChainHeight uint64    `json:"pchainHeight"`
 	Proposer     StringID  `json:"proposer"`
 	TimeStamp    time.Time `json:"timestamp"`
 }

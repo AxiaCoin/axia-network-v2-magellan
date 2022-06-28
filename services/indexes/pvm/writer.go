@@ -162,7 +162,7 @@ func (w *Writer) initCtx(b platformvm.Block) {
 type PtxDataProposerModel struct {
 	ID           string    `json:"tx"`
 	ParentID     string    `json:"parentID"`
-	PChainHeight uint64    `json:"pChainHeight"`
+	CoreChainHeight uint64    `json:"coreChainHeight"`
 	Proposer     string    `json:"proposer"`
 	TimeStamp    time.Time `json:"timeStamp"`
 }
@@ -173,14 +173,14 @@ func NewPtxDataProposerModel(b block.Block) *PtxDataProposerModel {
 		return &PtxDataProposerModel{
 			ID:           properBlockDetail.ID().String(),
 			ParentID:     properBlockDetail.ParentID().String(),
-			PChainHeight: properBlockDetail.PChainHeight(),
+			CoreChainHeight: properBlockDetail.CoreChainHeight(),
 			Proposer:     properBlockDetail.Proposer().String(),
 			TimeStamp:    properBlockDetail.Timestamp(),
 		}
 	default:
 		return &PtxDataProposerModel{
 			ID:           properBlockDetail.ID().String(),
-			PChainHeight: 0,
+			CoreChainHeight: 0,
 			Proposer:     "",
 		}
 	}
@@ -371,7 +371,7 @@ func (w *Writer) indexBlock(ctx services.ConsumerCtx, proposerblockBytes []byte)
 				ParentID:      properBlockDetail.ParentID().String(),
 				BlkID:         blkID.String(),
 				ProposerBlkID: proposerBlkID.String(),
-				PChainHeight:  properBlockDetail.PChainHeight(),
+				CoreChainHeight:  properBlockDetail.CoreChainHeight(),
 				Proposer:      properBlockDetail.Proposer().String(),
 				TimeStamp:     properBlockDetail.Timestamp(),
 				CreatedAt:     ctx.Time(),
@@ -382,7 +382,7 @@ func (w *Writer) indexBlock(ctx services.ConsumerCtx, proposerblockBytes []byte)
 				ParentID:      properBlockDetail.ParentID().String(),
 				BlkID:         blkID.String(),
 				ProposerBlkID: proposerBlkID.String(),
-				PChainHeight:  0,
+				CoreChainHeight:  0,
 				Proposer:      "",
 				TimeStamp:     ctx.Time(),
 				CreatedAt:     ctx.Time(),

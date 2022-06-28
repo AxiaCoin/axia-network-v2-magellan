@@ -340,7 +340,7 @@ func newPvmProposerModel(pvmProposer db.PvmProposer) *models.PvmProposerModel {
 	return &models.PvmProposerModel{
 		ID:           models.StringID(pvmProposer.ID),
 		ParentID:     models.StringID(pvmProposer.ParentID),
-		PChainHeight: pvmProposer.PChainHeight,
+		CoreChainHeight: pvmProposer.CoreChainHeight,
 		Proposer:     models.StringID(pvmProposer.Proposer),
 		TimeStamp:    pvmProposer.TimeStamp,
 	}
