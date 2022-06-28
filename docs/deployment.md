@@ -69,14 +69,14 @@ git checkout tags/{tag-id}
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "chainID": "11111111111111111111111111111111LpoYY",
-      "chainAlias": "p",
+      "chainAlias": "core",
       "vm": "pvm",
       "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
     },
     "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": {
       "chainID": "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
-      "chainAlias": "x",
+      "chainAlias": "swap",
       "vm": "avm",
       "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1

@@ -12,9 +12,9 @@ import (
 
 const (
 	AVMName     = "avm"
-	SwapChainAlias = "x"
+	SwapChainAlias = "swap"
 	PVMName     = "pvm"
-	CoreChainAlias = "p"
+	CoreChainAlias = "core"
 )
 
 func newIndexResponse(networkID uint32, swapChainID ids.ID, axcAssetID ids.ID) ([]byte, error) {
