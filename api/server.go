@@ -90,11 +90,11 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 		}
 		consumersmap[chid] = consumer
 	}
-	consumercchain, err := consumers.IndexerConsumerAXChain(conf.NetworkID, conf.CchainID)
+	consumeraxchain, err := consumers.IndexerConsumerAXChain(conf.NetworkID, conf.AXchainID)
 	if err != nil {
 		return nil, err
 	}
-	axcReader, err := axc.NewReader(conf.NetworkID, connections, consumersmap, consumercchain, sc)
+	axcReader, err := axc.NewReader(conf.NetworkID, connections, consumersmap, consumeraxchain, sc)
 	if err != nil {
 		return nil, err
 	}

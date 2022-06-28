@@ -408,7 +408,7 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalout uint64
 	for icnt, out := range tx.Outs {
 		icntval := uint64(icnt)
-		err = w.insertAddress(models.CchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
+		err = w.insertAddress(models.AXchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
 		if err != nil {
 			return err
 		}

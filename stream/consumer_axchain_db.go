@@ -46,11 +46,11 @@ func NewConsumerAXChainDB() ProcessorFactoryInstDB {
 		c := &consumerAXChainDB{
 			conf:                          conf,
 			sc:                            sc,
-			metricProcessedCountKey:       fmt.Sprintf("consume_records_processed_%s_cchain", conf.CchainID),
-			metricProcessMillisCounterKey: fmt.Sprintf("consume_records_process_millis_%s_cchain", conf.CchainID),
-			metricSuccessCountKey:         fmt.Sprintf("consume_records_success_%s_cchain", conf.CchainID),
-			metricFailureCountKey:         fmt.Sprintf("consume_records_failure_%s_cchain", conf.CchainID),
-			id:                            fmt.Sprintf("consumer %d %s cchain", conf.NetworkID, conf.CchainID),
+			metricProcessedCountKey:       fmt.Sprintf("consume_records_processed_%s_axchain", conf.AXchainID),
+			metricProcessMillisCounterKey: fmt.Sprintf("consume_records_process_millis_%s_axchain", conf.AXchainID),
+			metricSuccessCountKey:         fmt.Sprintf("consume_records_success_%s_axchain", conf.AXchainID),
+			metricFailureCountKey:         fmt.Sprintf("consume_records_failure_%s_axchain", conf.AXchainID),
+			id:                            fmt.Sprintf("consumer %d %s axchain", conf.NetworkID, conf.AXchainID),
 
 			quitCh: make(chan struct{}),
 		}
@@ -61,15 +61,15 @@ func NewConsumerAXChainDB() ProcessorFactoryInstDB {
 		sc.InitConsumeMetrics()
 
 		var err error
-		c.consumer, err = cvm.NewWriter(c.conf.NetworkID, c.conf.CchainID)
+		c.consumer, err = cvm.NewWriter(c.conf.NetworkID, c.conf.AXchainID)
 		if err != nil {
 			_ = c.Close()
 			return nil, err
 		}
 
-		c.topicName = fmt.Sprintf("%d-%s-cchain", c.conf.NetworkID, c.conf.CchainID)
-		c.topicTrcName = fmt.Sprintf("%d-%s-cchain-trc", c.conf.NetworkID, c.conf.CchainID)
-		c.topicLogsName = fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.CchainID)
+		c.topicName = fmt.Sprintf("%d-%s-axchain", c.conf.NetworkID, c.conf.AXchainID)
+		c.topicTrcName = fmt.Sprintf("%d-%s-axchain-trc", c.conf.NetworkID, c.conf.AXchainID)
+		c.topicLogsName = fmt.Sprintf("%d-%s-axchain-logs", conf.NetworkID, conf.AXchainID)
 
 		return c, nil
 	}
@@ -93,7 +93,7 @@ func (c *consumerAXChainDB) Process(conns *utils.Connections, row *db.TxPool) er
 	case c.topicName:
 		msg := &Message{
 			id:         row.MsgKey,
-			chainID:    c.conf.CchainID,
+			chainID:    c.conf.AXchainID,
 			body:       row.Serialization,
 			timestamp:  row.CreatedAt.UTC().Unix(),
 			nanosecond: int64(row.CreatedAt.UTC().Nanosecond()),
@@ -102,7 +102,7 @@ func (c *consumerAXChainDB) Process(conns *utils.Connections, row *db.TxPool) er
 	case c.topicTrcName:
 		msg := &Message{
 			id:         row.MsgKey,
-			chainID:    c.conf.CchainID,
+			chainID:    c.conf.AXchainID,
 			body:       row.Serialization,
 			timestamp:  row.CreatedAt.UTC().Unix(),
 			nanosecond: int64(row.CreatedAt.UTC().Nanosecond()),
@@ -111,7 +111,7 @@ func (c *consumerAXChainDB) Process(conns *utils.Connections, row *db.TxPool) er
 	case c.topicLogsName:
 		msg := &Message{
 			id:         row.MsgKey,
-			chainID:    c.conf.CchainID,
+			chainID:    c.conf.AXchainID,
 			body:       row.Serialization,
 			timestamp:  row.CreatedAt.UTC().Unix(),
 			nanosecond: int64(row.CreatedAt.UTC().Nanosecond()),

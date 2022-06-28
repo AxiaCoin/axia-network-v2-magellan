@@ -26,5 +26,5 @@ const (
 	keysStreamProducerAxia  = "axia"
 	keysStreamProducerNodeInstance = "nodeInstance"
 
-	keysStreamProducerCchainID = "cchainID"
+	keysStreamProducerAXchainID = "axchainID"
 )

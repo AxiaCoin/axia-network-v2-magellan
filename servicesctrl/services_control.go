@@ -71,7 +71,7 @@ func (s *Control) Init(networkID uint32) error {
 	if _, ok := s.Features["aggregate_cache"]; ok {
 		s.IsAggregateCache = true
 	}
-	if _, ok := s.Features["cchain_index"]; ok {
+	if _, ok := s.Features["axchain_index"]; ok {
 		s.IsAXChainIndex = true
 	}
 	var err error

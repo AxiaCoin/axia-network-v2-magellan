@@ -604,7 +604,7 @@ func TestCvmAddresses(t *testing.T) {
 		t.Fatal("compare fail")
 	}
 
-	v.Type = models.CchainOut
+	v.Type = models.AXchainOut
 	v.Idx = 2
 	v.TransactionID = "tid2"
 	v.Address = "addr2"
@@ -670,7 +670,7 @@ func TestCvmTransactions(t *testing.T) {
 
 	txtime2 := time.Now().UTC().Truncate(1 * time.Second).Add(-1 * time.Hour)
 
-	v.Type = models.CchainOut
+	v.Type = models.AXchainOut
 	v.TransactionID = "trid2"
 	v.BlockchainID = "bid2"
 	v.Block = "2"

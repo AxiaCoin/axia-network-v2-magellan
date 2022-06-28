@@ -104,9 +104,9 @@ func (replay *dbReplay) Start() error {
 		}
 	}
 
-	err = replay.handleCReader(replay.config.CchainID, waitGroup, worker)
+	err = replay.handleCReader(replay.config.AXchainID, waitGroup, worker)
 	if err != nil {
-		log.Fatalln("reader failed", replay.config.CchainID, ":", err.Error())
+		log.Fatalln("reader failed", replay.config.AXchainID, ":", err.Error())
 		return err
 	}
 
@@ -180,15 +180,15 @@ func (replay *dbReplay) handleCReader(chain string, waitGroup *int64, worker uti
 		return err
 	}
 
-	err = replay.startCchain(chain, waitGroup, worker, writer)
+	err = replay.startAXchain(chain, waitGroup, worker, writer)
 	if err != nil {
 		return err
 	}
-	err = replay.startCchainTrc(chain, waitGroup, worker, writer)
+	err = replay.startAXchainTrc(chain, waitGroup, worker, writer)
 	if err != nil {
 		return err
 	}
-	err = replay.startCchainLog(chain, waitGroup, worker, writer)
+	err = replay.startAXchainLog(chain, waitGroup, worker, writer)
 	if err != nil {
 		return err
 	}
@@ -329,8 +329,8 @@ func (replay *dbReplay) workerProcessor() func(int, interface{}) {
 	}
 }
 
-func (replay *dbReplay) startCchain(chain string, waitGroup *int64, worker utils.Worker, writer *cvm.Writer) error {
-	tn := fmt.Sprintf("%d-%s-cchain", replay.config.NetworkID, chain)
+func (replay *dbReplay) startAXchain(chain string, waitGroup *int64, worker utils.Worker, writer *cvm.Writer) error {
+	tn := fmt.Sprintf("%d-%s-axchain", replay.config.NetworkID, chain)
 
 	replay.counterWaits.Inc(tn)
 	replay.counterAdded.Add(tn, 0)
@@ -407,8 +407,8 @@ func (replay *dbReplay) startCchain(chain string, waitGroup *int64, worker utils
 	return nil
 }
 
-func (replay *dbReplay) startCchainTrc(chain string, waitGroup *int64, worker utils.Worker, writer *cvm.Writer) error {
-	tn := fmt.Sprintf("%d-%s-cchain-trc", replay.config.NetworkID, chain)
+func (replay *dbReplay) startAXchainTrc(chain string, waitGroup *int64, worker utils.Worker, writer *cvm.Writer) error {
+	tn := fmt.Sprintf("%d-%s-axchain-trc", replay.config.NetworkID, chain)
 
 	replay.counterWaits.Inc(tn)
 	replay.counterAdded.Add(tn, 0)
@@ -475,8 +475,8 @@ func (replay *dbReplay) startCchainTrc(chain string, waitGroup *int64, worker ut
 	return nil
 }
 
-func (replay *dbReplay) startCchainLog(chain string, waitGroup *int64, worker utils.Worker, writer *cvm.Writer) error {
-	tn := fmt.Sprintf("%d-%s-cchain-logs", replay.config.NetworkID, chain)
+func (replay *dbReplay) startAXchainLog(chain string, waitGroup *int64, worker utils.Worker, writer *cvm.Writer) error {
+	tn := fmt.Sprintf("%d-%s-axchain-logs", replay.config.NetworkID, chain)
 
 	replay.counterWaits.Inc(tn)
 	replay.counterAdded.Add(tn, 0)

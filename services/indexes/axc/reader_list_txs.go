@@ -664,7 +664,7 @@ func collectCvmTransactions(ctx context.Context, dbRunner dbr.SessionRunner, txI
 		switch a.Type {
 		case models.AXChainIn:
 			ins[a.TransactionID] = append(ins[a.TransactionID], mapOutput(a))
-		case models.CchainOut:
+		case models.AXchainOut:
 			outs[a.TransactionID] = append(outs[a.TransactionID], mapOutput(a))
 		}
 	}

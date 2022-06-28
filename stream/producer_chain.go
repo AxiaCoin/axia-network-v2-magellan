@@ -350,7 +350,7 @@ func (p *ProducerChain) Listen() error {
 // finished
 func (p *ProducerChain) runProcessor() error {
 	if p.runningControl.IsStopped() {
-		p.sc.Log.Info("Not starting worker for cchain because we're stopping")
+		p.sc.Log.Info("Not starting worker for axchain because we're stopping")
 		return nil
 	}
 

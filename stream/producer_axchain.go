@@ -247,9 +247,9 @@ type ProducerAXChain struct {
 }
 
 func NewProducerAXChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenCloser {
-	topicName := fmt.Sprintf("%d-%s-cchain", conf.NetworkID, conf.CchainID)
-	topicTrcName := fmt.Sprintf("%d-%s-cchain-trc", conf.NetworkID, conf.CchainID)
-	topicLogsName := fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.CchainID)
+	topicName := fmt.Sprintf("%d-%s-axchain", conf.NetworkID, conf.AXchainID)
+	topicTrcName := fmt.Sprintf("%d-%s-axchain-trc", conf.NetworkID, conf.AXchainID)
+	topicLogsName := fmt.Sprintf("%d-%s-axchain-logs", conf.NetworkID, conf.AXchainID)
 
 	p := &ProducerAXChain{
 		topic:                   topicName,
@@ -257,10 +257,10 @@ func NewProducerAXChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenC
 		topicLogs:               topicLogsName,
 		conf:                    conf,
 		sc:                      sc,
-		metricProcessedCountKey: fmt.Sprintf("produce_records_processed_%s_cchain", conf.CchainID),
-		metricSuccessCountKey:   fmt.Sprintf("produce_records_success_%s_cchain", conf.CchainID),
-		metricFailureCountKey:   fmt.Sprintf("produce_records_failure_%s_cchain", conf.CchainID),
-		id:                      fmt.Sprintf("producer %d %s cchain", conf.NetworkID, conf.CchainID),
+		metricProcessedCountKey: fmt.Sprintf("produce_records_processed_%s_axchain", conf.AXchainID),
+		metricSuccessCountKey:   fmt.Sprintf("produce_records_success_%s_axchain", conf.AXchainID),
+		metricFailureCountKey:   fmt.Sprintf("produce_records_failure_%s_axchain", conf.AXchainID),
+		id:                      fmt.Sprintf("producer %d %s axchain", conf.NetworkID, conf.AXchainID),
 		runningControl:          utils.NewRunning(),
 	}
 	utils.Prometheus.CounterInit(p.metricProcessedCountKey, "records processed")
@@ -304,8 +304,8 @@ func (p *ProducerAXChain) Success() {
 }
 
 func (p *ProducerAXChain) Listen() error {
-	p.sc.Log.Info("Started worker manager for cchain")
-	defer p.sc.Log.Info("Exiting worker manager for cchain")
+	p.sc.Log.Info("Started worker manager for axchain")
+	defer p.sc.Log.Info("Exiting worker manager for axchain")
 
 	for !p.runningControl.IsStopped() {
 		err := p.runProcessor()
@@ -346,12 +346,12 @@ func AXChainNotReady(err error) bool {
 // finished
 func (p *ProducerAXChain) runProcessor() error {
 	if p.runningControl.IsStopped() {
-		p.sc.Log.Info("Not starting worker for cchain because we're stopping")
+		p.sc.Log.Info("Not starting worker for axchain because we're stopping")
 		return nil
 	}
 
-	p.sc.Log.Info("Starting worker for cchain")
-	defer p.sc.Log.Info("Exiting worker for cchain")
+	p.sc.Log.Info("Starting worker for axchain")
+	defer p.sc.Log.Info("Exiting worker for axchain")
 
 	wgpc := &sync.WaitGroup{}
 	wgpcmsgchan := &sync.WaitGroup{}
@@ -370,7 +370,7 @@ func (p *ProducerAXChain) runProcessor() error {
 
 		err := pc.Close()
 		if err != nil {
-			p.sc.Log.Warn("Stopping worker for cchain %w", err)
+			p.sc.Log.Warn("Stopping worker for axchain %w", err)
 		}
 	}()
 
@@ -480,7 +480,7 @@ func (p *ProducerAXChain) processWork(conns *utils.Connections, localBlock *loca
 
 		txPool := &db.TxPool{
 			NetworkID:     p.conf.NetworkID,
-			ChainID:       p.conf.CchainID,
+			ChainID:       p.conf.AXchainID,
 			MsgKey:        id.String(),
 			Serialization: txTransactionTracesBits,
 			Processed:     0,
@@ -511,7 +511,7 @@ func (p *ProducerAXChain) processWork(conns *utils.Connections, localBlock *loca
 
 		txPool := &db.TxPool{
 			NetworkID:     p.conf.NetworkID,
-			ChainID:       p.conf.CchainID,
+			ChainID:       p.conf.AXchainID,
 			MsgKey:        id.String(),
 			Serialization: logBits,
 			Processed:     0,
@@ -540,7 +540,7 @@ func (p *ProducerAXChain) processWork(conns *utils.Connections, localBlock *loca
 
 	txPool := &db.TxPool{
 		NetworkID:     p.conf.NetworkID,
-		ChainID:       p.conf.CchainID,
+		ChainID:       p.conf.AXchainID,
 		MsgKey:        id.String(),
 		Serialization: block,
 		Processed:     0,

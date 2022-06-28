@@ -7,7 +7,7 @@ type AXChainType uint16
 
 var (
 	AXChainIn     AXChainType = 1
-	CchainOut    AXChainType = 2
+	AXchainOut    AXChainType = 2
 	AXChainImport AXChainType = 1
 	AXChainExport AXChainType = 2
 
