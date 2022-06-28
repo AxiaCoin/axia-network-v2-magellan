@@ -1,6 +1,6 @@
 {
   "networkID": 1,
-  "logDirectory": "/var/log/ortelius",
+  "logDirectory": "/var/log/magellan",
   "metricsListenAddr": "",
   "listenAddr": ":8080",
   "features": [
@@ -20,7 +20,7 @@
   },
   "services": {
     "db": {
-      "dsn": "root:password@tcp(mysql:3306)/ortelius",
+      "dsn": "root:password@tcp(mysql:3306)/magellan",
       "driver": "mysql"
     }
   }

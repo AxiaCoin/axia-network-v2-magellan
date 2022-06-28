@@ -13,16 +13,16 @@ import (
 func TestParse(t *testing.T) {
 	var err error
 	var dsn string
-	dsn, err = ForceParseTimeParam("mysql://root:password@tcp(mysql:3306)/ortelius_dev")
-	if err != nil || dsn != "mysql://root:password@tcp(mysql:3306)/ortelius_dev?parseTime=true" {
+	dsn, err = ForceParseTimeParam("mysql://root:password@tcp(mysql:3306)/magellan_dev")
+	if err != nil || dsn != "mysql://root:password@tcp(mysql:3306)/magellan_dev?parseTime=true" {
 		t.Fatal("Unexpected dsn")
 	}
-	dsn, err = ForceParseTimeParam("root:password@tcp(mysql:3306)/ortelius_dev")
-	if err != nil || dsn != "root:password@tcp(mysql:3306)/ortelius_dev?parseTime=true" {
+	dsn, err = ForceParseTimeParam("root:password@tcp(mysql:3306)/magellan_dev")
+	if err != nil || dsn != "root:password@tcp(mysql:3306)/magellan_dev?parseTime=true" {
 		t.Fatal("Unexpected dsn")
 	}
-	dsn, err = ForceParseTimeParam("root:password@tcp(mysql:3306)/ortelius_dev?xyz=123")
-	if err != nil || dsn != "root:password@tcp(mysql:3306)/ortelius_dev?parseTime=true&xyz=123" {
+	dsn, err = ForceParseTimeParam("root:password@tcp(mysql:3306)/magellan_dev?xyz=123")
+	if err != nil || dsn != "root:password@tcp(mysql:3306)/magellan_dev?parseTime=true&xyz=123" {
 		t.Fatal("Unexpected dsn")
 	}
 }

@@ -5,12 +5,12 @@ package cfg
 
 const defaultJSON = `{
   "networkID": 1,
-  "logDirectory": "/tmp/ortelius/logs",
+  "logDirectory": "/tmp/magellan/logs",
   "listenAddr": ":8080",
   "chains": {},
   "services": {
     "db": {
-      "dsn": "root:password@tcp(127.0.0.1:3306)/ortelius_dev",
+      "dsn": "root:password@tcp(127.0.0.1:3306)/magellan_dev",
       "driver": "mysql"
     }
   }

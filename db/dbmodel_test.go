@@ -14,7 +14,7 @@ import (
 )
 
 const TestDB = "mysql"
-const TestDSN = "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true"
+const TestDSN = "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true"
 
 func TestTransaction(t *testing.T) {
 	p := NewPersist()

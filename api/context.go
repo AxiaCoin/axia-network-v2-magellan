@@ -26,7 +26,7 @@ var (
 	ErrCacheableFnFailed = errors.New("failed to load resource")
 )
 
-// Context is the base context for APIs in the ortelius systems
+// Context is the base context for APIs in the magellan systems
 type Context struct {
 	sc *servicesctrl.Control
 

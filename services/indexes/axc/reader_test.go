@@ -183,7 +183,7 @@ func newTestIndex(t *testing.T) (*Reader, func()) {
 		Logging: logConf,
 		DB: &cfg.DB{
 			Driver: "mysql",
-			DSN:    "root:password@tcp(127.0.0.1:3306)/ortelius_test?parseTime=true",
+			DSN:    "root:password@tcp(127.0.0.1:3306)/magellan_test?parseTime=true",
 		},
 	}
 
