@@ -8,8 +8,8 @@ Username = "ASDFasdf1245asdfASDFasdf234"
 Password = "ASDFasdf1245asdfASDFasdf234"
 
 keystoreURI = "http://127.0.0.1:9650/ext/keystore"
-SwapChainURI = "http://127.0.0.1:9650/ext/bc/X"
-coreChainURI = "http://127.0.0.1:9650/ext/bc/P"
+SwapChainURI = "http://127.0.0.1:9650/ext/bc/Swap"
+coreChainURI = "http://127.0.0.1:9650/ext/bc/Core"
 
 
 def send(uri, data)

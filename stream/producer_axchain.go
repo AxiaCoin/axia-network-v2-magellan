@@ -75,7 +75,7 @@ func newContainerC(
 		return nil, err
 	}
 
-	cl, err := modelsc.NewClient(conf.Axia + "/ext/bc/C/rpc")
+	cl, err := modelsc.NewClient(conf.Axia + "/ext/bc/AX/rpc")
 	if err != nil {
 		_ = conns.Close()
 		return nil, err
@@ -385,7 +385,7 @@ func (p *ProducerAXChain) runProcessor() error {
 	}
 
 	for icnt := 0; icnt < maxWorkers; icnt++ {
-		cl, err := modelsc.NewClient(p.conf.Axia + "/ext/bc/C/rpc")
+		cl, err := modelsc.NewClient(p.conf.Axia + "/ext/bc/AX/rpc")
 		if err != nil {
 			return err
 		}
