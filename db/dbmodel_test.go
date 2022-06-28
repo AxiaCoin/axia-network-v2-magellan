@@ -575,7 +575,7 @@ func TestCvmAddresses(t *testing.T) {
 
 	v := &CvmAddresses{}
 	v.ID = "id1"
-	v.Type = models.CChainIn
+	v.Type = models.AXChainIn
 	v.Idx = 1
 	v.TransactionID = "tid1"
 	v.Address = "addr1"
@@ -638,7 +638,7 @@ func TestCvmTransactions(t *testing.T) {
 	v := &CvmTransactions{}
 	v.ID = "id1"
 	v.TransactionID = "trid1"
-	v.Type = models.CChainIn
+	v.Type = models.AXChainIn
 	v.BlockchainID = "bid1"
 	v.Block = "1"
 	v.CreatedAt = tm

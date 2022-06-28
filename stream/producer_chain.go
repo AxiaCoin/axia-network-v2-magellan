@@ -54,7 +54,7 @@ type IndexedChain byte
 const (
 	IndexSwapChain IndexedChain = iota
 	IndexCoreChain
-	IndexCChain
+	IndexAXChain
 )
 
 func (t IndexedChain) String() string {
@@ -63,7 +63,7 @@ func (t IndexedChain) String() string {
 		return "X"
 	case IndexCoreChain:
 		return "P"
-	case IndexCChain:
+	case IndexAXChain:
 		return "C"
 	}
 	// Should never happen
@@ -183,7 +183,7 @@ func (p *producerChainContainer) ProcessNextMessage() error {
 
 		var id ids.ID
 		switch p.indexerChain {
-		case IndexCChain:
+		case IndexAXChain:
 			id = container.ID
 		default:
 			// x and p we compute the hash

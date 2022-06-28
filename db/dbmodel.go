@@ -1091,7 +1091,7 @@ func (p *persist) InsertCvmBlocks(
 
 type CvmAddresses struct {
 	ID            string
-	Type          models.CChainType
+	Type          models.AXChainType
 	Idx           uint64
 	TransactionID string
 	Address       string
@@ -1168,7 +1168,7 @@ func (p *persist) InsertCvmAddresses(
 type CvmTransactions struct {
 	ID            string
 	TransactionID string
-	Type          models.CChainType
+	Type          models.AXChainType
 	BlockchainID  string
 	Block         string
 	CreatedAt     time.Time

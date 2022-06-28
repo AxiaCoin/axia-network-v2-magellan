@@ -35,7 +35,7 @@ const (
 	maxWorkers     = 8
 )
 
-type producerCChainContainer struct {
+type producerAXChainContainer struct {
 	sc *servicesctrl.Control
 
 	conns      *utils.Connections
@@ -55,13 +55,13 @@ type producerCChainContainer struct {
 func newContainerC(
 	sc *servicesctrl.Control,
 	conf cfg.Config,
-) (*producerCChainContainer, error) {
+) (*producerAXChainContainer, error) {
 	conns, err := sc.Database()
 	if err != nil {
 		return nil, err
 	}
 
-	pc := &producerCChainContainer{
+	pc := &producerAXChainContainer{
 		msgChan:        make(chan *blockWorkContainer, maxWorkerQueue),
 		msgChanDone:    make(chan struct{}, 1),
 		runningControl: utils.NewRunning(),
@@ -85,7 +85,7 @@ func newContainerC(
 	return pc, nil
 }
 
-func (p *producerCChainContainer) Close() error {
+func (p *producerAXChainContainer) Close() error {
 	if p.client != nil {
 		p.client.Close()
 	}
@@ -96,7 +96,7 @@ func (p *producerCChainContainer) Close() error {
 	return errs.Err
 }
 
-func (p *producerCChainContainer) getBlock() error {
+func (p *producerAXChainContainer) getBlock() error {
 	var err error
 	sess := p.conns.DB().NewSessionForEventReceiver(p.conns.Stream().NewJob("get-block"))
 
@@ -132,7 +132,7 @@ func (p *producerCChainContainer) getBlock() error {
 	return nil
 }
 
-func (p *producerCChainContainer) catchupBlock(conns *utils.Connections, catchupBlock *big.Int, wg *sync.WaitGroup) {
+func (p *producerAXChainContainer) catchupBlock(conns *utils.Connections, catchupBlock *big.Int, wg *sync.WaitGroup) {
 	defer func() {
 		wg.Done()
 		_ = conns.Close()
@@ -190,7 +190,7 @@ func (p *producerCChainContainer) catchupBlock(conns *utils.Connections, catchup
 	p.sc.Log.Info("catchup complete")
 }
 
-func (p *producerCChainContainer) ProcessNextMessage() error {
+func (p *producerAXChainContainer) ProcessNextMessage() error {
 	lblocknext, err := p.client.Latest(rpcTimeout)
 	if err != nil {
 		time.Sleep(readRPCTimeout)
@@ -228,7 +228,7 @@ func (p *producerCChainContainer) ProcessNextMessage() error {
 	return nil
 }
 
-type ProducerCChain struct {
+type ProducerAXChain struct {
 	id string
 	sc *servicesctrl.Control
 
@@ -246,12 +246,12 @@ type ProducerCChain struct {
 	topicLogs string
 }
 
-func NewProducerCChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenCloser {
+func NewProducerAXChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenCloser {
 	topicName := fmt.Sprintf("%d-%s-cchain", conf.NetworkID, conf.CchainID)
 	topicTrcName := fmt.Sprintf("%d-%s-cchain-trc", conf.NetworkID, conf.CchainID)
 	topicLogsName := fmt.Sprintf("%d-%s-cchain-logs", conf.NetworkID, conf.CchainID)
 
-	p := &ProducerCChain{
+	p := &ProducerAXChain{
 		topic:                   topicName,
 		topicTrc:                topicTrcName,
 		topicLogs:               topicLogsName,
@@ -271,16 +271,16 @@ func NewProducerCChain(sc *servicesctrl.Control, conf cfg.Config) utils.ListenCl
 	return p
 }
 
-func (p *ProducerCChain) Close() error {
+func (p *ProducerAXChain) Close() error {
 	p.runningControl.Close()
 	return nil
 }
 
-func (p *ProducerCChain) ID() string {
+func (p *ProducerAXChain) ID() string {
 	return p.id
 }
 
-func (p *ProducerCChain) updateBlock(conns *utils.Connections, blockNumber *big.Int, updateTime time.Time) error {
+func (p *ProducerAXChain) updateBlock(conns *utils.Connections, blockNumber *big.Int, updateTime time.Time) error {
 	sess := conns.DB().NewSessionForEventReceiver(conns.Stream().NewJob("update-block"))
 
 	ctx, cancelCtx := context.WithTimeout(context.Background(), dbWriteTimeout)
@@ -293,17 +293,17 @@ func (p *ProducerCChain) updateBlock(conns *utils.Connections, blockNumber *big.
 	return p.sc.Persist.InsertCvmBlocks(ctx, sess, cvmBlocks)
 }
 
-func (p *ProducerCChain) Failure() {
+func (p *ProducerAXChain) Failure() {
 	_ = utils.Prometheus.CounterInc(p.metricFailureCountKey)
 	_ = utils.Prometheus.CounterInc(servicesctrl.MetricProduceFailureCountKey)
 }
 
-func (p *ProducerCChain) Success() {
+func (p *ProducerAXChain) Success() {
 	_ = utils.Prometheus.CounterInc(p.metricSuccessCountKey)
 	_ = utils.Prometheus.CounterInc(servicesctrl.MetricProduceSuccessCountKey)
 }
 
-func (p *ProducerCChain) Listen() error {
+func (p *ProducerAXChain) Listen() error {
 	p.sc.Log.Info("Started worker manager for cchain")
 	defer p.sc.Log.Info("Exiting worker manager for cchain")
 
@@ -326,7 +326,7 @@ func (p *ProducerCChain) Listen() error {
 	return nil
 }
 
-func CChainNotReady(err error) bool {
+func AXChainNotReady(err error) bool {
 	if strings.HasPrefix(err.Error(), "404 Not Found") {
 		return true
 	}
@@ -344,7 +344,7 @@ func CChainNotReady(err error) bool {
 
 // runProcessor starts the processing loop for the backend and closes it when
 // finished
-func (p *ProducerCChain) runProcessor() error {
+func (p *ProducerAXChain) runProcessor() error {
 	if p.runningControl.IsStopped() {
 		p.sc.Log.Info("Not starting worker for cchain because we're stopping")
 		return nil
@@ -403,7 +403,7 @@ func (p *ProducerCChain) runProcessor() error {
 		err := pc.ProcessNextMessage()
 		if pc.catchupErrs.GetValue() != nil {
 			err = pc.catchupErrs.GetValue().(error)
-			if !CChainNotReady(err) {
+			if !AXChainNotReady(err) {
 				p.Failure()
 				p.sc.Log.Error("Catchup error: %v", err)
 			} else {
@@ -430,7 +430,7 @@ func (p *ProducerCChain) runProcessor() error {
 			return io.EOF
 
 		default:
-			if CChainNotReady(err) {
+			if AXChainNotReady(err) {
 				p.sc.Log.Warn("%s", TrimNL(err.Error()))
 				return nil
 			}
@@ -460,7 +460,7 @@ type localBlockObject struct {
 	time           time.Time
 }
 
-func (p *ProducerCChain) processWork(conns *utils.Connections, localBlock *localBlockObject) error {
+func (p *ProducerAXChain) processWork(conns *utils.Connections, localBlock *localBlockObject) error {
 	cblk, err := modelsc.New(localBlock.blockContainer.Block)
 	if err != nil {
 		return err
@@ -564,7 +564,7 @@ type blockWorkContainer struct {
 	blockNumber *big.Int
 }
 
-func (p *ProducerCChain) blockProcessor(pc *producerCChainContainer, client *modelsc.Client, conns *utils.Connections, wg *sync.WaitGroup) {
+func (p *ProducerAXChain) blockProcessor(pc *producerAXChainContainer, client *modelsc.Client, conns *utils.Connections, wg *sync.WaitGroup) {
 	defer func() {
 		wg.Done()
 		_ = conns.Close()

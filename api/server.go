@@ -90,7 +90,7 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 		}
 		consumersmap[chid] = consumer
 	}
-	consumercchain, err := consumers.IndexerConsumerCChain(conf.NetworkID, conf.CchainID)
+	consumercchain, err := consumers.IndexerConsumerAXChain(conf.NetworkID, conf.CchainID)
 	if err != nil {
 		return nil, err
 	}

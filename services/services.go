@@ -27,7 +27,7 @@ type Consumer interface {
 	ParseJSON([]byte) ([]byte, error)
 }
 
-type ConsumerCChain interface {
+type ConsumerAXChain interface {
 	Name() string
 	Consume(context.Context, *utils.Connections, Consumable, *modelsc.Block, db.Persist) error
 	ParseJSON([]byte) ([]byte, error)

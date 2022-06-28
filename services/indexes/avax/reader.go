@@ -64,20 +64,20 @@ type Reader struct {
 	avmLock         sync.RWMutex
 	networkID       uint32
 	chainConsumers  map[string]services.Consumer
-	cChainCconsumer services.ConsumerCChain
+	axChainCconsumer services.ConsumerAXChain
 
 	readerAggregate ReaderAggregate
 
 	doneCh chan struct{}
 }
 
-func NewReader(networkID uint32, conns *utils.Connections, chainConsumers map[string]services.Consumer, cChainCconsumer services.ConsumerCChain, sc *servicesctrl.Control) (*Reader, error) {
+func NewReader(networkID uint32, conns *utils.Connections, chainConsumers map[string]services.Consumer, axChainCconsumer services.ConsumerAXChain, sc *servicesctrl.Control) (*Reader, error) {
 	reader := &Reader{
 		conns:           conns,
 		sc:              sc,
 		networkID:       networkID,
 		chainConsumers:  chainConsumers,
-		cChainCconsumer: cChainCconsumer,
+		axChainCconsumer: axChainCconsumer,
 		doneCh:          make(chan struct{}),
 	}
 
@@ -1234,7 +1234,7 @@ func (r *Reader) ETxDATA(ctx context.Context, p *params.TxDataParam) ([]byte, er
 
 	row := rows[0]
 
-	return r.cChainCconsumer.ParseJSON(row.Serialization)
+	return r.axChainCconsumer.ParseJSON(row.Serialization)
 }
 
 func (r *Reader) RawTransaction(ctx context.Context, id ids.ID) (*models.RawTx, error) {

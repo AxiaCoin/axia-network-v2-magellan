@@ -662,7 +662,7 @@ func collectCvmTransactions(ctx context.Context, dbRunner dbr.SessionRunner, txI
 			outs[a.TransactionID] = make([]models.Output, 0)
 		}
 		switch a.Type {
-		case models.CChainIn:
+		case models.AXChainIn:
 			ins[a.TransactionID] = append(ins[a.TransactionID], mapOutput(a))
 		case models.CchainOut:
 			outs[a.TransactionID] = append(outs[a.TransactionID], mapOutput(a))
@@ -682,9 +682,9 @@ func mapOutput(a models.CvmOutput) models.Output {
 	o.ChainID = a.ChainID
 	o.CreatedAt = a.CreatedAt
 	switch a.TransactionType {
-	case models.CChainExport:
+	case models.AXChainExport:
 		o.OutputType = models.OutputTypesAtomicExportTx
-	case models.CChainImport:
+	case models.AXChainImport:
 		o.OutputType = models.OutputTypesAtomicImportTx
 	}
 	o.CAddresses = []string{a.Address}

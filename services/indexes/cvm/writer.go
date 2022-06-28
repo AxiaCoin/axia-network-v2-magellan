@@ -228,14 +228,14 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 		return err
 	}
 
-	var typ models.CChainType = 0
+	var typ models.AXChainType = 0
 	var blockchainID string
 	for i, atomicTX := range atomicTXs {
 		txID := atomicTX.ID()
 		txIDs[i] = txID.String()
 		switch atx := atomicTX.UnsignedAtomicTx.(type) {
 		case *evm.UnsignedExportTx:
-			typ = models.CChainExport
+			typ = models.AXChainExport
 			blockchainID = atx.BlockchainID.String()
 			err = w.indexExportTx(ctx, txID, atx, blockBytes)
 			if err != nil {
@@ -247,7 +247,7 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 				return err
 			}
 
-			typ = models.CChainImport
+			typ = models.AXChainImport
 			blockchainID = atx.BlockchainID.String()
 			err = w.indexImportTx(ctx, txID, atx, atomicTX.Creds, blockBytes, unsignedBytes)
 			if err != nil {
@@ -319,16 +319,16 @@ func (w *Writer) indexBlockInternal(ctx services.ConsumerCtx, atomicTXs []*evm.T
 func (w *Writer) indexTransaction(
 	ctx services.ConsumerCtx,
 	id ids.ID,
-	typ models.CChainType,
+	typ models.AXChainType,
 	blockChainID ids.ID,
 	txFee uint64,
 	unsignedBytes []byte,
 ) error {
 	avmTxtype := ""
 	switch typ {
-	case models.CChainImport:
+	case models.AXChainImport:
 		avmTxtype = "atomic_import_tx"
-	case models.CChainExport:
+	case models.AXChainExport:
 		avmTxtype = "atomic_export_tx"
 	}
 
@@ -346,7 +346,7 @@ func (w *Writer) indexTransaction(
 }
 
 func (w *Writer) insertAddress(
-	typ models.CChainType,
+	typ models.AXChainType,
 	ctx services.ConsumerCtx,
 	idx uint64,
 	id ids.ID,
@@ -377,7 +377,7 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 	var totalin uint64
 	for icnt, in := range tx.Ins {
 		icntval := uint64(icnt)
-		err = w.insertAddress(models.CChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
+		err = w.insertAddress(models.AXChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
 		if err != nil {
 			return err
 		}
@@ -399,7 +399,7 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		idx++
 	}
 
-	return w.indexTransaction(ctx, txID, models.CChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.AXChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
 }
 
 func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.UnsignedImportTx, creds []verify.Verifiable, blockBytes []byte, unsignedBytes []byte) error {
@@ -428,5 +428,5 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		}
 	}
 
-	return w.indexTransaction(ctx, txID, models.CChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.AXChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
 }

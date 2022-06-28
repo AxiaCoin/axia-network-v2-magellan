@@ -46,7 +46,7 @@ var IndexerConsumer = func(networkID uint32, chainVM string, chainID string) (in
 	return indexer, err
 }
 
-var IndexerConsumerCChain = func(networkID uint32, chainID string) (indexer services.ConsumerCChain, err error) {
+var IndexerConsumerAXChain = func(networkID uint32, chainID string) (indexer services.ConsumerAXChain, err error) {
 	return cvm.NewWriter(networkID, chainID)
 }
 
@@ -54,7 +54,7 @@ type ConsumerDBFactory func(uint32, string, string) (stream.ProcessorFactoryChai
 
 var IndexerDB = stream.NewConsumerDBFactory(IndexerConsumer, stream.EventTypeDecisions)
 var IndexerConsensusDB = stream.NewConsumerDBFactory(IndexerConsumer, stream.EventTypeConsensus)
-var IndexerCChainDB = stream.NewConsumerCChainDB
+var IndexerAXChainDB = stream.NewConsumerAXChainDB
 
 func Bootstrap(sc *servicesctrl.Control, networkID uint32, chains cfg.Chains, factories []ConsumerFactory) error {
 	if sc.IsDisableBootstrap {

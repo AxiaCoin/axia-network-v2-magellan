@@ -150,8 +150,8 @@ type OutputList struct {
 }
 
 type CvmOutput struct {
-	Type            CChainType  `json:"type"`
-	TransactionType CChainType  `json:"transactionType"`
+	Type            AXChainType  `json:"type"`
+	TransactionType AXChainType  `json:"transactionType"`
 	Idx             uint64      `json:"idx"`
 	Amount          TokenAmount `json:"amount"`
 	Nonce           uint64      `json:"nonce"`
