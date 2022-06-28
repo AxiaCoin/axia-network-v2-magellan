@@ -61,14 +61,14 @@ func (s *Server) Close() error {
 }
 
 func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
-	sc.Log.Info("Router chainID %s", sc.GenesisContainer.XChainID.String())
+	sc.Log.Info("Router chainID %s", sc.GenesisContainer.SwapChainID.String())
 
-	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.XChainID, sc.GenesisContainer.AvaxAssetID)
+	indexBytes, err := newIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AvaxAssetID)
 	if err != nil {
 		return nil, err
 	}
 
-	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.XChainID, sc.GenesisContainer.AvaxAssetID)
+	legacyIndexResponse, err := newLegacyIndexResponse(conf.NetworkID, sc.GenesisContainer.SwapChainID, sc.GenesisContainer.AvaxAssetID)
 	if err != nil {
 		return nil, err
 	}
@@ -121,8 +121,8 @@ func newRouter(sc *servicesctrl.Control, conf cfg.Config) (*web.Router, error) {
 	AddV2Routes(&ctx, router, "/v2", indexBytes, nil)
 
 	// Legacy routes.
-	AddV2Routes(&ctx, router, "/x", legacyIndexResponse, &sc.GenesisContainer.XChainID)
-	AddV2Routes(&ctx, router, "/X", legacyIndexResponse, &sc.GenesisContainer.XChainID)
+	AddV2Routes(&ctx, router, "/x", legacyIndexResponse, &sc.GenesisContainer.SwapChainID)
+	AddV2Routes(&ctx, router, "/X", legacyIndexResponse, &sc.GenesisContainer.SwapChainID)
 
 	return router, nil
 }

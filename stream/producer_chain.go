@@ -52,14 +52,14 @@ func (t IndexType) String() string {
 type IndexedChain byte
 
 const (
-	IndexXChain IndexedChain = iota
+	IndexSwapChain IndexedChain = iota
 	IndexCoreChain
 	IndexCChain
 )
 
 func (t IndexedChain) String() string {
 	switch t {
-	case IndexXChain:
+	case IndexSwapChain:
 		return "X"
 	case IndexCoreChain:
 		return "P"

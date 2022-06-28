@@ -8,7 +8,7 @@ Username = "ASDFasdf1245asdfASDFasdf234"
 Password = "ASDFasdf1245asdfASDFasdf234"
 
 keystoreURI = "http://127.0.0.1:9650/ext/keystore"
-XChainURI = "http://127.0.0.1:9650/ext/bc/X"
+SwapChainURI = "http://127.0.0.1:9650/ext/bc/X"
 coreChainURI = "http://127.0.0.1:9650/ext/bc/P"
 
 
@@ -24,8 +24,8 @@ def send(uri, data)
     resp
 end
 
-def newXChainAddr()
-    resp = JSON.parse(send(XChainURI, {
+def newSwapChainAddr()
+    resp = JSON.parse(send(SwapChainURI, {
         "jsonrpc": "2.0",
         "id": nextID(),
         "method": "avm.createAddress",
@@ -53,7 +53,7 @@ send(keystoreURI, {
     }
 })
 
-send(XChainURI, {
+send(SwapChainURI, {
     "jsonrpc": "2.0",
     "id": nextID(),
     "method": "avm.importKey",
@@ -64,11 +64,11 @@ send(XChainURI, {
     }
 })
 
-addr1 = newXChainAddr()
-addr2 = newXChainAddr()
-addr3 = newXChainAddr()
+addr1 = newSwapChainAddr()
+addr2 = newSwapChainAddr()
+addr3 = newSwapChainAddr()
 
-send(XChainURI, {
+send(SwapChainURI, {
     "jsonrpc": "2.0",
     "id": nextID(),
     "method": "avm.send",
@@ -83,7 +83,7 @@ send(XChainURI, {
 
 sleep 2
 
-send(XChainURI, {
+send(SwapChainURI, {
     "jsonrpc": "2.0",
     "id": 3,
     "method": "avm.send",
@@ -97,7 +97,7 @@ send(XChainURI, {
 })
 
 sleep 2
-send(XChainURI, {
+send(SwapChainURI, {
     "jsonrpc": "2.0",
     "id": nextID(),
     "method": "avm.send",
@@ -111,7 +111,7 @@ send(XChainURI, {
 })
 
 sleep 2
-send(XChainURI, {
+send(SwapChainURI, {
     "jsonrpc": "2.0",
     "id": nextID(),
     "method": "avm.send",

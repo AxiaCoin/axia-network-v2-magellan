@@ -433,7 +433,7 @@ func (r *Reader) aggregateProcessorAssetAggr(conns *utils.Connections) {
 			}
 			p.ListParams.EndTime = runTm
 			p.ListParams.StartTime = p.ListParams.EndTime.Add(-runDuration)
-			p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.XChainID.String())
+			p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.SwapChainID.String())
 			id, err := ids.FromString(asset)
 			if err != nil {
 				r.sc.Log.Warn("Aggregate %v", err)
@@ -527,7 +527,7 @@ func (r *Reader) processAggregate(conns *utils.Connections, runTm time.Time, tag
 	}
 	p.ListParams.EndTime = runTm
 	p.ListParams.StartTime = p.ListParams.EndTime.Add(deltaTime)
-	p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.XChainID.String())
+	p.ChainIDs = append(p.ChainIDs, r.sc.GenesisContainer.SwapChainID.String())
 	r.sc.Log.Info("aggregate %s interval %s %v->%v", tag, intervalSize, p.ListParams.StartTime.Format(time.RFC3339), p.ListParams.EndTime.Format(time.RFC3339))
 	return r.Aggregate(ctx, p, conns)
 }
