@@ -62,7 +62,7 @@ func (t IndexedChain) String() string {
 	case IndexSwapChain:
 		return "Swap"
 	case IndexCoreChain:
-		return "P"
+		return "Core"
 	case IndexAXChain:
 		return "C"
 	}

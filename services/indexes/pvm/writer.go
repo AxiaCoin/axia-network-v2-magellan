@@ -62,7 +62,7 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err = bcLookup.Alias(id, "P"); err != nil {
+	if err = bcLookup.Alias(id, "Core"); err != nil {
 		return nil, err
 	}
 
