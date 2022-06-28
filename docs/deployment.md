@@ -113,12 +113,12 @@ As items are consumed into the indexer the count of processed = 0 transactions d
 # Docker containers
 
 There are 2 ortelius services api and indexer.
-There will be an avalanchego, and mysql container.
+There will be an axia, and mysql container.
 
 ```
 # docker ps -a
 CONTAINER ID   IMAGE                             COMMAND                  CREATED          STATUS                      PORTS                                              NAMES
-f9bd3c9d6f74   avaplatform/avalanchego:v1.2.3    "/bin/sh -cx 'exec .…"   19 minutes ago   Up 19 minutes               0.0.0.0:9650->9650/tcp                             production_avalanche_1
+f9bd3c9d6f74   avaplatform/axia:v1.2.3    "/bin/sh -cx 'exec .…"   19 minutes ago   Up 19 minutes               0.0.0.0:9650->9650/tcp                             production_axia_1
 70c5b875c07d   avaplatform/ortelius:140ac5c      "/opt/orteliusd api …"   19 minutes ago   Up 19 minutes               0.0.0.0:8080->8080/tcp                             production_api_1
 ee28fdea61c2   avaplatform/ortelius:140ac5c      "/opt/orteliusd stre…"   19 minutes ago   Up 19 minutes                                                                  production_indexer_1
 ae923d0489f0   mysql:8.0.26                      "docker-entrypoint.s…"   19 minutes ago   Up 19 minutes               0.0.0.0:3306->3306/tcp, 33060/tcp                  production_mysql_1
@@ -164,19 +164,19 @@ Update [config](https://github.com/axiacoin/axia-network-v2-magellan/blob/master
 
 The full Ortelius pipeline requires the following services. This guide will not cover their installation but will discuss key configuration settings.
 
-- **[Avalanche.go](https://github.com/axiacoin/axia-network-v2)** is the gateway to the Avalanche network
+- **[Axia.go](https://github.com/axiacoin/axia-network-v2)** is the gateway to the Axia network
 - **[MySQL](https://www.mysql.com/)** powers the index
 
 ## Configuring services
 
-### Avalanche.go
+### Axia.go
 
-The IPCs for the chains you want to consume must be available. This can be done by starting the Avalanche.go process with the `--index-enabled` flag.
+The IPCs for the chains you want to consume must be available. This can be done by starting the Axia.go process with the `--index-enabled` flag.
 
 see:
-[avalanchego configs](https://docs.avax.network/build/references/command-line-interface)
+[axia configs](https://docs.avax.network/build/references/command-line-interface)
 
-[avalanchego chain configs](https://docs.avax.network/build/references/command-line-interface#chain-configs)
+[axia chain configs](https://docs.avax.network/build/references/command-line-interface#chain-configs)
 
 ### MySQL
 
@@ -205,15 +205,15 @@ ortelius stream indexer -c path/to/config.json
 ortelius api -c path/to/config.json
 ```
 
-As Avalanche.go bootstraps the Producer will send all events to DB, the indexer will index, and the API will make them available. 
+As Axia.go bootstraps the Producer will send all events to DB, the indexer will index, and the API will make them available. 
 You can test your setup [API](https://docs.avax.network/build/tools/ortelius). 
 
 # Ortelius re-indexing
 
-If you performed a standard install the avalanchego database will be located at: /var/lib/ortelius/avalanche/mainnet/.
+If you performed a standard install the axia database will be located at: /var/lib/ortelius/axia/mainnet/.
 
 ```
-$ ls -altr /var/lib/ortelius/avalanche/mainnet/
+$ ls -altr /var/lib/ortelius/axia/mainnet/
 total 12
 drwxr-xr-x 3 root root 4096 Mar 10 14:29 ..
 drwxr-xr-x 3 root root 4096 Mar 10 14:29 .
@@ -224,7 +224,7 @@ drwxr-xr-x 2 root root 4096 Mar 10 15:01 v1.4.5
 
 Stop [ortelius](#stop-ortelius)
 
-Remove the directory /var/lib/ortelius/avalanche/mainnet/
+Remove the directory /var/lib/ortelius/axia/mainnet/
 
 Restart [ortelius](#start-ortelius).
 

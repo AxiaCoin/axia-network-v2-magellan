@@ -15,12 +15,12 @@ import (
 	"github.com/axiacoin/axia-network-v2/genesis"
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/snow"
-	"github.com/axiacoin/axia-network-v2/snow/engine/avalanche/vertex"
+	"github.com/axiacoin/axia-network-v2/snow/engine/axia/vertex"
 	"github.com/axiacoin/axia-network-v2/utils/constants"
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	avalancheGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
+	axiaGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
@@ -383,7 +383,7 @@ func (w *Writer) insertOperationTx(
 	}
 	for _, txOps := range tx.Ops {
 		for _, u := range txOps.UTXOIDs {
-			ti := &avalancheGoAvax.TransferableInput{
+			ti := &axiaGoAvax.TransferableInput{
 				Asset:  txOps.Asset,
 				UTXOID: *u,
 				In:     &secp256k1fx.TransferInput{},

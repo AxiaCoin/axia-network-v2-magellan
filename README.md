@@ -2,11 +2,11 @@
 
 # Ortelius
 
-A data processing pipeline for the [Avalanche network](https://avax.network).
+A data processing pipeline for the [Axia network](https://avax.network).
 
 ## Features
 
-- Maintains a persistent log of all consensus events and decisions made on the Avalanche network.
+- Maintains a persistent log of all consensus events and decisions made on the Axia network.
 - Indexes Exchange (X), Platform (P), and Contract (C) chain transactions.
 - An [API](https://docs.avax.network/build/tools/ortelius) allowing easy exploration of the index.
 

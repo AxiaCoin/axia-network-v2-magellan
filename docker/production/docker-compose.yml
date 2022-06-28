@@ -1,6 +1,6 @@
 version: '3.5'
 volumes:
-  avalanche-ipcs:
+  axia-ipcs:
 services:
   mysql:
     image: "mysql:8.0.26"
@@ -25,21 +25,21 @@ services:
         sleep 1
       done'
     restart: on-failure
-  avalanche:
+  axia:
     env_file:
       - production.env
-    image: "avaplatform/avalanchego:v1.7.10"
-    command: /bin/sh -cx "exec /avalanchego/build/avalanchego
+    image: "avaplatform/axia:v1.7.10"
+    command: /bin/sh -cx "exec /axia/build/axia
       --config-file=/opt/config.json
       --network-id=$${NETWORKID}
       "
     ports:
       - "9650:9650"
     volumes:
-      - /var/lib/ortelius/avalanche:/var/lib/avalanche
-      - ./../avalanchego_config.json:/opt/config.json
-      - ./../avalanchego_chain_config:/opt/avalanchego
-      - avalanche-ipcs:/tmp
+      - /var/lib/ortelius/axia:/var/lib/axia
+      - ./../axia_config.json:/opt/config.json
+      - ./../axia_chain_config:/opt/axia
+      - axia-ipcs:/tmp
     depends_on:
       - indexer
     restart: always
@@ -52,7 +52,7 @@ services:
       - mysql
       - migrate
     volumes:
-      - avalanche-ipcs:/tmp
+      - axia-ipcs:/tmp
       - ./../config.json:/opt/config.json
     restart: on-failure
   api:

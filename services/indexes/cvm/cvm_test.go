@@ -10,7 +10,7 @@ import (
 
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
-	avalancheGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
+	axiaGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/axia-network-v2-coreth/plugin/evm"
@@ -64,9 +64,9 @@ func TestInsertTxInternalExport(t *testing.T) {
 	extx := &evm.UnsignedExportTx{}
 	extxIn := evm.EVMInput{}
 	extx.Ins = []evm.EVMInput{extxIn}
-	transferableOut := &avalancheGoAvax.TransferableOutput{}
+	transferableOut := &axiaGoAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	extx.ExportedOutputs = []*avalancheGoAvax.TransferableOutput{transferableOut}
+	extx.ExportedOutputs = []*axiaGoAvax.TransferableOutput{transferableOut}
 
 	tx.UnsignedAtomicTx = extx
 	header := types.Header{}
@@ -96,9 +96,9 @@ func TestInsertTxInternalImport(t *testing.T) {
 	extx := &evm.UnsignedImportTx{}
 	evtxOut := evm.EVMOutput{}
 	extx.Outs = []evm.EVMOutput{evtxOut}
-	transferableIn := &avalancheGoAvax.TransferableInput{}
+	transferableIn := &axiaGoAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	extx.ImportedInputs = []*avalancheGoAvax.TransferableInput{transferableIn}
+	extx.ImportedInputs = []*axiaGoAvax.TransferableInput{transferableIn}
 
 	tx.UnsignedAtomicTx = extx
 	header := types.Header{}

@@ -280,7 +280,7 @@ func NewProducerChain(sc *servicesctrl.Control, conf cfg.Config, chainID string,
 
 	endpoint := fmt.Sprintf("/ext/index/%s/%s", indexerChain, indexerType)
 
-	nodeIndexer := indexer.NewClient(conf.AvalancheGO, endpoint)
+	nodeIndexer := indexer.NewClient(conf.Axia, endpoint)
 
 	p := &ProducerChain{
 		indexerType:             indexerType,

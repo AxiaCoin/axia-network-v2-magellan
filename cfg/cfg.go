@@ -30,7 +30,7 @@ type Config struct {
 	AdminListenAddr   string `json:"adminListenAddr"`
 	Features          map[string]struct{}
 	CchainID          string `json:"cchainId"`
-	AvalancheGO       string `json:"avalanchego"`
+	Axia       string `json:"axia"`
 	NodeInstance      string `json:"nodeInstance"`
 	AP5Activation     uint64
 }
@@ -123,7 +123,7 @@ func NewFromFile(filePath string) (*Config, error) {
 			},
 		},
 		CchainID:      v.GetString(keysStreamProducerCchainID),
-		AvalancheGO:   v.GetString(keysStreamProducerAvalanchego),
+		Axia:   v.GetString(keysStreamProducerAxia),
 		NodeInstance:  v.GetString(keysStreamProducerNodeInstance),
 		AP5Activation: uint64(ap5Activation),
 	}, nil

@@ -14,7 +14,7 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/crypto"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	avalancheGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
+	axiaGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 	"github.com/axiacoin/axia-network-v2-magellan/db"
@@ -171,15 +171,15 @@ func TestInsertTxInternal(t *testing.T) {
 	tx := &avm.Tx{}
 	baseTx := &avm.BaseTx{}
 
-	transferableOut := &avalancheGoAvax.TransferableOutput{}
+	transferableOut := &axiaGoAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{
 		OutputOwners: secp256k1fx.OutputOwners{Addrs: []ids.ShortID{ids.ShortEmpty}},
 	}
-	baseTx.Outs = []*avalancheGoAvax.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaGoAvax.TransferableOutput{transferableOut}
 
-	transferableIn := &avalancheGoAvax.TransferableInput{}
+	transferableIn := &axiaGoAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*avalancheGoAvax.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaGoAvax.TransferableInput{transferableIn}
 
 	f := crypto.FactorySECP256K1R{}
 	pk, _ := f.NewPrivateKey()
@@ -239,13 +239,13 @@ func TestInsertTxInternalCreateAsset(t *testing.T) {
 	tx := &avm.Tx{}
 	baseTx := &avm.CreateAssetTx{}
 
-	transferableOut := &avalancheGoAvax.TransferableOutput{}
+	transferableOut := &axiaGoAvax.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	baseTx.Outs = []*avalancheGoAvax.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaGoAvax.TransferableOutput{transferableOut}
 
-	transferableIn := &avalancheGoAvax.TransferableInput{}
+	transferableIn := &axiaGoAvax.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*avalancheGoAvax.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaGoAvax.TransferableInput{transferableIn}
 
 	tx.UnsignedTx = baseTx
 
