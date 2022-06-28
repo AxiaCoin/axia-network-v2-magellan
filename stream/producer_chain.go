@@ -64,7 +64,7 @@ func (t IndexedChain) String() string {
 	case IndexCoreChain:
 		return "Core"
 	case IndexAXChain:
-		return "C"
+		return "AX"
 	}
 	// Should never happen
 	return typeUnknown
