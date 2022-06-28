@@ -12,7 +12,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
@@ -47,7 +47,7 @@ func TestBootstrap(t *testing.T) {
 	}
 }
 
-func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connections, *Writer, *avax.Reader, func()) {
+func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connections, *Writer, *axc.Reader, func()) {
 	logConf := logging.DefaultConfig
 
 	conf := cfg.Services{
@@ -71,7 +71,7 @@ func newTestIndex(t *testing.T, networkID uint32, chainID ids.ID) (*utils.Connec
 	}
 
 	cmap := make(map[string]services.Consumer)
-	reader, _ := avax.NewReader(networkID, conns, cmap, nil, sc)
+	reader, _ := axc.NewReader(networkID, conns, cmap, nil, sc)
 	return conns, writer, reader, func() {
 		_ = conns.Close()
 	}

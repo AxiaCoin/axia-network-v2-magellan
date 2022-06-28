@@ -1,14 +1,14 @@
-🔴WARNING: This has been deprecated, please read [this.](https://docs.avax.network/build/tools/deprecating-ortelius) 🔴
+🔴WARNING: This has been deprecated, please read [this.](https://docs.axc.network/build/tools/deprecating-ortelius) 🔴
 
 # Ortelius
 
-A data processing pipeline for the [Axia network](https://avax.network).
+A data processing pipeline for the [Axia network](https://axc.network).
 
 ## Features
 
 - Maintains a persistent log of all consensus events and decisions made on the Axia network.
 - Indexes Exchange (X), Platform (P), and Contract (C) chain transactions.
-- An [API](https://docs.avax.network/build/tools/ortelius) allowing easy exploration of the index.
+- An [API](https://docs.axc.network/build/tools/ortelius) allowing easy exploration of the index.
 
 ## Prerequisite
 

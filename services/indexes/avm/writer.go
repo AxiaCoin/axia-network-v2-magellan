@@ -20,7 +20,7 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	axiaGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
+	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
@@ -28,7 +28,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 	"github.com/palantir/stacktrace"
@@ -41,10 +41,10 @@ var (
 type Writer struct {
 	chainID     string
 	networkID   uint32
-	avaxAssetID ids.ID
+	axcAssetID ids.ID
 
 	codec codec.Manager
-	avax  *avax.Writer
+	axc  *axc.Writer
 	ctx   *snow.Context
 }
 
@@ -54,7 +54,7 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 		return nil, err
 	}
 
-	_, avaxAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
+	_, axcAssetID, err := genesis.FromConfig(genesis.GetConfig(networkID))
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +81,8 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 		chainID:     chainID,
 		codec:       avmCodec,
 		networkID:   networkID,
-		avaxAssetID: avaxAssetID,
-		avax:        avax.NewWriter(chainID, avaxAssetID),
+		axcAssetID: axcAssetID,
+		axc:        axc.NewWriter(chainID, axcAssetID),
 		ctx:         ctx,
 	}, nil
 }
@@ -310,20 +310,20 @@ func (w *Writer) insertTxInternal(ctx services.ConsumerCtx, tx *avm.Tx, txBytes 
 	case *avm.OperationTx:
 		return w.insertOperationTx(ctx, txBytes, castTx, tx.Credentials(), false)
 	case *avm.ImportTx:
-		return w.avax.InsertTransaction(
+		return w.axc.InsertTransaction(
 			ctx,
 			txBytes,
 			tx.UnsignedBytes(),
 			&castTx.BaseTx.BaseTx,
 			tx.Credentials(),
 			models.TransactionTypeAVMImport,
-			&avax.AddInsContainer{Ins: castTx.ImportedIns, ChainID: castTx.SourceChain.String()},
+			&axc.AddInsContainer{Ins: castTx.ImportedIns, ChainID: castTx.SourceChain.String()},
 			nil,
 			0,
 			false,
 		)
 	case *avm.ExportTx:
-		return w.avax.InsertTransaction(
+		return w.axc.InsertTransaction(
 			ctx,
 			txBytes,
 			tx.UnsignedBytes(),
@@ -331,12 +331,12 @@ func (w *Writer) insertTxInternal(ctx services.ConsumerCtx, tx *avm.Tx, txBytes 
 			tx.Credentials(),
 			models.TransactionTypeAVMExport,
 			nil,
-			&avax.AddOutsContainer{Outs: castTx.ExportedOuts, ChainID: castTx.DestinationChain.String()},
+			&axc.AddOutsContainer{Outs: castTx.ExportedOuts, ChainID: castTx.DestinationChain.String()},
 			0,
 			false,
 		)
 	case *avm.BaseTx:
-		return w.avax.InsertTransaction(
+		return w.axc.InsertTransaction(
 			ctx,
 			txBytes,
 			tx.UnsignedBytes(),
@@ -371,19 +371,19 @@ func (w *Writer) insertOperationTx(
 	// before working on the Ops
 	// the outs get processed again in InsertTransaction
 	for _, out := range tx.Outs {
-		_, err = w.avax.InsertTransactionOuts(outputCount, ctx, 0, out, tx.ID(), w.chainID, false, false)
+		_, err = w.axc.InsertTransactionOuts(outputCount, ctx, 0, out, tx.ID(), w.chainID, false, false)
 		if err != nil {
 			return err
 		}
 		outputCount++
 	}
 
-	addIns := &avax.AddInsContainer{
+	addIns := &axc.AddInsContainer{
 		ChainID: w.chainID,
 	}
 	for _, txOps := range tx.Ops {
 		for _, u := range txOps.UTXOIDs {
-			ti := &axiaGoAvax.TransferableInput{
+			ti := &axiaGoAxc.TransferableInput{
 				Asset:  txOps.Asset,
 				UTXOID: *u,
 				In:     &secp256k1fx.TransferInput{},
@@ -392,7 +392,7 @@ func (w *Writer) insertOperationTx(
 		}
 
 		for _, out := range txOps.Op.Outs() {
-			amount, totalout, err = w.avax.ProcessStateOut(ctx, out, tx.ID(), outputCount, txOps.AssetID(), amount, totalout, w.chainID, false, false)
+			amount, totalout, err = w.axc.ProcessStateOut(ctx, out, tx.ID(), outputCount, txOps.AssetID(), amount, totalout, w.chainID, false, false)
 			if err != nil {
 				return err
 			}
@@ -400,7 +400,7 @@ func (w *Writer) insertOperationTx(
 		}
 	}
 
-	return w.avax.InsertTransaction(ctx, txBytes, tx.UnsignedBytes(), &tx.BaseTx.BaseTx, creds, models.TransactionTypeOperation, addIns, nil, totalout, genesis)
+	return w.axc.InsertTransaction(ctx, txBytes, tx.UnsignedBytes(), &tx.BaseTx.BaseTx, creds, models.TransactionTypeOperation, addIns, nil, totalout, genesis)
 }
 
 func (w *Writer) insertCreateAssetTx(ctx services.ConsumerCtx, txBytes []byte, tx *avm.CreateAssetTx, creds []verify.Verifiable, alias string, genesis bool) error {
@@ -415,7 +415,7 @@ func (w *Writer) insertCreateAssetTx(ctx services.ConsumerCtx, txBytes []byte, t
 	// before working on the states
 	// the outs get processed again in InsertTransaction
 	for _, out := range tx.Outs {
-		_, err = w.avax.InsertTransactionOuts(outputCount, ctx, 0, out, tx.ID(), w.chainID, false, false)
+		_, err = w.axc.InsertTransactionOuts(outputCount, ctx, 0, out, tx.ID(), w.chainID, false, false)
 		if err != nil {
 			return err
 		}
@@ -424,7 +424,7 @@ func (w *Writer) insertCreateAssetTx(ctx services.ConsumerCtx, txBytes []byte, t
 
 	for _, state := range tx.States {
 		for _, out := range state.Outs {
-			amount, totalout, err = w.avax.ProcessStateOut(ctx, out, tx.ID(), outputCount, tx.ID(), amount, totalout, w.chainID, false, false)
+			amount, totalout, err = w.axc.ProcessStateOut(ctx, out, tx.ID(), outputCount, tx.ID(), amount, totalout, w.chainID, false, false)
 			if err != nil {
 				return err
 			}
@@ -448,5 +448,5 @@ func (w *Writer) insertCreateAssetTx(ctx services.ConsumerCtx, txBytes []byte, t
 		return err
 	}
 
-	return w.avax.InsertTransaction(ctx, txBytes, tx.UnsignedBytes(), &tx.BaseTx.BaseTx, creds, models.TransactionTypeCreateAsset, nil, nil, totalout, genesis)
+	return w.axc.InsertTransaction(ctx, txBytes, tx.UnsignedBytes(), &tx.BaseTx.BaseTx, creds, models.TransactionTypeCreateAsset, nil, nil, totalout, genesis)
 }

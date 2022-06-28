@@ -1,4 +1,4 @@
-package avax
+package axc
 
 import (
 	"context"
@@ -240,7 +240,7 @@ func (r *Reader) listTxs(
 	return txs, false, nil
 }
 
-func (r *Reader) ListTransactions(ctx context.Context, p *params.ListTransactionsParams, avaxAssetID ids.ID) (*models.TransactionList, error) {
+func (r *Reader) ListTransactions(ctx context.Context, p *params.ListTransactionsParams, axcAssetID ids.ID) (*models.TransactionList, error) {
 	dbRunner, err := r.conns.DB().NewSession("get_transactions", cfg.RequestTimeout)
 	if err != nil {
 		return nil, err
@@ -252,7 +252,7 @@ func (r *Reader) ListTransactions(ctx context.Context, p *params.ListTransaction
 	}
 
 	if !dressed {
-		if err := dressTransactions(ctx, dbRunner, txs, avaxAssetID, p.ListParams.ID, p.DisableGenesis); err != nil {
+		if err := dressTransactions(ctx, dbRunner, txs, axcAssetID, p.ListParams.ID, p.DisableGenesis); err != nil {
 			return nil, err
 		}
 	}
@@ -350,7 +350,7 @@ func dressTransactions(
 	ctx context.Context,
 	dbRunner dbr.SessionRunner,
 	txs []*models.Transaction,
-	avaxAssetID ids.ID,
+	axcAssetID ids.ID,
 	txID *ids.ID,
 	disableGenesis bool,
 ) error {
@@ -481,7 +481,7 @@ func dressTransactions(
 		return err
 	}
 
-	dressTransactionsTx(txs, disableGenesis, txID, avaxAssetID, inputsMap, outputsMap, inputTotalsMap, outputTotalsMap, rewardsTypesMap, cvmin, cvmout)
+	dressTransactionsTx(txs, disableGenesis, txID, axcAssetID, inputsMap, outputsMap, inputTotalsMap, outputTotalsMap, rewardsTypesMap, cvmin, cvmout)
 	return nil
 }
 
@@ -489,7 +489,7 @@ func dressTransactionsTx(
 	txs []*models.Transaction,
 	disableGenesis bool,
 	txID *ids.ID,
-	avaxAssetID ids.ID,
+	axcAssetID ids.ID,
 	inputsMap map[models.StringID]map[models.StringID]*models.Input,
 	outputsMap map[models.StringID]map[models.StringID]*models.Output,
 	inputTotalsMap map[models.StringID]map[models.StringID]*big.Int,
@@ -500,7 +500,7 @@ func dressTransactionsTx(
 ) {
 	// Add the data we've built up for each transaction
 	for _, tx := range txs {
-		if disableGenesis && (txID == nil && string(tx.ID) == avaxAssetID.String()) {
+		if disableGenesis && (txID == nil && string(tx.ID) == axcAssetID.String()) {
 			continue
 		}
 		if inputs, ok := inputsMap[tx.ID]; ok {

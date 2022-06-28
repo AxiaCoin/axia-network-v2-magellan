@@ -14,13 +14,13 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/crypto"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
-	axiaGoAvax "github.com/axiacoin/axia-network-v2/vms/components/avax"
+	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/avax"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/params"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
@@ -125,7 +125,7 @@ func TestIndexBootstrap(t *testing.T) {
 	}
 }
 
-func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *avax.Reader, func()) {
+func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *axc.Reader, func()) {
 	networkID := uint32(5)
 
 	logConf := logging.DefaultConfig
@@ -151,7 +151,7 @@ func newTestIndex(t *testing.T, chainID ids.ID) (*utils.Connections, *Writer, *a
 	}
 
 	cmap := make(map[string]services.Consumer)
-	reader, _ := avax.NewReader(networkID, conns, cmap, nil, sc)
+	reader, _ := axc.NewReader(networkID, conns, cmap, nil, sc)
 	return conns, writer, reader, func() {
 		_ = conns.Close()
 	}
@@ -171,15 +171,15 @@ func TestInsertTxInternal(t *testing.T) {
 	tx := &avm.Tx{}
 	baseTx := &avm.BaseTx{}
 
-	transferableOut := &axiaGoAvax.TransferableOutput{}
+	transferableOut := &axiaGoAxc.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{
 		OutputOwners: secp256k1fx.OutputOwners{Addrs: []ids.ShortID{ids.ShortEmpty}},
 	}
-	baseTx.Outs = []*axiaGoAvax.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaGoAxc.TransferableOutput{transferableOut}
 
-	transferableIn := &axiaGoAvax.TransferableInput{}
+	transferableIn := &axiaGoAxc.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*axiaGoAvax.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaGoAxc.TransferableInput{transferableIn}
 
 	f := crypto.FactorySECP256K1R{}
 	pk, _ := f.NewPrivateKey()
@@ -239,13 +239,13 @@ func TestInsertTxInternalCreateAsset(t *testing.T) {
 	tx := &avm.Tx{}
 	baseTx := &avm.CreateAssetTx{}
 
-	transferableOut := &axiaGoAvax.TransferableOutput{}
+	transferableOut := &axiaGoAxc.TransferableOutput{}
 	transferableOut.Out = &secp256k1fx.TransferOutput{}
-	baseTx.Outs = []*axiaGoAvax.TransferableOutput{transferableOut}
+	baseTx.Outs = []*axiaGoAxc.TransferableOutput{transferableOut}
 
-	transferableIn := &axiaGoAvax.TransferableInput{}
+	transferableIn := &axiaGoAxc.TransferableInput{}
 	transferableIn.In = &secp256k1fx.TransferInput{}
-	baseTx.Ins = []*axiaGoAvax.TransferableInput{transferableIn}
+	baseTx.Ins = []*axiaGoAxc.TransferableInput{transferableIn}
 
 	tx.UnsignedTx = baseTx
 

@@ -12,7 +12,7 @@ type ChainInfo struct {
 	ID          StringID `json:"chainID"`
 	Alias       string   `json:"chainAlias"`
 	VM          string   `json:"vm"`
-	AVAXAssetID StringID `json:"avaxAssetID"`
+	AXCAssetID StringID `json:"axcAssetID"`
 	NetworkID   uint32   `json:"networkID"`
 }
 

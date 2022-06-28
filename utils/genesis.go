@@ -14,14 +14,14 @@ type GenesisContainer struct {
 	NetworkID       uint32
 	SwapChainGenesisTx *platformvm.Tx
 	SwapChainID        ids.ID
-	AvaxAssetID     ids.ID
+	AxcAssetID     ids.ID
 	GenesisBytes    []byte
 }
 
 func NewGenesisContainer(networkID uint32) (*GenesisContainer, error) {
 	gc := &GenesisContainer{NetworkID: networkID}
 	var err error
-	gc.GenesisBytes, gc.AvaxAssetID, err = genesis.FromConfig(genesis.GetConfig(gc.NetworkID))
+	gc.GenesisBytes, gc.AxcAssetID, err = genesis.FromConfig(genesis.GetConfig(gc.NetworkID))
 	if err != nil {
 		return nil, err
 	}

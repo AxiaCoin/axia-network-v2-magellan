@@ -71,14 +71,14 @@ git checkout tags/{tag-id}
       "chainID": "11111111111111111111111111111111LpoYY",
       "chainAlias": "p",
       "vm": "pvm",
-      "avaxAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
+      "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
     },
     "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": {
       "chainID": "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
       "chainAlias": "x",
       "vm": "avm",
-      "avaxAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
+      "axcAssetID": "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z",
       "networkID": 1
     }
   }
@@ -174,9 +174,9 @@ The full Ortelius pipeline requires the following services. This guide will not 
 The IPCs for the chains you want to consume must be available. This can be done by starting the Axia.go process with the `--index-enabled` flag.
 
 see:
-[axia configs](https://docs.avax.network/build/references/command-line-interface)
+[axia configs](https://docs.axc.network/build/references/command-line-interface)
 
-[axia chain configs](https://docs.avax.network/build/references/command-line-interface#chain-configs)
+[axia chain configs](https://docs.axc.network/build/references/command-line-interface#chain-configs)
 
 ### MySQL
 
@@ -206,7 +206,7 @@ ortelius api -c path/to/config.json
 ```
 
 As Axia.go bootstraps the Producer will send all events to DB, the indexer will index, and the API will make them available. 
-You can test your setup [API](https://docs.avax.network/build/tools/ortelius). 
+You can test your setup [API](https://docs.axc.network/build/tools/ortelius). 
 
 # Ortelius re-indexing
 
