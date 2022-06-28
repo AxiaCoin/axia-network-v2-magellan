@@ -155,10 +155,10 @@ func (r *Reader) Search(ctx context.Context, p *params.SearchParams, avaxAssetID
 		A regex search on address can't work..
 		And on output_id makes no sense...
 
-		Addresses are stored in the db in 20byte hex, and the query is by address 'fuji.....'
+		Addresses are stored in the db in 20byte hex, and the query is by address 'test.....'
 		There is no way to convert a part of an address into a "few" bytes...
 
-		Future: store the address in the db in the address format 'fuji.....'
+		Future: store the address in the db in the address format 'test.....'
 		then a part query could work.
 	*/
 	if false {

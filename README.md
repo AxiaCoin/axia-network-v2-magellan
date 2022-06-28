@@ -16,7 +16,7 @@ https://docs.docker.com/engine/install/ubuntu/
 
 https://docs.docker.com/compose/install/
 
-## Quick Start with Standalone Mode on Fuji (testnet) network
+## Quick Start with Standalone Mode on Test (testnet) network
 
 The easiest way to get started is to try out the standalone mode.
 
