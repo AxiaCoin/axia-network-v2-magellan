@@ -44,7 +44,7 @@ services:
       - indexer
     restart: always
   indexer: &magellan-app
-    image: "167356549637.dkr.ecr.us-east-1.amazonaws.com/axia:latest"
+    image: "167356549637.dkr.ecr.us-east-1.amazonaws.com/magellan:latest"
     command: ["stream", "indexer", "-c", "/opt/config.json"]
     external_links:
       - mysql
