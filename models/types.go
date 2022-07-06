@@ -31,7 +31,7 @@ var (
 	TransactionTypeAVMExport          TransactionType = 0x4
 	TransactionTypeAddValidator       TransactionType = 0xc
 	TransactionTypeAddAllychainValidator TransactionType = 0xd
-	TransactionTypeAddDelegator       TransactionType = 0xe
+	TransactionTypeAddNominator       TransactionType = 0xe
 	TransactionTypeCreateChain        TransactionType = 0xf
 	TransactionTypeCreateAllychain       TransactionType = 0x10
 	TransactionTypePVMImport          TransactionType = 0x11
@@ -73,8 +73,8 @@ func (t TransactionType) String() string {
 		return "add_validator"
 	case TransactionTypeAddAllychainValidator:
 		return "add_allychain_validator"
-	case TransactionTypeAddDelegator:
-		return "add_delegator"
+	case TransactionTypeAddNominator:
+		return "add_nominator"
 	case TransactionTypeCreateChain:
 		return "create_chain"
 	case TransactionTypeCreateAllychain:

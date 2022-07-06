@@ -101,7 +101,7 @@ func (w *Writer) initCtxPtx(p *platformvm.Tx) {
 			utxo.Out.InitCtx(w.ctx)
 		}
 		castTx.InitCtx(w.ctx)
-	case *platformvm.UnsignedAddDelegatorTx:
+	case *platformvm.UnsignedAddNominatorTx:
 		for _, utxo := range castTx.UTXOs() {
 			utxo.Out.InitCtx(w.ctx)
 		}
@@ -491,14 +491,14 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		if err != nil {
 			return err
 		}
-	case *platformvm.UnsignedAddDelegatorTx:
+	case *platformvm.UnsignedAddNominatorTx:
 		baseTx = castTx.BaseTx.BaseTx
 		outs = &axcIndexer.AddOutsContainer{
 			Outs:    castTx.Stake,
 			Stake:   true,
 			ChainID: w.chainID,
 		}
-		typ = models.TransactionTypeAddDelegator
+		typ = models.TransactionTypeAddNominator
 		err = w.InsertTransactionValidator(ctx, baseTx.ID(), castTx.Validator)
 		if err != nil {
 			return err
