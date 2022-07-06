@@ -5,7 +5,7 @@ services:
   mysql:
     image: "mysql:8.0.26"
     volumes:
-      - /var/lib/magellan/mysql:/var/lib/mysql
+      - /home/ubuntu/.magellan/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
     ports:
       - "3306:3306"
@@ -28,7 +28,7 @@ services:
   axia:
     env_file:
       - production.env
-    image: "avaplatform/axia:v1.7.10"
+    image: "167356549637.dkr.ecr.us-east-1.amazonaws.com/axia:latest"
     command: /bin/sh -cx "exec /axia/build/axia
       --config-file=/opt/config.json
       --network-id=$${NETWORKID}
@@ -36,7 +36,7 @@ services:
     ports:
       - "9650:9650"
     volumes:
-      - /var/lib/magellan/axia:/var/lib/axia
+      - /home/ubuntu/.magellan/axia:/var/lib/axia
       - ./../axia_config.json:/opt/config.json
       - ./../axia_chain_config:/opt/axia
       - axia-ipcs:/tmp
@@ -44,7 +44,7 @@ services:
       - indexer
     restart: always
   indexer: &magellan-app
-    image: "avaplatform/magellan:v1.7.10"
+    image: "167356549637.dkr.ecr.us-east-1.amazonaws.com/axia:latest"
     command: ["stream", "indexer", "-c", "/opt/config.json"]
     external_links:
       - mysql
@@ -60,3 +60,14 @@ services:
     command: ["api", "-c", "/opt/config.json"]
     ports:
       - 8080:8080
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin:5.1.3
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      PMA_PORT: 3306
