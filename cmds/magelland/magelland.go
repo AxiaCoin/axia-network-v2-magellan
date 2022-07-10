@@ -15,7 +15,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2-magellan/api"
 	"github.com/axiacoin/axia-network-v2-magellan/balance"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
@@ -28,6 +27,7 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/stream"
 	"github.com/axiacoin/axia-network-v2-magellan/stream/consumers"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
+	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/rpc/v2"
 	"github.com/gorilla/rpc/v2/json2"

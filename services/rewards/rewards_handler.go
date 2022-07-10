@@ -5,27 +5,28 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/axia-network-v2/api"
-	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/axia-network-v2/utils/formatting"
-	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
-	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/services"
 	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/servicesctrl"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
+	"github.com/axiacoin/axia-network-v2/api"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/formatting"
+	"github.com/axiacoin/axia-network-v2/utils/uint128"
+	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
+	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 )
 
 type Handler struct {
-	client      platformvm.Client
-	conns       *utils.Connections
-	perist      db.Persist
+	client     platformvm.Client
+	conns      *utils.Connections
+	perist     db.Persist
 	axcAssetID ids.ID
-	writer      *axc.Writer
-	cid         ids.ID
-	doneCh      chan struct{}
+	writer     *axc.Writer
+	cid        ids.ID
+	doneCh     chan struct{}
 }
 
 func (r *Handler) Start(sc *servicesctrl.Control) error {
@@ -175,8 +176,8 @@ func (r *Handler) processRewardUtxos(rewardsUtxos [][]byte, createdAt time.Time)
 			utxo.TxID,
 			utxo.OutputIndex,
 			utxo.AssetID(),
-			0,
-			0,
+			uint128.Zero,
+			uint128.Zero,
 			r.cid.String(),
 			false,
 			false,

@@ -227,7 +227,7 @@ func TestAssets(t *testing.T) {
 	v.Symbol = "symbol1"
 	v.Denomination = 0x1
 	v.Alias = "alias1"
-	v.CurrentSupply = 1
+	v.CurrentSupply = "1"
 	v.CreatedAt = tm
 
 	stream := &dbr.NullEventReceiver{}
@@ -255,7 +255,7 @@ func TestAssets(t *testing.T) {
 	v.Symbol = "symbol2"
 	v.Denomination = 0x2
 	v.Alias = "alias2"
-	v.CurrentSupply = 2
+	v.CurrentSupply = "2"
 	v.CreatedAt = tm
 
 	err = p.InsertAssets(ctx, rawDBConn.NewSession(stream), v, true)

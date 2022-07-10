@@ -8,21 +8,19 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/palantir/stacktrace"
-
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
 	"github.com/axiacoin/axia-network-v2/ids"
 	"github.com/axiacoin/axia-network-v2/utils/crypto"
 	"github.com/axiacoin/axia-network-v2/utils/formatting"
-	"github.com/axiacoin/axia-network-v2/utils/math"
+	"github.com/axiacoin/axia-network-v2/utils/uint128"
 	"github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/nftfx"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/axia-network-v2-magellan/cfg"
-	"github.com/axiacoin/axia-network-v2-magellan/db"
-	"github.com/axiacoin/axia-network-v2-magellan/models"
-	"github.com/axiacoin/axia-network-v2-magellan/services"
 )
 
 var (
@@ -35,7 +33,7 @@ var (
 var ecdsaRecoveryFactory = crypto.FactorySECP256K1R{}
 
 type Writer struct {
-	chainID     string
+	chainID    string
 	axcAssetID ids.ID
 }
 
@@ -63,13 +61,13 @@ func (w *Writer) InsertTransaction(
 	txType models.TransactionType,
 	addIns *AddInsContainer,
 	addOuts *AddOutsContainer,
-	addlOutTxfee uint64,
+	addlOutTxfee uint128.Uint128,
 	genesis bool,
 ) error {
 	var (
 		err      error
-		totalin  uint64 = 0
-		totalout uint64 = 0
+		totalin  uint128.Uint128 = uint128.Zero
+		totalout uint128.Uint128 = uint128.Zero
 	)
 
 	inidx := 0
@@ -109,12 +107,13 @@ func (w *Writer) InsertTransaction(
 			idx++
 		}
 	}
-
-	txfee := totalin - (totalout + addlOutTxfee)
+	txfee := uint128.Uint128{}
 	if genesis {
-		txfee = 0
-	} else if totalin < (totalout + addlOutTxfee) {
-		txfee = 0
+		txfee = uint128.Zero
+	} else if totalin.Cmp(totalout.Add(addlOutTxfee)) == -1 {
+		txfee = uint128.Zero
+	} else {
+		txfee = totalin.Sub(totalout.Add(addlOutTxfee))
 	}
 
 	// Add baseTx to the table
@@ -138,7 +137,7 @@ func (w *Writer) InsertTransactionBase(
 	txType string,
 	memo []byte,
 	txBytes []byte,
-	txfee uint64,
+	txfee uint128.Uint128,
 	genesis bool,
 	networkID uint32,
 ) error {
@@ -155,7 +154,7 @@ func (w *Writer) InsertTransactionBase(
 		Type:                   txType,
 		Memo:                   memo,
 		CanonicalSerialization: txBytes,
-		Txfee:                  txfee,
+		Txfee:                  txfee.Lo,
 		Genesis:                genesis,
 		CreatedAt:              ctx.Time(),
 		NetworkID:              networkID,
@@ -167,18 +166,18 @@ func (w *Writer) InsertTransactionBase(
 func (w *Writer) InsertTransactionIns(
 	idx int,
 	ctx services.ConsumerCtx,
-	totalin uint64,
+	totalin uint128.Uint128,
 	in *axc.TransferableInput,
 	txID ids.ID,
 	creds []verify.Verifiable,
 	unsignedBytes []byte,
 	chainID string,
-) (uint64, error) {
+) (uint128.Uint128, error) {
 	var err error
 	if in.AssetID() == w.axcAssetID {
-		totalin, err = math.Add64(totalin, in.Input().Amount())
+		totalin = totalin.Add64(in.Input().Amount())
 		if err != nil {
-			return 0, err
+			return uint128.Zero, err
 		}
 	}
 
@@ -191,16 +190,16 @@ func (w *Writer) InsertTransactionIns(
 			for _, sig := range cred.Sigs {
 				publicKey, err := ecdsaRecoveryFactory.RecoverPublicKey(unsignedBytes, sig[:])
 				if err != nil {
-					return 0, err
+					return uint128.Zero, err
 				}
 				err = w.InsertAddressFromPublicKey(ctx, publicKey)
 				if err != nil {
-					return 0, err
+					return uint128.Zero, err
 				}
 
 				err = w.InsertOutputAddress(ctx, inputID, publicKey.Address(), sig[:], in.TxID, in.OutputIndex, chainID)
 				if err != nil {
-					return 0, err
+					return uint128.Zero, err
 				}
 			}
 		}
@@ -220,7 +219,7 @@ func (w *Writer) InsertTransactionIns(
 
 	err = ctx.Persist().UpdateOutputAddressAccumulateInOutputsProcessed(ctx.Ctx(), ctx.DB(), inputID.String())
 	if err != nil {
-		return 0, err
+		return uint128.Zero, err
 	}
 
 	return totalin, ctx.Persist().InsertOutputsRedeeming(ctx.Ctx(), ctx.DB(), outputsRedeeming, cfg.PerformUpdates)
@@ -229,17 +228,17 @@ func (w *Writer) InsertTransactionIns(
 func (w *Writer) InsertTransactionOuts(
 	idx uint32,
 	ctx services.ConsumerCtx,
-	totalout uint64,
+	totalout uint128.Uint128,
 	out *axc.TransferableOutput,
 	txID ids.ID,
 	chainID string,
 	stake bool,
 	genesisutxo bool,
-) (uint64, error) {
+) (uint128.Uint128, error) {
 	var err error
-	_, totalout, err = w.ProcessStateOut(ctx, out.Out, txID, idx, out.AssetID(), 0, totalout, chainID, stake, genesisutxo)
+	_, totalout, err = w.ProcessStateOut(ctx, out.Out, txID, idx, out.AssetID(), uint128.Zero, totalout, chainID, stake, genesisutxo)
 	if err != nil {
-		return 0, err
+		return uint128.Zero, err
 	}
 	return totalout, nil
 }
@@ -408,12 +407,12 @@ func (w *Writer) ProcessStateOut(
 	txID ids.ID,
 	outputCount uint32,
 	assetID ids.ID,
-	amount uint64,
-	totalout uint64,
+	amount uint128.Uint128,
+	totalout uint128.Uint128,
 	chainID string,
 	stake bool,
 	genesisutxo bool,
-) (uint64, uint64, error) {
+) (uint128.Uint128, uint128.Uint128, error) {
 	xOut := func(oo secp256k1fx.OutputOwners) *secp256k1fx.TransferOutput {
 		return &secp256k1fx.TransferOutput{OutputOwners: oo}
 	}
@@ -424,15 +423,14 @@ func (w *Writer) ProcessStateOut(
 	case *platformvm.StakeableLockOut:
 		xOut, ok := typedOut.TransferableOut.(*secp256k1fx.TransferOutput)
 		if !ok {
-			return 0, 0, fmt.Errorf("invalid type *secp256k1fx.TransferOutput")
+			return uint128.Zero, uint128.Zero, fmt.Errorf("invalid type *secp256k1fx.TransferOutput")
 		}
 		if assetID == w.axcAssetID {
-			totalout, err = math.Add64(totalout, xOut.Amt)
+			totalout = totalout.Add64(xOut.Amt)
 			if err != nil {
-				return 0, 0, err
+				return uint128.Zero, uint128.Zero, err
 			}
 		}
-
 		err = w.InsertOutput(
 			ctx,
 			txID,
@@ -450,7 +448,7 @@ func (w *Writer) ProcessStateOut(
 			genesisutxo,
 		)
 		if err != nil {
-			return 0, 0, err
+			return uint128.Zero, uint128.Zero, err
 		}
 	case *nftfx.TransferOutput:
 		err = w.InsertOutput(
@@ -470,7 +468,7 @@ func (w *Writer) ProcessStateOut(
 			genesisutxo,
 		)
 		if err != nil {
-			return 0, 0, err
+			return uint128.Zero, uint128.Zero, err
 		}
 	case *nftfx.MintOutput:
 		err = w.InsertOutput(
@@ -490,7 +488,7 @@ func (w *Writer) ProcessStateOut(
 			genesisutxo,
 		)
 		if err != nil {
-			return 0, 0, err
+			return uint128.Zero, uint128.Zero, err
 		}
 	case *secp256k1fx.MintOutput:
 		err = w.InsertOutput(
@@ -510,13 +508,13 @@ func (w *Writer) ProcessStateOut(
 			genesisutxo,
 		)
 		if err != nil {
-			return 0, 0, err
+			return uint128.Zero, uint128.Zero, err
 		}
 	case *secp256k1fx.TransferOutput:
 		if assetID == w.axcAssetID {
-			totalout, err = math.Add64(totalout, typedOut.Amount())
+			totalout = totalout.Add64(typedOut.Amount())
 			if err != nil {
-				return 0, 0, err
+				return uint128.Zero, uint128.Zero, err
 			}
 		}
 		err = w.InsertOutput(
@@ -536,14 +534,11 @@ func (w *Writer) ProcessStateOut(
 			genesisutxo,
 		)
 		if err != nil {
-			return 0, 0, err
+			return uint128.Zero, uint128.Zero, err
 		}
-		amount, err = math.Add64(amount, typedOut.Amount())
-		if err != nil {
-			return 0, 0, stacktrace.Propagate(err, "add %v to %v", typedOut.Amount(), amount)
-		}
+		amount = amount.Add64(typedOut.Amount())
 	default:
-		return 0, 0, fmt.Errorf("unknown type %s", reflect.TypeOf(out))
+		return uint128.Zero, uint128.Zero, fmt.Errorf("unknown type %s", reflect.TypeOf(out))
 	}
 
 	return amount, totalout, nil

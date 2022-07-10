@@ -11,6 +11,12 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/axiacoin/axia-network-v2/api/metrics"
 	"github.com/axiacoin/axia-network-v2/codec"
 	"github.com/axiacoin/axia-network-v2/genesis"
@@ -18,18 +24,13 @@ import (
 	"github.com/axiacoin/axia-network-v2/snow"
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
+	"github.com/axiacoin/axia-network-v2/utils/uint128"
 	"github.com/axiacoin/axia-network-v2/utils/wrappers"
 	"github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/proposervm/block"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/axia-network-v2-magellan/cfg"
-	"github.com/axiacoin/axia-network-v2-magellan/db"
-	"github.com/axiacoin/axia-network-v2-magellan/models"
-	"github.com/axiacoin/axia-network-v2-magellan/services"
-	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
-	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/palantir/stacktrace"
 )
 
@@ -42,12 +43,12 @@ var (
 )
 
 type Writer struct {
-	chainID     string
-	networkID   uint32
+	chainID    string
+	networkID  uint32
 	axcAssetID ids.ID
 
 	codec codec.Manager
-	axc  *axcIndexer.Writer
+	axc   *axcIndexer.Writer
 	ctx   *snow.Context
 }
 
@@ -75,12 +76,12 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	}
 
 	return &Writer{
-		chainID:     chainID,
-		networkID:   networkID,
+		chainID:    chainID,
+		networkID:  networkID,
 		axcAssetID: axcAssetID,
-		codec:       platformvm.Codec,
+		codec:      platformvm.Codec,
 		axc:        axcIndexer.NewWriter(chainID, axcAssetID),
-		ctx:         ctx,
+		ctx:        ctx,
 	}, nil
 }
 
@@ -160,28 +161,28 @@ func (w *Writer) initCtx(b platformvm.Block) {
 }
 
 type PtxDataProposerModel struct {
-	ID           string    `json:"tx"`
-	ParentID     string    `json:"parentID"`
+	ID              string    `json:"tx"`
+	ParentID        string    `json:"parentID"`
 	CoreChainHeight uint64    `json:"coreChainHeight"`
-	Proposer     string    `json:"proposer"`
-	TimeStamp    time.Time `json:"timeStamp"`
+	Proposer        string    `json:"proposer"`
+	TimeStamp       time.Time `json:"timeStamp"`
 }
 
 func NewPtxDataProposerModel(b block.Block) *PtxDataProposerModel {
 	switch properBlockDetail := b.(type) {
 	case block.SignedBlock:
 		return &PtxDataProposerModel{
-			ID:           properBlockDetail.ID().String(),
-			ParentID:     properBlockDetail.ParentID().String(),
+			ID:              properBlockDetail.ID().String(),
+			ParentID:        properBlockDetail.ParentID().String(),
 			CoreChainHeight: properBlockDetail.CoreChainHeight(),
-			Proposer:     properBlockDetail.Proposer().String(),
-			TimeStamp:    properBlockDetail.Timestamp(),
+			Proposer:        properBlockDetail.Proposer().String(),
+			TimeStamp:       properBlockDetail.Timestamp(),
 		}
 	default:
 		return &PtxDataProposerModel{
-			ID:           properBlockDetail.ID().String(),
+			ID:              properBlockDetail.ID().String(),
 			CoreChainHeight: 0,
-			Proposer:     "",
+			Proposer:        "",
 		}
 	}
 }
@@ -301,8 +302,8 @@ func (w *Writer) Bootstrap(ctx context.Context, conns *utils.Connections, persis
 			ChainID,
 			uint32(idx),
 			utxo.AssetID(),
-			0,
-			0,
+			uint128.Zero,
+			uint128.Zero,
 			w.chainID,
 			false,
 			true,
@@ -367,25 +368,25 @@ func (w *Writer) indexBlock(ctx services.ConsumerCtx, proposerblockBytes []byte)
 		switch properBlockDetail := proposerBlock.(type) {
 		case block.SignedBlock:
 			pvmProposer = &db.PvmProposer{
-				ID:            properBlockDetail.ID().String(),
-				ParentID:      properBlockDetail.ParentID().String(),
-				BlkID:         blkID.String(),
-				ProposerBlkID: proposerBlkID.String(),
-				CoreChainHeight:  properBlockDetail.CoreChainHeight(),
-				Proposer:      properBlockDetail.Proposer().String(),
-				TimeStamp:     properBlockDetail.Timestamp(),
-				CreatedAt:     ctx.Time(),
+				ID:              properBlockDetail.ID().String(),
+				ParentID:        properBlockDetail.ParentID().String(),
+				BlkID:           blkID.String(),
+				ProposerBlkID:   proposerBlkID.String(),
+				CoreChainHeight: properBlockDetail.CoreChainHeight(),
+				Proposer:        properBlockDetail.Proposer().String(),
+				TimeStamp:       properBlockDetail.Timestamp(),
+				CreatedAt:       ctx.Time(),
 			}
 		default:
 			pvmProposer = &db.PvmProposer{
-				ID:            properBlockDetail.ID().String(),
-				ParentID:      properBlockDetail.ParentID().String(),
-				BlkID:         blkID.String(),
-				ProposerBlkID: proposerBlkID.String(),
-				CoreChainHeight:  0,
-				Proposer:      "",
-				TimeStamp:     ctx.Time(),
-				CreatedAt:     ctx.Time(),
+				ID:              properBlockDetail.ID().String(),
+				ParentID:        properBlockDetail.ParentID().String(),
+				BlkID:           blkID.String(),
+				ProposerBlkID:   proposerBlkID.String(),
+				CoreChainHeight: 0,
+				Proposer:        "",
+				TimeStamp:       ctx.Time(),
+				CreatedAt:       ctx.Time(),
 			}
 		}
 		err := ctx.Persist().InsertPvmProposer(ctx.Ctx(), ctx.DB(), pvmProposer, cfg.PerformUpdates)
@@ -573,7 +574,7 @@ func (w *Writer) indexTransaction(ctx services.ConsumerCtx, blkID ids.ID, tx pla
 		typ,
 		ins,
 		outs,
-		0,
+		uint128.Zero,
 		genesis,
 	)
 }
