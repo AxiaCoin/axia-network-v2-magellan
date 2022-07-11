@@ -10,6 +10,12 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/axiacoin/axia-network-v2-magellan/cfg"
+	"github.com/axiacoin/axia-network-v2-magellan/db"
+	"github.com/axiacoin/axia-network-v2-magellan/models"
+	"github.com/axiacoin/axia-network-v2-magellan/services"
+	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
+	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/axiacoin/axia-network-v2/api/metrics"
 	"github.com/axiacoin/axia-network-v2/codec"
 	"github.com/axiacoin/axia-network-v2/genesis"
@@ -19,17 +25,12 @@ import (
 	"github.com/axiacoin/axia-network-v2/utils/constants"
 	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2/utils/logging"
+	"github.com/axiacoin/axia-network-v2/utils/uint128"
 	"github.com/axiacoin/axia-network-v2/vms/avm"
 	axiaGoAxc "github.com/axiacoin/axia-network-v2/vms/components/axc"
 	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2/vms/platformvm"
 	"github.com/axiacoin/axia-network-v2/vms/secp256k1fx"
-	"github.com/axiacoin/axia-network-v2-magellan/cfg"
-	"github.com/axiacoin/axia-network-v2-magellan/db"
-	"github.com/axiacoin/axia-network-v2-magellan/models"
-	"github.com/axiacoin/axia-network-v2-magellan/services"
-	"github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
-	"github.com/axiacoin/axia-network-v2-magellan/utils"
 	"github.com/gocraft/dbr/v2"
 	"github.com/palantir/stacktrace"
 )
@@ -39,12 +40,12 @@ var (
 )
 
 type Writer struct {
-	chainID     string
-	networkID   uint32
+	chainID    string
+	networkID  uint32
 	axcAssetID ids.ID
 
 	codec codec.Manager
-	axc  *axc.Writer
+	axc   *axc.Writer
 	ctx   *snow.Context
 }
 
@@ -78,12 +79,12 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 	}
 
 	return &Writer{
-		chainID:     chainID,
-		codec:       avmCodec,
-		networkID:   networkID,
+		chainID:    chainID,
+		codec:      avmCodec,
+		networkID:  networkID,
 		axcAssetID: axcAssetID,
 		axc:        axc.NewWriter(chainID, axcAssetID),
-		ctx:         ctx,
+		ctx:        ctx,
 	}, nil
 }
 
@@ -319,7 +320,7 @@ func (w *Writer) insertTxInternal(ctx services.ConsumerCtx, tx *avm.Tx, txBytes 
 			models.TransactionTypeAVMImport,
 			&axc.AddInsContainer{Ins: castTx.ImportedIns, ChainID: castTx.SourceChain.String()},
 			nil,
-			0,
+			uint128.Zero,
 			false,
 		)
 	case *avm.ExportTx:
@@ -332,7 +333,7 @@ func (w *Writer) insertTxInternal(ctx services.ConsumerCtx, tx *avm.Tx, txBytes 
 			models.TransactionTypeAVMExport,
 			nil,
 			&axc.AddOutsContainer{Outs: castTx.ExportedOuts, ChainID: castTx.DestinationChain.String()},
-			0,
+			uint128.Zero,
 			false,
 		)
 	case *avm.BaseTx:
@@ -345,7 +346,7 @@ func (w *Writer) insertTxInternal(ctx services.ConsumerCtx, tx *avm.Tx, txBytes 
 			models.TransactionTypeBase,
 			nil,
 			nil,
-			0,
+			uint128.Zero,
 			false,
 		)
 	default:
@@ -363,15 +364,15 @@ func (w *Writer) insertOperationTx(
 	var (
 		err         error
 		outputCount uint32
-		amount      uint64
-		totalout    uint64 = 0
+		amount      uint128.Uint128
+		totalout    uint128.Uint128 = uint128.Zero
 	)
 
 	// we must process the Outs to get the outputCount updated
 	// before working on the Ops
 	// the outs get processed again in InsertTransaction
 	for _, out := range tx.Outs {
-		_, err = w.axc.InsertTransactionOuts(outputCount, ctx, 0, out, tx.ID(), w.chainID, false, false)
+		_, err = w.axc.InsertTransactionOuts(outputCount, ctx, uint128.Zero, out, tx.ID(), w.chainID, false, false)
 		if err != nil {
 			return err
 		}
@@ -407,15 +408,14 @@ func (w *Writer) insertCreateAssetTx(ctx services.ConsumerCtx, txBytes []byte, t
 	var (
 		err         error
 		outputCount uint32
-		amount      uint64
-		totalout    uint64 = 0
+		amount      uint128.Uint128
+		totalout    uint128.Uint128 = uint128.Zero
 	)
-
 	// we must process the Outs to get the outputCount updated
 	// before working on the states
 	// the outs get processed again in InsertTransaction
 	for _, out := range tx.Outs {
-		_, err = w.axc.InsertTransactionOuts(outputCount, ctx, 0, out, tx.ID(), w.chainID, false, false)
+		_, err = w.axc.InsertTransactionOuts(outputCount, ctx, uint128.Zero, out, tx.ID(), w.chainID, false, false)
 		if err != nil {
 			return err
 		}
@@ -439,7 +439,7 @@ func (w *Writer) insertCreateAssetTx(ctx services.ConsumerCtx, txBytes []byte, t
 		Symbol:        tx.Symbol,
 		Denomination:  tx.Denomination,
 		Alias:         alias,
-		CurrentSupply: amount,
+		CurrentSupply: amount.String(),
 		CreatedAt:     ctx.Time(),
 	}
 

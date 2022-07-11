@@ -10,13 +10,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/axia-network-v2/codec"
-	"github.com/axiacoin/axia-network-v2/genesis"
-	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/axia-network-v2/utils/hashing"
-	"github.com/axiacoin/axia-network-v2/utils/math"
-	"github.com/axiacoin/axia-network-v2/version"
-	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/axiacoin/axia-network-v2-coreth/core/types"
 	"github.com/axiacoin/axia-network-v2-coreth/plugin/evm"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
@@ -26,6 +19,13 @@ import (
 	"github.com/axiacoin/axia-network-v2-magellan/services"
 	axcIndexer "github.com/axiacoin/axia-network-v2-magellan/services/indexes/axc"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
+	"github.com/axiacoin/axia-network-v2/codec"
+	"github.com/axiacoin/axia-network-v2/genesis"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/hashing"
+	"github.com/axiacoin/axia-network-v2/utils/uint128"
+	"github.com/axiacoin/axia-network-v2/version"
+	"github.com/axiacoin/axia-network-v2/vms/components/verify"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -34,11 +34,11 @@ var (
 )
 
 type Writer struct {
-	networkID   uint32
+	networkID  uint32
 	axcAssetID ids.ID
 
 	codec         codec.Manager
-	axc          *axcIndexer.Writer
+	axc           *axcIndexer.Writer
 	ap5Activation uint64
 }
 
@@ -52,9 +52,9 @@ func NewWriter(networkID uint32, chainID string) (*Writer, error) {
 
 	return &Writer{
 		networkID:     networkID,
-		axcAssetID:   axcAssetID,
+		axcAssetID:    axcAssetID,
 		codec:         evm.Codec,
-		axc:          axcIndexer.NewWriter(chainID, axcAssetID),
+		axc:           axcIndexer.NewWriter(chainID, axcAssetID),
 		ap5Activation: uint64(ap5Activation),
 	}, nil
 }
@@ -321,7 +321,7 @@ func (w *Writer) indexTransaction(
 	id ids.ID,
 	typ models.AXChainType,
 	blockChainID ids.ID,
-	txFee uint64,
+	txFee uint128.Uint128,
 	unsignedBytes []byte,
 ) error {
 	avmTxtype := ""
@@ -374,7 +374,7 @@ func (w *Writer) insertAddress(
 func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.UnsignedExportTx, blockBytes []byte) error {
 	var err error
 
-	var totalin uint64
+	var totalin uint128.Uint128
 	for icnt, in := range tx.Ins {
 		icntval := uint64(icnt)
 		err = w.insertAddress(models.AXChainIn, ctx, icntval, txID, in.Address, in.AssetID, in.Amount, in.Nonce)
@@ -382,14 +382,14 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 			return err
 		}
 		if in.AssetID == w.axcAssetID {
-			totalin, err = math.Add64(totalin, in.Amount)
+			totalin = totalin.Add64(in.Amount)
 			if err != nil {
 				return err
 			}
 		}
 	}
 
-	var totalout uint64
+	var totalout uint128.Uint128
 	var idx uint32
 	for _, out := range tx.ExportedOutputs {
 		totalout, err = w.axc.InsertTransactionOuts(idx, ctx, totalout, out, txID, tx.DestinationChain.String(), false, false)
@@ -399,13 +399,13 @@ func (w *Writer) indexExportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		idx++
 	}
 
-	return w.indexTransaction(ctx, txID, models.AXChainExport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.AXChainExport, tx.BlockchainID, totalin.Sub(totalout), blockBytes)
 }
 
 func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.UnsignedImportTx, creds []verify.Verifiable, blockBytes []byte, unsignedBytes []byte) error {
 	var err error
 
-	var totalout uint64
+	var totalout uint128.Uint128
 	for icnt, out := range tx.Outs {
 		icntval := uint64(icnt)
 		err = w.insertAddress(models.AXchainOut, ctx, icntval, txID, out.Address, out.AssetID, out.Amount, 0)
@@ -413,14 +413,14 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 			return err
 		}
 		if out.AssetID == w.axcAssetID {
-			totalout, err = math.Add64(totalout, out.Amount)
+			totalout = totalout.Add64(out.Amount)
 			if err != nil {
 				return err
 			}
 		}
 	}
 
-	var totalin uint64
+	var totalin uint128.Uint128
 	for inidx, in := range tx.ImportedInputs {
 		totalin, err = w.axc.InsertTransactionIns(inidx, ctx, totalin, in, txID, creds, unsignedBytes, tx.SourceChain.String())
 		if err != nil {
@@ -428,5 +428,5 @@ func (w *Writer) indexImportTx(ctx services.ConsumerCtx, txID ids.ID, tx *evm.Un
 		}
 	}
 
-	return w.indexTransaction(ctx, txID, models.AXChainImport, tx.BlockchainID, totalin-totalout, blockBytes)
+	return w.indexTransaction(ctx, txID, models.AXChainImport, tx.BlockchainID, totalin.Sub(totalout), blockBytes)
 }

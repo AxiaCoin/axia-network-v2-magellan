@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axiacoin/axia-network-v2/ids"
-	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/axiacoin/axia-network-v2-magellan/models"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
+	"github.com/axiacoin/axia-network-v2/ids"
+	"github.com/axiacoin/axia-network-v2/utils/hashing"
 	"github.com/gocraft/dbr/v2"
 )
 
@@ -737,7 +737,7 @@ type Assets struct {
 	Symbol        string
 	Denomination  byte
 	Alias         string
-	CurrentSupply uint64
+	CurrentSupply string
 	CreatedAt     time.Time
 }
 
@@ -2478,14 +2478,14 @@ func (p *persist) InsertCvmLogs(
 }
 
 type PvmProposer struct {
-	ID            string
-	ParentID      string
-	BlkID         string
-	ProposerBlkID string
-	CoreChainHeight  uint64
-	Proposer      string
-	TimeStamp     time.Time
-	CreatedAt     time.Time
+	ID              string
+	ParentID        string
+	BlkID           string
+	ProposerBlkID   string
+	CoreChainHeight uint64
+	Proposer        string
+	TimeStamp       time.Time
+	CreatedAt       time.Time
 }
 
 func (p *persist) QueryPvmProposer(

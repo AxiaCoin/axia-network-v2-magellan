@@ -108,10 +108,14 @@ github.com/axiacoin/axia-network-v2 v0.0.0-20220628075412-30fe55e8399c h1:u5hzjg
 github.com/axiacoin/axia-network-v2 v0.0.0-20220628075412-30fe55e8399c/go.mod h1:QUEz7QJ+QH3VVR5eymC3ZTEq2Z2yWLhHrnlA78om8yA=
 github.com/axiacoin/axia-network-v2 v0.0.0-20220628082050-8a2bbc466c26 h1:31vX53McxFSyez2D1lgLrCNyz/XWaPrPZfjRyOzav2s=
 github.com/axiacoin/axia-network-v2 v0.0.0-20220628082050-8a2bbc466c26/go.mod h1:QUEz7QJ+QH3VVR5eymC3ZTEq2Z2yWLhHrnlA78om8yA=
+github.com/axiacoin/axia-network-v2 v0.0.0-20220707081147-a34fca2b9864 h1:nvS3qP91fnCf8RNzWli66ntwJAB2SSO9Nur1tlIgkXE=
+github.com/axiacoin/axia-network-v2 v0.0.0-20220707081147-a34fca2b9864/go.mod h1:10QI+azyhPD8AddK6v/fXbB9sjVmUWDE5HYCKt67dls=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628071734-b8c3181d32aa h1:IDeOW/atfhP8td4wgH1Y/q7IwUACEXadUiyPnXSa9yA=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628071734-b8c3181d32aa/go.mod h1:gx1IUElX+2JR7SzyWmLGyWSmPFE6F/T+MiyNXr728/Q=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628075152-80aa548e828e h1:II8dmFrDQ4pKCCqXbbqbjmt2BKWgmF8B4Ep9r3WSXGQ=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628075152-80aa548e828e/go.mod h1:j8cAf8/3lDnmQva7hH90RO89jvWe366mOwAKXKU59oc=
+github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220705131545-929b4c93c5f6 h1:40+ZfgYVfItzmopm8y3ENgheoaUKZo+sFbuvZrbiDc4=
+github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220705131545-929b4c93c5f6/go.mod h1:FF0tBjKY2vFvINkam2GvCCjGleU0RBOERCvQTU7UbcM=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
