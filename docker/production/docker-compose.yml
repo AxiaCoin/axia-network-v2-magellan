@@ -3,7 +3,7 @@ volumes:
   axia-ipcs:
 services:
   mysql:
-    image: "143953102251.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-mysql5168b53f-vmuhdp4dbwah:latest"
+    image: "mysql:8.0.26"
     volumes:
       - /home/ubuntu/.magellan/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
@@ -14,7 +14,7 @@ services:
       MYSQL_DATABASE: magellan
     restart: on-failure
   migrate:
-    image: "143953102251.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-migrateed724f89-bs8x5rromfxv:latest"
+    image: "migrate/migrate:v4.14.1"
     volumes:
       - ../../services/db/migrations:/migrations
     depends_on:
@@ -63,7 +63,7 @@ services:
   phpmyadmin:
     depends_on:
       - mysql
-    image: "143953102251.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-phpmyadminf1f95b88-qxxtocp43hjl:latest"
+    image: phpmyadmin/phpmyadmin:5.1.3
     restart: always
     ports:
       - 8081:80
