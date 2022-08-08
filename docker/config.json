@@ -1,20 +1,19 @@
 {
-  "networkID": 1,
+  "networkID": 5,
   "logDirectory": "/var/log/magellan",
   "metricsListenAddr": "",
   "listenAddr": ":8080",
-  "features": [
-  ],
+  "features": [],
   "axia": "http://52.0.104.155:9650",
   "nodeInstance": "default",
-  "axchainId": "2gwLBrwGFnqa1rq82t5zedV38e9xScD58czpyTpu9q68j4kTF1",
+  "axchainId": "2FxLTzBfdifgZhseyFGkTscsgW2xtReT2cG2oSJemmBWJJnQg2",
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "id": "11111111111111111111111111111111LpoYY",
       "vmType": "pvm"
     },
-    "29U6914Wq1nfTrXnUdVjQ5RSs8iWt15XXWhdr1VYy6nFGfWBr6": {
-      "id": "29U6914Wq1nfTrXnUdVjQ5RSs8iWt15XXWhdr1VYy6nFGfWBr6",
+    "1HvMnRTHEhkQjrJrx9XyYpwtEM8MoHZwpnwvuEber6U4jBaJ8": {
+      "id": "1HvMnRTHEhkQjrJrx9XyYpwtEM8MoHZwpnwvuEber6U4jBaJ8",
       "vmType": "avm"
     }
   },
