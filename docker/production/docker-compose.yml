@@ -19,7 +19,7 @@ services:
       - ../../services/db/migrations:/migrations
     depends_on:
       - mysql
-    entrypoint: ["/bin/sh"]
+    entrypoint: [ "/bin/sh" ]
     command: |
       -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up; do
         sleep 1
@@ -28,11 +28,8 @@ services:
   axia:
     env_file:
       - production.env
-    image: "167356549637.dkr.ecr.us-east-1.amazonaws.com/axia:latest"
-    command: /bin/sh -cx "exec /axia/build/axia
-      --config-file=/opt/config.json
-      --network-id=$${NETWORKID}
-      "
+    image: "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-mainnet-infra-axia59f2266c-mxa7adhwoc4o:latest"
+    command: /bin/sh -cx "exec /axia/build/axia --config-file=/opt/config.json --network-id=$${NETWORKID} "
     ports:
       - "9650:9650"
     volumes:
@@ -43,9 +40,10 @@ services:
     depends_on:
       - indexer
     restart: always
-  indexer: &magellan-app
-    image: "167356549637.dkr.ecr.us-east-1.amazonaws.com/magellan:latest"
-    command: ["stream", "indexer", "-c", "/opt/config.json"]
+  indexer:
+    &magellan-app
+    image: "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-mainnet-infra-magellan3ba08964-ifphl9hls7h2:latest"
+    command: [ "stream", "indexer", "-c", "/opt/config.json" ]
     external_links:
       - mysql
     depends_on:
@@ -57,7 +55,7 @@ services:
     restart: on-failure
   api:
     <<: *magellan-app
-    command: ["api", "-c", "/opt/config.json"]
+    command: [ "api", "-c", "/opt/config.json" ]
     ports:
       - 8080:8080
   phpmyadmin:

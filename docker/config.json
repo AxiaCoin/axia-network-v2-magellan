@@ -3,18 +3,17 @@
   "logDirectory": "/var/log/magellan",
   "metricsListenAddr": "",
   "listenAddr": ":8080",
-  "features": [
-  ],
+  "features": [],
   "axia": "http://52.0.104.155:9650",
   "nodeInstance": "default",
-  "axchainId": "2gwLBrwGFnqa1rq82t5zedV38e9xScD58czpyTpu9q68j4kTF1",
+  "axchainId": "7Dv3yn5r758b198H43SSAc5Cfqqzc6brFtqiCFHDCNDXG3Ypj",
   "chains": {
     "11111111111111111111111111111111LpoYY": {
       "id": "11111111111111111111111111111111LpoYY",
       "vmType": "pvm"
     },
-    "29U6914Wq1nfTrXnUdVjQ5RSs8iWt15XXWhdr1VYy6nFGfWBr6": {
-      "id": "29U6914Wq1nfTrXnUdVjQ5RSs8iWt15XXWhdr1VYy6nFGfWBr6",
+    "2gsjn1dfxHRCcc1WQZPbjRWCAp5H6Dro7hy2ZbX6b5dF8WtDRz": {
+      "id": "2gsjn1dfxHRCcc1WQZPbjRWCAp5H6Dro7hy2ZbX6b5dF8WtDRz",
       "vmType": "avm"
     }
   },
