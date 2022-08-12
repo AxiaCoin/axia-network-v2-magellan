@@ -4,7 +4,7 @@
   "metricsListenAddr": "",
   "listenAddr": ":8080",
   "features": [],
-  "axia": "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-axia59f2266c-ua7offt4h8jo://axia:9650",
+  "axia": "production_axia_1://axia:9650",
   "nodeInstance": "default",
   "axchainId": "2FxLTzBfdifgZhseyFGkTscsgW2xtReT2cG2oSJemmBWJJnQg2",
   "chains": {
