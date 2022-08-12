@@ -11,7 +11,7 @@ create table avm_assets
     created_at     timestamp         not null default current_timestamp,
 
     -- Denormalized data
-    current_supply bigint unsigned   not null
+    current_supply decimal(40, 0) unsigned   not null
 );
 
 create table avm_outputs
