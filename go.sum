@@ -114,6 +114,8 @@ github.com/axiacoin/axia-network-v2 v0.0.0-20220707081147-a34fca2b9864 h1:nvS3qP
 github.com/axiacoin/axia-network-v2 v0.0.0-20220707081147-a34fca2b9864/go.mod h1:10QI+azyhPD8AddK6v/fXbB9sjVmUWDE5HYCKt67dls=
 github.com/axiacoin/axia-network-v2 v0.1.2-0.20220809210120-8e851bf62b0e h1:814vVBQHxSV0fjbI/4kC75+LXC7bM4uriPK9dET9Ne4=
 github.com/axiacoin/axia-network-v2 v0.1.2-0.20220809210120-8e851bf62b0e/go.mod h1:o7NfHnwFQQ28N0zsj/nj8AYfYYxBQGKpjqNiFo0Iff0=
+github.com/axiacoin/axia-network-v2 v0.1.2-0.20220809210124-e6a05340f6cb h1:R4/FBxHB0MgD/VlRtPWqJCkbRk+H6QzGXacBLXtvSyM=
+github.com/axiacoin/axia-network-v2 v0.1.2-0.20220809210124-e6a05340f6cb/go.mod h1:o7NfHnwFQQ28N0zsj/nj8AYfYYxBQGKpjqNiFo0Iff0=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628071734-b8c3181d32aa h1:IDeOW/atfhP8td4wgH1Y/q7IwUACEXadUiyPnXSa9yA=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628071734-b8c3181d32aa/go.mod h1:gx1IUElX+2JR7SzyWmLGyWSmPFE6F/T+MiyNXr728/Q=
 github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220628075152-80aa548e828e h1:II8dmFrDQ4pKCCqXbbqbjmt2BKWgmF8B4Ep9r3WSXGQ=
