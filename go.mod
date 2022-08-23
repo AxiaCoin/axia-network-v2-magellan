@@ -3,7 +3,7 @@ module github.com/axiacoin/axia-network-v2-magellan
 go 1.17
 
 require (
-	github.com/axiacoin/axia-network-v2 v0.1.2-0.20220809210124-e6a05340f6cb
+	github.com/axiacoin/axia-network-v2 v0.1.2-0.20220823175152-e05b258e98f8
 	github.com/axiacoin/axia-network-v2-coreth v0.0.0-20220715052731-ee32691448c0
 	github.com/ethereum/go-ethereum v1.10.16
 	github.com/go-sql-driver/mysql v1.6.0
