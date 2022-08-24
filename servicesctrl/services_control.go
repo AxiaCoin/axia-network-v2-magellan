@@ -6,11 +6,11 @@ package servicesctrl
 import (
 	"time"
 
-	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
-	"github.com/axiacoin/axia-network-v2/utils/logging"
 	"github.com/axiacoin/axia-network-v2-magellan/cfg"
 	"github.com/axiacoin/axia-network-v2-magellan/db"
 	"github.com/axiacoin/axia-network-v2-magellan/utils"
+	avlancheGoUtils "github.com/axiacoin/axia-network-v2/utils"
+	"github.com/axiacoin/axia-network-v2/utils/logging"
 )
 
 const (
@@ -42,7 +42,7 @@ type Control struct {
 	IsAccumulateBalanceReader  bool
 	IsDisableBootstrap         bool
 	IsAggregateCache           bool
-	IsAXChainIndex              bool
+	IsAXChainIndex             bool
 	IndexedList                utils.IndexedList
 	LocalTxPool                chan *LocalTxPoolJob
 }
@@ -103,6 +103,7 @@ func (s *Control) Database() (*utils.Connections, error) {
 	}
 	c.DB().SetMaxIdleConns(32)
 	c.DB().SetConnMaxIdleTime(10 * time.Second)
+	c.DB().SetConnMaxLifetime(5 * time.Minute)
 	c.Eventer.SetLog(s.Log)
 	return c, nil
 }
@@ -114,6 +115,7 @@ func (s *Control) DatabaseRO() (*utils.Connections, error) {
 	}
 	c.DB().SetMaxIdleConns(32)
 	c.DB().SetConnMaxIdleTime(10 * time.Second)
+	c.DB().SetConnMaxLifetime(5 * time.Minute)
 	c.Eventer.SetLog(s.Log)
 	return c, nil
 }
