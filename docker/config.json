@@ -4,7 +4,7 @@
   "metricsListenAddr": "",
   "listenAddr": ":8080",
   "features": [],
-  "axia": "http://axia:965",
+  "axia": "http://axia:9650",
   "nodeInstance": "default",
   "axchainId": "7Dv3yn5r758b198H43SSAc5Cfqqzc6brFtqiCFHDCNDXG3Ypj",
   "chains": {
