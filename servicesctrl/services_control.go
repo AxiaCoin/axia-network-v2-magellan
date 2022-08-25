@@ -103,6 +103,7 @@ func (s *Control) Database() (*utils.Connections, error) {
 	}
 	c.DB().SetMaxIdleConns(32)
 	c.DB().SetConnMaxIdleTime(10 * time.Second)
+	c.DB().SetConnMaxLifetime(5 * time.Minute)
 	c.Eventer.SetLog(s.Log)
 	return c, nil
 }
@@ -114,6 +115,7 @@ func (s *Control) DatabaseRO() (*utils.Connections, error) {
 	}
 	c.DB().SetMaxIdleConns(32)
 	c.DB().SetConnMaxIdleTime(10 * time.Second)
+	c.DB().SetConnMaxLifetime(5 * time.Minute)
 	c.Eventer.SetLog(s.Log)
 	return c, nil
 }
