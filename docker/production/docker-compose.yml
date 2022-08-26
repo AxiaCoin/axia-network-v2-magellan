@@ -58,14 +58,3 @@ services:
     command: [ "api", "-c", "/opt/config.json" ]
     ports:
       - 8080:8080
-  phpmyadmin:
-    depends_on:
-      - mysql
-    image: phpmyadmin/phpmyadmin:5.1.3
-    restart: always
-    ports:
-      - 8081:80
-    environment:
-      PMA_ARBITRARY: 1
-      PMA_HOST: mysql
-      PMA_PORT: 3306
