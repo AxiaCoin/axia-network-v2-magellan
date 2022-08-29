@@ -19,7 +19,7 @@
   },
   "services": {
     "db": {
-      "dsn": "root:password@tcp(mysql:3306)/magellan",
+      "dsn": "root:315315359586f5305024b64e55655cfcf35f9a89757ed2bae1793efcab6760a6@tcp(mysql:3306)/magellan",
       "driver": "mysql"
     }
   }
