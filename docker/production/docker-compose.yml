@@ -7,10 +7,8 @@ services:
     volumes:
       - /home/ubuntu/.magellan/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: 653fd9fbc707664d994ed51e83e2e424f53092a9a4fe7df4ef0ce0eb6ee3037e
       MYSQL_DATABASE: magellan
     restart: on-failure
   migrate:
@@ -19,20 +17,17 @@ services:
       - ../../services/db/migrations:/migrations
     depends_on:
       - mysql
-    entrypoint: ["/bin/sh"]
+    entrypoint: [ "/bin/sh" ]
     command: |
-      -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up; do
+      -c 'while ! migrate -path=/migrations/ -database "mysql://root:653fd9fbc707664d994ed51e83e2e424f53092a9a4fe7df4ef0ce0eb6ee3037e@tcp(mysql:3306)/magellan" up; do
         sleep 1
       done'
     restart: on-failure
   axia:
     env_file:
       - production.env
-    image: "143953102251.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-axia59f2266c-ogoxxo9ydchm:latest"
-    command: /bin/sh -cx "exec /axia/build/axia
-      --config-file=/opt/config.json
-      --network-id=$${NETWORKID}
-      "
+    image: "667299798306.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-axia59f2266c-mxatb6ymx02a:latest"
+    command: /bin/sh -cx "exec /axia/build/axia --config-file=/opt/config.json --network-id=$${NETWORKID} "
     ports:
       - "9650:9650"
     volumes:
@@ -43,9 +38,10 @@ services:
     depends_on:
       - indexer
     restart: always
-  indexer: &magellan-app
-    image: "143953102251.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-magellan3ba08964-vnpvsc8ycc84:latest"
-    command: ["stream", "indexer", "-c", "/opt/config.json"]
+  indexer:
+    &magellan-app
+    image: "667299798306.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-magellan3ba08964-h5eca3o7tqfq:latest"
+    command: [ "stream", "indexer", "-c", "/opt/config.json" ]
     external_links:
       - mysql
     depends_on:
@@ -57,7 +53,7 @@ services:
     restart: on-failure
   api:
     <<: *magellan-app
-    command: ["api", "-c", "/opt/config.json"]
+    command: [ "api", "-c", "/opt/config.json" ]
     ports:
       - 8080:8080
   phpmyadmin:
