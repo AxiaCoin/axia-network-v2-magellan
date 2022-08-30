@@ -7,6 +7,8 @@ services:
     volumes:
       - /home/ubuntu/.magellan/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: magellan
@@ -26,7 +28,7 @@ services:
   axia:
     env_file:
       - production.env
-    image: "667299798306.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-axia59f2266c-mxatb6ymx02a:latest"
+    image: "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-mainnet-infra-axia59f2266c-mxa7adhwoc4o:latest"
     command: /bin/sh -cx "exec /axia/build/axia --config-file=/opt/config.json --network-id=$${NETWORKID} "
     ports:
       - "9650:9650"
@@ -40,7 +42,7 @@ services:
     restart: always
   indexer:
     &magellan-app
-    image: "667299798306.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-magellan3ba08964-h5eca3o7tqfq:latest"
+    image: "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-mainnet-infra-magellan3ba08964-ifphl9hls7h2:latest"
     command: [ "stream", "indexer", "-c", "/opt/config.json" ]
     external_links:
       - mysql
@@ -56,14 +58,3 @@ services:
     command: [ "api", "-c", "/opt/config.json" ]
     ports:
       - 8080:8080
-  phpmyadmin:
-    depends_on:
-      - mysql
-    image: phpmyadmin/phpmyadmin:5.1.3
-    restart: always
-    ports:
-      - 8081:80
-    environment:
-      PMA_ARBITRARY: 1
-      PMA_HOST: mysql
-      PMA_PORT: 3306
