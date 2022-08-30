@@ -8,7 +8,7 @@ services:
       - /home/ubuntu/.magellan/mysql:/var/lib/mysql
       - ./../my.cnf:/etc/mysql/my.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: 315315359586f5305024b64e55655cfcf35f9a89757ed2bae1793efcab6760a6
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: magellan
     restart: on-failure
   migrate:
@@ -19,7 +19,7 @@ services:
       - mysql
     entrypoint: [ "/bin/sh" ]
     command: |
-      -c 'while ! migrate -path=/migrations/ -database "mysql://root:315315359586f5305024b64e55655cfcf35f9a89757ed2bae1793efcab6760a6@tcp(mysql:3306)/magellan" up; do
+      -c 'while ! migrate -path=/migrations/ -database "mysql://root:password@tcp(mysql:3306)/magellan" up; do
         sleep 1
       done'
     restart: on-failure
