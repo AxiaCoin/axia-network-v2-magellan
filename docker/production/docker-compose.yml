@@ -28,7 +28,7 @@ services:
   axia:
     env_file:
       - production.env
-    image: "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-mainnet-infra-axia59f2266c-mxa7adhwoc4o:latest"
+    image: "667299798306.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-axia59f2266c-mxatb6ymx02a:latest"
     command: /bin/sh -cx "exec /axia/build/axia --config-file=/opt/config.json --network-id=$${NETWORKID} "
     ports:
       - "9650:9650"
@@ -42,7 +42,7 @@ services:
     restart: always
   indexer:
     &magellan-app
-    image: "606361176142.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-mainnet-infra-magellan3ba08964-ifphl9hls7h2:latest"
+    image: "667299798306.dkr.ecr.us-east-1.amazonaws.com/axia-indexer-testnet-infra-magellan3ba08964-h5eca3o7tqfq:latest"
     command: [ "stream", "indexer", "-c", "/opt/config.json" ]
     external_links:
       - mysql
